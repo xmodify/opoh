@@ -24,7 +24,8 @@ class OpInsuranceController extends Controller
 
         $validated = $request->validate([
             'records' => ['required', 'array', 'min:1'],
-            'records.*.vstdate' => ['required', 'date'], // ถ้าข้อมูลเป็น YYYY-MM-DD ตายตัว แนะนำใช้: date_format:Y-m-d
+            'records.*.vstdate' => ['required','date_format:Y-m-d'],
+            // 'records.*.vstdate' => ['required', 'date'], // ถ้าข้อมูลเป็น YYYY-MM-DD ตายตัว แนะนำใช้: date_format:Y-m-d
             'records.*.total_visit' => ['required','integer','min:0'],
             'records.*.endpoint' => ['required','integer','min:0'],
             'records.*.ofc_visit' => ['required','integer','min:0'],
