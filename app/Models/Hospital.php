@@ -15,13 +15,16 @@ class Hospital extends Authenticatable
         'name',
         'token_api',
         'contact',
-        'ip_whitelist',
         'is_active',   // อย่าลืมเผื่อ column นี้ด้วย
     ];
 
     protected $hidden = [
         'password', // เผื่อใช้ auth แบบ password ในอนาคต
         'remember_token',
+    ];
+
+    protected $casts = [
+    'is_active' => 'boolean',
     ];
 
     // ถ้าใช้ hospcode เป็นตัว login
