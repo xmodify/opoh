@@ -2,15 +2,31 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\User as Authenticatable; // สำคัญ: ให้โมเดลนี้เป็น authenticatable
+use Illuminate\Foundation\Auth\User as Authenticatable; // สำคัญ: ใช้แทน Model
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Hospital extends Model
+class Hospital extends Authenticatable
 {
-   use HasApiTokens;
+    use HasApiTokens, HasFactory;
 
-    protected $fillable = ['hospcode','name','token_api','contact','ip_whitelist'];
+    protected $fillable = [
+        'hospcode',
+        'name',
+        'token_api',
+        'contact',
+        'ip_whitelist',
+        'is_active',   // อย่าลืมเผื่อ column นี้ด้วย
+    ];
 
-    // ถ้าต้องการกำหนด guard แยก สามารถตั้งค่าใน config/auth.php
+    protected $hidden = [
+        'password', // เผื่อใช้ auth แบบ password ในอนาคต
+        'remember_token',
+    ];
+
+    // ถ้าใช้ hospcode เป็นตัว login
+    public function getAuthIdentifierName()
+    {
+        return 'hospcode';
+    }
 }
