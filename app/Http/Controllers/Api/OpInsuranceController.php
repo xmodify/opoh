@@ -6,142 +6,182 @@ use App\Http\Controllers\Controller;
 use App\Models\OpInsurance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
 
 class OpInsuranceController extends Controller
 {
-    // POST /ingest  (ต้องส่ง Authorization: Bearer <token> ที่มี ability: ingest)
+    /**
+     * POST /api/op-insurance/ingest
+     * Header: Authorization: Bearer <token>  (ต้องมี ability: ingest)
+     *
+     * Body ตัวอย่าง:
+     * {
+     *   "records": [
+     *     {
+     *       "vstdate": "2025-08-01",
+     *       "total_visit": 524,
+     *       "endpoint": 2,
+     *       "ofc_visit": 69,
+     *       "ofc_edc": 58,
+     *       "non_authen": 0,
+     *       "non_hmain": 0,
+     *       "uc_anywhere": 8,
+     *       "uc_anywhere_endpoint": 1,
+     *       "uc_cr": 19,
+     *       "uc_cr_endpoint": 0,
+     *       "uc_herb": 25,
+     *       "uc_herb_endpoint": 0,
+     *       "ppfs": 5,
+     *       "ppfs_endpoint": 0,
+     *       "uc_healthmed": 1,
+     *       "uc_healthmed_endpoint": 0
+     *     }
+     *   ]
+     * }
+     */
     public function ingest(Request $request)
     {
-        $hospital = Auth::user(); // tokenable เป็น Hospital
-
-        // ปิดช่องโหว่: เช็คที่ $hospital แทนการอ้าง $request->user() ซ้ำ
+        // Auth: อนุญาตเฉพาะ user ที่เป็นโรงพยาบาลและมี ability: ingest
+        $hospital = Auth::user();
         if (!$hospital || !$hospital->tokenCan('ingest')) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
+        // Validate เฉพาะฟิลด์ที่ต้องใช้ เพื่อกัน nested array ทำให้เกิด error แปลกๆ
         $validated = $request->validate([
             'records' => ['required', 'array', 'min:1'],
-            'records.*.vstdate' => ['required','date_format:Y-m-d'],
-            // 'records.*.vstdate' => ['required', 'date'], // ถ้าข้อมูลเป็น YYYY-MM-DD ตายตัว แนะนำใช้: date_format:Y-m-d
-            'records.*.total_visit' => ['required','integer','min:0'],
-            'records.*.endpoint' => ['required','integer','min:0'],
-            'records.*.ofc_visit' => ['required','integer','min:0'],
-            'records.*.ofc_edc' => ['required','integer','min:0'],
-            'records.*.non_authen' => ['required','integer','min:0'],
-            'records.*.non_hmain' => ['required','integer','min:0'],
-            'records.*.uc_anywhere' => ['required','integer','min:0'],
-            'records.*.uc_anywhere_endpoint' => ['required','integer','min:0'],
-            'records.*.uc_cr' => ['required','integer','min:0'],
-            'records.*.uc_cr_endpoint' => ['required','integer','min:0'],
-            'records.*.uc_herb' => ['required','integer','min:0'],
-            'records.*.uc_herb_endpoint' => ['required','integer','min:0'],
-            'records.*.ppfs' => ['required','integer','min:0'],
-            'records.*.ppfs_endpoint' => ['required','integer','min:0'],
-            'records.*.uc_healthmed' => ['required','integer','min:0'],
-            'records.*.uc_healthmed_endpoint' => ['required','integer','min:0'],
+
+            'records.*.vstdate' => ['required', 'date_format:Y-m-d'],
+            'records.*.total_visit' => ['required', 'integer', 'min:0'],
+            'records.*.endpoint' => ['required', 'integer', 'min:0'],
+            'records.*.ofc_visit' => ['required', 'integer', 'min:0'],
+            'records.*.ofc_edc' => ['required', 'integer', 'min:0'],
+            'records.*.non_authen' => ['required', 'integer', 'min:0'],
+            'records.*.non_hmain' => ['required', 'integer', 'min:0'],
+            'records.*.uc_anywhere' => ['required', 'integer', 'min:0'],
+            'records.*.uc_anywhere_endpoint' => ['required', 'integer', 'min:0'],
+            'records.*.uc_cr' => ['required', 'integer', 'min:0'],
+            'records.*.uc_cr_endpoint' => ['required', 'integer', 'min:0'],
+            'records.*.uc_herb' => ['required', 'integer', 'min:0'],
+            'records.*.uc_herb_endpoint' => ['required', 'integer', 'min:0'],
+            'records.*.ppfs' => ['required', 'integer', 'min:0'],
+            'records.*.ppfs_endpoint' => ['required', 'integer', 'min:0'],
+            'records.*.uc_healthmed' => ['required', 'integer', 'min:0'],
+            'records.*.uc_healthmed_endpoint' => ['required', 'integer', 'min:0'],
         ]);
 
         $hospcode = $hospital->hospcode;
-        $rows     = $validated['records'];
+        $rows = $validated['records'];
 
-        // เตรียม key (vstdate) ทั้งหมด
+        // ---- เตรียมวันที่ทั้งหมดจาก payload ----
         $dates = collect($rows)->pluck('vstdate')->unique()->values();
 
-        // ดึงว่ามีรายการไหนอยู่แล้วใน DB (เพื่อจะได้นับ created/updated)
+        // ---- เช็ควันที่ที่มีอยู่แล้วใน DB (ของ hospcode นี้) ----
         $existing = OpInsurance::query()
             ->where('hospcode', $hospcode)
             ->whereIn('vstdate', $dates)
             ->pluck('vstdate')
             ->all();
 
-        $existingSet = array_flip($existing); // ใช้เช็คเร็ว ๆ
-
-        $toUpsert = [];
-        $created = 0;
-        $updated = 0;
-        $errors  = [];
-
-        // แปลงข้อมูลสำหรับ upsert ทีเดียว
-        foreach ($rows as $i => $row) {
-            try {
-                $record = [
-                    'hospcode' => $hospcode,
-                    'vstdate'  => $row['vstdate'],
-
-                    'total_visit'           => $row['total_visit'],
-                    'endpoint'              => $row['endpoint'],
-                    'ofc_visit'             => $row['ofc_visit'],
-                    'ofc_edc'               => $row['ofc_edc'],
-                    'non_authen'            => $row['non_authen'],
-                    'non_hmain'             => $row['non_hmain'],
-                    'uc_anywhere'           => $row['uc_anywhere'],
-                    'uc_anywhere_endpoint'  => $row['uc_anywhere_endpoint'],
-                    'uc_cr'                 => $row['uc_cr'],
-                    'uc_cr_endpoint'        => $row['uc_cr_endpoint'],
-                    'uc_herb'               => $row['uc_herb'],
-                    'uc_herb_endpoint'      => $row['uc_herb_endpoint'],
-                    'ppfs'                  => $row['ppfs'],
-                    'ppfs_endpoint'         => $row['ppfs_endpoint'],
-                    'uc_healthmed'          => $row['uc_healthmed'],
-                    'uc_healthmed_endpoint' => $row['uc_healthmed_endpoint'],
-
-                    // เผื่อใช้ timestamps
-                    'updated_at' => now(),
-                ];
-
-                // ถ้าเป็นรายการใหม่ เพิ่ม created_at ด้วย (บาง DB จะตั้ง default เองก็ได้)
-                if (!isset($existingSet[$row['vstdate']])) {
-                    $record['created_at'] = now();
-                    $created++;
-                } else {
-                    $updated++;
-                }
-
-                $toUpsert[] = $record;
-            } catch (\Throwable $e) {
-                $errors[] = [
-                    'index'   => $i,
-                    'vstdate' => $row['vstdate'] ?? null,
-                    'message' => $e->getMessage(),
-                ];
+        // สร้าง set แบบปลอดภัย (กัน array_flip error หากมีค่า non-scalar)
+        $existingSet = [];
+        foreach ($existing as $d) {
+            if (is_string($d) || is_int($d)) {
+                $existingSet[(string)$d] = true;
             }
         }
 
-        // ถ้ามี error บางเรคอร์ด ก็ยัง upsert ส่วนที่พร้อมได้
+        // ---- กัน payload ซ้ำวันที่เดียวกัน: อันหลังทับอันแรก ----
+        $byDate = [];
+        foreach ($rows as $r) {
+            $byDate[$r['vstdate']] = $r;
+        }
+
+        // ---- แปลงเป็น rows สำหรับ upsert ----
+        $now = now();
+        $toUpsert = [];
+        foreach ($byDate as $vstdate => $row) {
+            $toUpsert[] = [
+                'hospcode'              => $hospcode,
+                'vstdate'               => $vstdate,
+
+                'total_visit'           => $row['total_visit'],
+                'endpoint'              => $row['endpoint'],
+                'ofc_visit'             => $row['ofc_visit'],
+                'ofc_edc'               => $row['ofc_edc'],
+                'non_authen'            => $row['non_authen'],
+                'non_hmain'             => $row['non_hmain'],
+                'uc_anywhere'           => $row['uc_anywhere'],
+                'uc_anywhere_endpoint'  => $row['uc_anywhere_endpoint'],
+                'uc_cr'                 => $row['uc_cr'],
+                'uc_cr_endpoint'        => $row['uc_cr_endpoint'],
+                'uc_herb'               => $row['uc_herb'],
+                'uc_herb_endpoint'      => $row['uc_herb_endpoint'],
+                'ppfs'                  => $row['ppfs'],
+                'ppfs_endpoint'         => $row['ppfs_endpoint'],
+                'uc_healthmed'          => $row['uc_healthmed'],
+                'uc_healthmed_endpoint' => $row['uc_healthmed_endpoint'],
+
+                // timestamps (optional ถ้าตารางมีคอลัมน์)
+                'updated_at' => $now,
+            ];
+        }
+
+        // ---- นับผลลัพธ์ created / updated ให้ถูกต้อง ----
+        $payloadDates  = array_keys($byDate);
+        $existingDates = array_keys($existingSet);
+        $created = count(array_diff($payloadDates, $existingDates));
+        $updated = count(array_intersect($payloadDates, $existingDates));
+
+        // ---- ทำ upsert ----
         if (!empty($toUpsert)) {
             DB::beginTransaction();
             try {
-                // ใช้ Query Builder เพื่อ upsert ทีเดียว
-                // uniqueBy ตามคีย์ร่วม (hospcode, vstdate)
-                // update columns: ระบุเฉพาะฟิลด์ข้อมูลสรุป (ตัดคีย์และ created_at ออก)
-                $updateColumns = [
-                    'total_visit','endpoint','ofc_visit','ofc_edc','non_authen','non_hmain',
-                    'uc_anywhere','uc_anywhere_endpoint','uc_cr','uc_cr_endpoint','uc_herb','uc_herb_endpoint',
-                    'ppfs','ppfs_endpoint','uc_healthmed','uc_healthmed_endpoint','updated_at'
-                ];
-
-                DB::table((new OpInsurance())->getTable())
-                    ->upsert($toUpsert, ['hospcode','vstdate'], $updateColumns);
+                DB::table((new OpInsurance())->getTable())->upsert(
+                    $toUpsert,
+                    ['hospcode', 'vstdate'], // unique keys
+                    [
+                        'total_visit', 'endpoint', 'ofc_visit', 'ofc_edc', 'non_authen', 'non_hmain',
+                        'uc_anywhere', 'uc_anywhere_endpoint', 'uc_cr', 'uc_cr_endpoint',
+                        'uc_herb', 'uc_herb_endpoint', 'ppfs', 'ppfs_endpoint',
+                        'uc_healthmed', 'uc_healthmed_endpoint', 'updated_at',
+                    ] // columns to update
+                );
 
                 DB::commit();
             } catch (\Throwable $e) {
                 DB::rollBack();
-                // ถ้า upsert ล้มเหลวทั้งหมด ปรับ counter กลับ 0 แล้วบันทึกข้อผิดพลาดรวม
-                $errors[] = ['index' => null, 'vstdate' => null, 'message' => $e->getMessage()];
-                $created = 0;
-                $updated = 0;
+                // หากล้มเหลวทั้งก้อน ให้ส่งรายละเอียด error กลับ
+                return response()->json([
+                    'hospcode' => $hospcode,
+                    'created'  => 0,
+                    'updated'  => 0,
+                    'errors'   => [
+                        ['message' => $e->getMessage()]
+                    ],
+                ], 500);
             }
         }
 
-        $status = empty($errors) ? 200 : 207; // 207 = บางรายการพลาด
+        // 200: สำเร็จทั้งหมด | 207: บางส่วน (ในที่นี้เรา validate ก่อนแล้ว ปกติจะ 200)
         return response()->json([
             'hospcode' => $hospcode,
             'created'  => $created,
             'updated'  => $updated,
-            'errors'   => $errors,
-        ], $status);
+            'errors'   => [],
+        ], 200);
+    }
+
+    /**
+     * (ทางเลือก) GET /api/op-insurance/health
+     * ใช้เช็คว่า endpoint ใช้งานได้และ token ถูกต้องหรือไม่
+     */
+    public function health()
+    {
+        $hospital = Auth::user();
+        if (!$hospital || !$hospital->tokenCan('ingest')) {
+            return response()->json(['ok' => false, 'message' => 'Unauthorized'], 403);
+        }
+        return response()->json(['ok' => true, 'hospcode' => $hospital->hospcode]);
     }
 }
