@@ -9,16 +9,8 @@ Route::post('/hospitals/{hospcode}/tokens', [HospitalTokenController::class, 'is
 Route::delete('/hospitals/{hospcode}/tokens/{tokenId}', [HospitalTokenController::class, 'revoke']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/ingest', [OpInsuranceController::class, 'ingest']);
+    Route::post('/op_insurance', [OpInsuranceController::class, 'ingest']);
 });
 
-Route::middleware('auth:sanctum')->get('/whoami', function (\Illuminate\Http\Request $r) {
-    $user = $r->user();
-    return [
-        'ok' => $user ? true : false,
-        'class' => $user ? get_class($user) : null,
-        'hospcode' => $user->hospcode ?? null,
-        'abilities' => $user?->currentAccessToken()?->abilities,
-    ];
-});
+
 

@@ -50,7 +50,6 @@ class OpInsuranceController extends Controller
         // Validate เฉพาะฟิลด์ที่ต้องใช้ เพื่อกัน nested array ทำให้เกิด error แปลกๆ
         $validated = $request->validate([
             'records' => ['required', 'array', 'min:1'],
-
             'records.*.vstdate' => ['required', 'date_format:Y-m-d'],
             'records.*.total_visit' => ['required', 'integer', 'min:0'],
             'records.*.endpoint' => ['required', 'integer', 'min:0'],
