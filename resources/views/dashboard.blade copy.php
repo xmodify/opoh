@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OP Insurance • Modern Dashboard</title>
+  <title>Amnat Dashboard</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
@@ -110,59 +110,51 @@
 <body>
   <!-- NAV -->
   <nav class="navbar navbar-expand-lg bg-white bg-opacity-75 border-bottom sticky-top glass" style="border-radius:0">
-    <div class="container container-compact">
+    <div class="container-fluid">
       <a class="navbar-brand d-flex align-items-center brand-title fw-bold" href="#">
-        <i class="bi bi-shield-check me-2 text-green"></i> OP Insurance
-      </a>
-      <div class="d-flex align-items-center gap-3 order-lg-2">
-        <span class="chip d-none d-md-inline"><i class="bi bi-activity me-1"></i> Realtime-lite</span>
-        <div id="themeToggle" class="toggle" role="button" title="สลับ Light/Dark">
-          <div class="dot"></div>
-        </div>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topnav">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-      </div>
-      <div id="topnav" class="collapse navbar-collapse">
+        <i class="bi bi-shield-check me-2 text-green"></i> Amnat Dashboard
+      </a>      
+      {{-- <div id="topnav" class="collapse navbar-collapse">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item"><a class="nav-link" href="#summary">ภาพรวม</a></li>
           <li class="nav-item"><a class="nav-link" href="#insights">อินไซต์</a></li>
           <li class="nav-item"><a class="nav-link" href="#table">ตาราง</a></li>
         </ul>
-      </div>
+      </div> --}}
     </div>
   </nav>
 
   <!-- HERO -->
-  <header class="py-5">
-    <div class="container container-compact">
-      <div class="row g-4 align-items-center">
-        <div class="col-lg-8">
-          <div class="d-flex align-items-center gap-2 mb-2">
-            <span class="chip"><i class="bi bi-stars me-1"></i> Modern UI</span>
-            <span class="chip"><i class="bi bi-lightning-charge me-1"></i> Fast</span>
-            <span class="chip"><i class="bi bi-shield-lock me-1"></i> Secure</span>
+  <header class="py-4">
+    <div class="container-fluid">
+      <form method="POST" action="{{ route('web.index') }}" enctype="multipart/form-data">
+      @csrf
+        <div class="row g-4 align-items-center">
+          <div class="col-lg-9">          
+            <h4 class="fw-bold mb-2">ข้อมูลบริการ ปีงบประมาณ {{$budget_year}}</h4>          
           </div>
-          <h1 class="fw-bold mb-2">แดชบอร์ด OP Insurance ที่ <span class="text-green">ทันสมัย</span> และใช้งานง่าย</h1>
-          <p class="text-secondary">สรุปข้อมูลจาก <code>op_insurance</code> แสดงผลแบบการ์ด กราฟ โพรเกรส และตารางค้นหาได้</p>
-        </div>
-        <div class="col-lg-4 text-lg-end">
-          <div class="d-flex justify-content-lg-end gap-2">
-            <button class="btn btn-ghost px-3" onclick="location.reload()">
-              <i class="bi bi-arrow-repeat me-1"></i> รีเฟรช
-            </button>
-            <button class="btn btn-neo px-3" id="exportCsv">
-              <i class="bi bi-download me-1"></i> ส่งออก CSV
-            </button>
+          {{-- ขวาสุด: select + ปุ่ม ติดกันและชิดขวา --}}
+          <div class="col-lg-3 d-flex justify-content-lg-end">
+            <div class="d-flex align-items-center gap-2">
+              <select class="form-select" name="budget_year">
+                @foreach ($budget_year_select as $row)
+                  <option value="{{ $row->LEAVE_YEAR_ID }}"
+                    {{ (int)$budget_year === (int)$row->LEAVE_YEAR_ID ? 'selected' : '' }}>
+                    {{ $row->LEAVE_YEAR_NAME }}
+                  </option>
+                @endforeach
+              </select>
+              <button type="submit" class="btn btn-primary">{{ __('ค้นหา') }}</button>
+            </div>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   </header>
 
   <!-- SUMMARY -->
   <section id="summary" class="pb-2">
-    <div class="container container-compact">
+    <div class="container-fluid">
       @php
         $cards = $cards ?? [];
         $fmt = fn($n)=>number_format((int)($n ?? 0));
@@ -171,14 +163,10 @@
       <div class="row g-3">
         @php
           $items = [
-            ['label'=>'Total Visit','key'=>'total_visit','icon'=>'bi-people','accent'=>'text-green'],
-            ['label'=>'Endpoint','key'=>'endpoint','icon'=>'bi-diagram-3','accent'=>'text-primary'],
-            ['label'=>'Non Hmain','key'=>'non_hmain','icon'=>'bi-hospital','accent'=>'text-green'],
-            ['label'=>'UC Anywhere','key'=>'uc_anywhere','icon'=>'bi-geo-alt','accent'=>'text-green'],
-            ['label'=>'UC CR','key'=>'uc_cr','icon'=>'bi-capsule','accent'=>'text-primary'],
-            ['label'=>'UC Herb','key'=>'uc_herb','icon'=>'bi-flower3','accent'=>'text-green'],
-            ['label'=>'UC HealthMed','key'=>'uc_healthmed','icon'=>'bi-heart-pulse','accent'=>'text-green'],
-            ['label'=>'PPFS','key'=>'ppfs','icon'=>'bi-clipboard2-check','accent'=>'text-primary'],
+            ['label'=>'UC-OP Anywhere','key'=>'visit_ucs_outprov','icon'=>'bi-people','accent'=>'text-green'],
+            ['label'=>'UC-บริการเฉพาะ CR','key'=>'visit_ucs_cr','icon'=>'bi-diagram-3','accent'=>'text-primary'],
+            ['label'=>'UC-สมุนไพร 32 รายการ','key'=>'visit_ucs_herb','icon'=>'bi-hospital','accent'=>'text-green'],
+            ['label'=>'PPFS','key'=>'visit_ppfs','icon'=>'bi-geo-alt','accent'=>'text-green'],           
           ];
         @endphp
 
@@ -206,16 +194,12 @@
           </div>
         @endforeach
       </div>
-
-      <div class="text-end mt-2">
-        <small class="text-secondary">อัปเดตล่าสุด: <span id="last-updated">-</span></small>
-      </div>
     </div>
   </section>
 
   <!-- INSIGHTS -->
   <section id="insights" class="py-4">
-    <div class="container container-compact">
+    <div class="container">
       <div class="row g-3">
         <div class="col-12 col-lg-7">
           <div class="glass p-3 h-100">
@@ -250,7 +234,7 @@
 
   <!-- TABLE -->
   <section id="table" class="py-4">
-    <div class="container container-compact">
+    <div class="container">
       <div class="glass p-3">
         <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-3 gap-2">
           <h5 class="mb-2 mb-md-0 text-primary"><i class="bi bi-table me-2 text-green"></i>สรุปแบบตาราง</h5>
@@ -415,21 +399,7 @@
         const okF = f ? tr.children[0].innerText.toLowerCase().includes(f) : true;
         tr.style.display = (okQ && okF) ? '' : 'none';
       });
-    }
-
-    // CSV export
-    document.getElementById('exportCsv').addEventListener('click', ()=>{
-      const rows = [['ประเภท','จำนวน'],
-        ['Total Visit', cardsData.visit], ['Endpoint', cardsData.endpoint], ['Non Hmain', cardsData.nonh],
-        ['UC Anywhere', cardsData.any], ['UC CR', cardsData.cr], ['UC Herb', cardsData.herb],
-        ['UC HealthMed', cardsData.hmed], ['PPFS', cardsData.ppfs],
-      ];
-      const csv = rows.map(r=>r.join(',')).join('\n');
-      const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href=url; a.download='op_insurance_summary.csv'; a.click();
-      URL.revokeObjectURL(url);
-    });
+    } 
   </script>
 </body>
 </html>

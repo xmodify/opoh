@@ -6,6 +6,10 @@ use App\Http\Controllers\Api\OpInsuranceController;
 
 Route::get('/hospitals/{hospcode}/tokens', [HospitalTokenController::class, 'index']);
 Route::post('/hospitals/{hospcode}/tokens', [HospitalTokenController::class, 'issue']);
+    // {
+    // "name": "10987-ingest",
+    // "abilities": ["ingest"]
+    // }
 Route::delete('/hospitals/{hospcode}/tokens/{tokenId}', [HospitalTokenController::class, 'revoke']);
 
 Route::middleware('auth:sanctum')->group(function () {

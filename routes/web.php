@@ -5,8 +5,9 @@ use App\Http\Controllers\Web\DashboardController;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    // return view('dashboard');
+     return redirect()->to('web/'); 
 });
 
 //Opinsurance หน้าแรก
-Route::get('op_insurance/dashboard', [DashboardController::class, 'index'])->name('opinsurance.dashboard');
+Route::match(['get','post'],'web', [DashboardController::class, 'index'])->name('web.index');;
