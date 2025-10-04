@@ -28,9 +28,7 @@ class OpdController extends Controller
             'records.*.visit_total'         => ['required', 'integer', 'min:0'],
             'records.*.visit_total_op'      => ['required', 'integer', 'min:0'],
             'records.*.visit_total_pp'      => ['required', 'integer', 'min:0'],
-            'records.*.visit_endpoint'      => ['required', 'integer', 'min:0'],
-            'records.*.visit_referout_inprov'       => ['required', 'integer', 'min:0'],
-            'records.*.visit_referout_outprov'      => ['required', 'integer', 'min:0'],
+            'records.*.visit_endpoint'      => ['required', 'integer', 'min:0'],            
             'records.*.visit_ucs_incup'     => ['required', 'integer', 'min:0'],
             'records.*.visit_ucs_inprov'    => ['required', 'integer', 'min:0'],
             'records.*.visit_ucs_outprov'   => ['required', 'integer', 'min:0'],
@@ -46,6 +44,11 @@ class OpdController extends Controller
             'records.*.visit_ucs_cr'        => ['required', 'integer', 'min:0'],
             'records.*.visit_ucs_herb'      => ['required', 'integer', 'min:0'],
             'records.*.visit_ucs_healthmed' => ['required', 'integer', 'min:0'],
+            'records.*.visit_healthmed'     => ['required', 'integer', 'min:0'],
+            'records.*.visit_dent'          => ['required', 'integer', 'min:0'],
+            'records.*.visit_physic'        => ['required', 'integer', 'min:0'],
+            'records.*.visit_referout_inprov'       => ['required', 'integer', 'min:0'],
+            'records.*.visit_referout_outprov'      => ['required', 'integer', 'min:0'],
 
             // รายได้ (float/double)
             'records.*.inc_total'            => ['required', 'numeric', 'min:0'],
@@ -129,9 +132,7 @@ class OpdController extends Controller
                 'visit_total'         => $row['visit_total'],
                 'visit_total_op'      => $row['visit_total_op'],
                 'visit_total_pp'      => $row['visit_total_pp'],
-                'visit_endpoint'      => $row['visit_endpoint'],
-                'visit_referout_inprov'      => $row['visit_referout_inprov'],
-                'visit_referout_outprov'     => $row['visit_referout_outprov'],
+                'visit_endpoint'      => $row['visit_endpoint'],                
                 'visit_total_pp'      => $row['visit_total_pp'],
                 'visit_ucs_incup'     => $row['visit_ucs_incup'],
                 'visit_ucs_inprov'    => $row['visit_ucs_inprov'],
@@ -148,6 +149,11 @@ class OpdController extends Controller
                 'visit_ucs_cr'        => $row['visit_ucs_cr'],
                 'visit_ucs_herb'      => $row['visit_ucs_herb'],
                 'visit_ucs_healthmed' => $row['visit_ucs_healthmed'],
+                'visit_healthmed'     => $row['visit_healthmed'],
+                'visit_dent'          => $row['visit_dent'],
+                'visit_physic'        => $row['visit_physic'],
+                'visit_referout_inprov'      => $row['visit_referout_inprov'],
+                'visit_referout_outprov'     => $row['visit_referout_outprov'],
 
                 // Income (float/double)
                 'inc_total'            => $row['inc_total'],
@@ -211,12 +217,11 @@ class OpdController extends Controller
                     [
                         // Visits
                         'hn_total', 'visit_total', 'visit_total_op', 'visit_total_pp',
-                        'visit_endpoint','visit_referout_inprov','visit_referout_outprov',
-                        'visit_ucs_incup', 'visit_ucs_inprov', 'visit_ucs_outprov',
-                        'visit_ofc', 'visit_bkk', 'visit_bmt', 'visit_sss',
-                        'visit_lgo', 'visit_fss', 'visit_stp', 'visit_pay',
-                        'visit_ppfs', 'visit_ucs_cr', 'visit_ucs_herb', 'visit_ucs_healthmed',
-
+                        'visit_endpoint','visit_ucs_incup', 'visit_ucs_inprov', 'visit_ucs_outprov',
+                        'visit_ofc', 'visit_bkk', 'visit_bmt', 'visit_sss','visit_lgo', 'visit_fss', 
+                        'visit_stp', 'visit_pay','visit_ppfs', 'visit_ucs_cr', 'visit_ucs_herb', 
+                        'visit_ucs_healthmed','visit_healthmed','visit_dent','visit_physic',
+                        'visit_referout_inprov','visit_referout_outprov',
                         // Incomes
                         'inc_total', 'inc_lab_total', 'inc_drug_total',
                         'inc_ucs_incup', 'inc_lab_ucs_incup', 'inc_drug_ucs_incup',
