@@ -19,7 +19,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/op_insurance', [OpInsuranceController::class, 'ingest']);
     Route::post('/opd', [OpdController::class, 'opd']);
     Route::post('/ipd', [IpdController::class, 'ipd']);
-    Route::post('/hospitalupdate', [HospitalUpdateController::class, 'update']);
+    Route::post('/hospital_config', [HospitalUpdateController::class, 'update']);
 });
 
 

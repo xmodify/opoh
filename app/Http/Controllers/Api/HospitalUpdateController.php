@@ -13,7 +13,7 @@ class HospitalUpdateController  extends Controller
      * PUT /api/hospital/update
      * อัปเดต bed_qty และ bed_use ของโรงพยาบาล
      */
-    public function update(Request $request)
+  public function update(Request $request)
     {
         // ✅ ตรวจสอบสิทธิ์
         $hospital = Auth::user();
@@ -30,14 +30,16 @@ class HospitalUpdateController  extends Controller
         $hospcode = $hospital->hospcode;
 
         try {
-            // ✅ อัปเดตข้อมูล
-            $affected = DB::table('hospitals')
-                ->where('hospcode', $hospcode)
-                ->update([
-                    'bed_qty' => $validated['bed_qty'],
-                    'bed_use' => $validated['bed_use'],
-                    'updated_at' => now(),
-                ]);
+            // ✅ อัปเดตหรือสร้างข้อมูลใน hospital_config
+            $affected = DB::table('hospital_config')
+                ->updateOrInsert(
+                    ['hospcode' => $hospcode],
+                    [
+                        'bed_qty' => $validated['bed_qty'],
+                        'bed_use' => $validated['bed_use'],
+                        'updated_at' => now(),
+                    ]
+                );
 
             return response()->json([
                 'ok' => true,
