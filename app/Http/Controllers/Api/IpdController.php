@@ -73,8 +73,7 @@ class IpdController extends Controller
                 'dchdate'  => $dchdate,
 
                 // Visits (int)
-                'an_total'          => $row['an_total'],
-                'visit_total'       => $row['visit_total'],
+                'an_total'          => $row['an_total'],                
                 'admdate'           => $row['admdate'],
                 'bed_occupancy'     => $row['bed_occupancy'],
                 'active_bed'        => $row['active_bed'],                
