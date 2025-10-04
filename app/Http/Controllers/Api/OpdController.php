@@ -99,7 +99,7 @@ class OpdController extends Controller
         $dates = collect($rows)->pluck('vstdate')->unique()->values();
 
         // ---- เช็ควันที่ที่มีอยู่แล้วใน DB (ของ hospcode นี้) ----
-        $existing = OpdService::query()
+        $existing = Opd::query()
             ->where('hospcode', $hospcode)
             ->whereIn('vstdate', $dates)
             ->pluck('vstdate')
