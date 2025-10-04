@@ -7,13 +7,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class HospitalUpdateController  extends Controller
+class HospitalUpdateController extends Controller
 {
-     /**
+    /**
      * PUT /api/hospital/update
-     * อัปเดต bed_qty และ bed_use ของโรงพยาบาล
+     * อัปเดต bed_qty และ bed_use ของโรงพยาบาล (update-only)
      */
-  public function update(Request $request)
+    public function update(Request $request)
     {
         // ✅ ตรวจสอบสิทธิ์
         $hospital = Auth::user();
@@ -30,16 +30,21 @@ class HospitalUpdateController  extends Controller
         $hospcode = $hospital->hospcode;
 
         try {
-            // ✅ อัปเดตหรือสร้างข้อมูลใน hospital_config
-            $affected = DB::table('hospital_config') 
-                ->updateOrInsert(
-                    ['hospcode' => $hospcode],
-                    [
-                        'bed_qty' => $validated['bed_qty'],
-                        'bed_use' => $validated['bed_use'],
-                        'updated_at' => now(),
-                    ]
-                );
+            // ✅ update-only
+            $affected = DB::table('hospital_config')
+                ->where('hospcode', $hospcode)
+                ->update([
+                    'bed_qty' => $validated['bed_qty'],
+                    'bed_use' => $validated['bed_use'],
+                    'updated_at' => now(),
+                ]);
+
+            if ($affected === 0) {
+                return response()->json([
+                    'ok' => false,
+                    'message' => "No record found for hospcode {$hospcode}. Update failed.",
+                ], 404);
+            }
 
             return response()->json([
                 'ok' => true,
