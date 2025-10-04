@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\HospitalTokenController;
 use App\Http\Controllers\Api\OpInsuranceController;
+use App\Http\Controllers\Api\OpdController;
 
 Route::get('/hospitals/{hospcode}/tokens', [HospitalTokenController::class, 'index']);
 Route::post('/hospitals/{hospcode}/tokens', [HospitalTokenController::class, 'issue']);
@@ -14,6 +15,7 @@ Route::delete('/hospitals/{hospcode}/tokens/{tokenId}', [HospitalTokenController
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/op_insurance', [OpInsuranceController::class, 'ingest']);
+    Route::post('/opd', [OpdController::class, 'opd']);
 });
 
 
