@@ -100,7 +100,7 @@ class IpdController extends Controller
         if (!empty($toUpsert)) {
             DB::beginTransaction();
             try {
-                DB::table((new Opd())->getTable())->upsert(
+                DB::table((new Ipd())->getTable())->upsert(
                     $toUpsert,
                     ['hospcode', 'dchdate'], // unique keys
                     [
