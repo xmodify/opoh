@@ -31,7 +31,7 @@ class HospitalUpdateController  extends Controller
 
         try {
             // ✅ อัปเดตหรือสร้างข้อมูลใน hospital_config
-            $affected = DB::table('hospital_config')
+            $affected = DB::table('hospital_config') 
                 ->updateOrInsert(
                     ['hospcode' => $hospcode],
                     [
