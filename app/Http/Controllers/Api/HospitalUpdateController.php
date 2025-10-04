@@ -31,7 +31,7 @@ class HospitalUpdateController  extends Controller
 
         try {
             // ✅ อัปเดตข้อมูล
-            $affected = DB::table('hospital')
+            $affected = DB::table('hospitals')
                 ->where('hospcode', $hospcode)
                 ->update([
                     'bed_qty' => $validated['bed_qty'],
