@@ -139,7 +139,7 @@
       @csrf
         <div class="row g-4 align-items-center">
           <div class="col-lg-9">          
-            <h6 class="text-primary mb-2">One Province One Hospital ปีงบประมาณ {{$budget_year}}</h6>          
+            <h6 class="text-danger mb-2">One Province One Hospital ปีงบประมาณ {{$budget_year}}</h6>          
           </div>
           {{-- ขวาสุด: select + ปุ่ม ติดกันและชิดขวา --}}
           <div class="col-lg-3 d-flex justify-content-lg-end">
@@ -170,82 +170,122 @@
 
     <div class="row g-3">
 
-      {{-- 1) UC-OP Anywhere : ครั้ง | บาท --}}
+      {{--  Visit Total : ครั้ง --}}
       <div class="col-12 col-sm-6 col-xl-3">
         <div class="glass p-3 h-100">
           <div class="d-flex align-items-center justify-content-between mb-2">
-            <h6 class="mb-0 text-primary">UC-OP Anywhere</h6>
-            <span class="text-info"><i class="bi bi-people fs-5"></i></span>
+            <h6 class="mb-0 text-primary">จำนวนผู้มารับบริการผู้ป่วยนอก</h6>
+            <span class="text-primary"><i class="bi bi-person-heart fs-5"></i></span>
           </div>
           <div class="d-flex align-items-end gap-4">
             <div class="text-end">
-              <div class="small text-secondary text-center">visit</div>
+              <div class="small text-secondary text-center">visit total</div>
               <div class="fw-bold" style="font-size:1.5rem;">
-                {{ $fmtInt($visit_ucs_outprov ?? 0) }}
+                {{ $fmtInt($visit_total ?? 0) }}
               </div>
             </div>
             <div class="vr d-none d-sm-block"></div>
             <div class="text-end">
-              <div class="small text-secondary text-center">บาท</div>
-              <div class="fw-bold text-success" style="font-size:1.5rem;">
-                {{ $fmtMoney($inc_ucs_outprov ?? 0) }}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>      
-
-      {{-- 2) UC-บริการเฉพาะ CR : ครั้ง | บาท --}}
-      <div class="col-12 col-sm-6 col-xl-3">
-        <div class="glass p-3 h-100">
-          <div class="d-flex align-items-center justify-content-between mb-2">
-            <h6 class="mb-0 text-primary">UC-บริการเฉพาะ CR</h6>
-            <span class="text-success"><i class="bi bi-hospital fs-5"></i></span>
-          </div>
-          <div class="d-flex align-items-end gap-4">
-            <div class="text-end">
-              <div class="small text-secondary text-center">visit</div>
-              <div class="fw-bold " style="font-size:1.5rem;">
-                {{ $fmtInt($visit_ucs_cr ?? 0) }}
-              </div>
-            </div>
-            <div class="vr d-none d-sm-block"></div>
-            <div class="text-end">
-              <div class="small text-secondary text-center">บาท</div>
-              <div class="fw-bold text-success" style="font-size:1.5rem;">
-                {{ $fmtMoney($inc_uccr ?? 0) }}
+              <div class="small text-secondary text-center">ปิดสิทธิ สปสช.</div>
+              <div class="fw-bold text-primary" style="font-size:1.5rem;">
+                {{ $fmtInt($visit_endpoint ?? 0) }}
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {{-- 3) UC-สมุนไพร 32 รายการ : ครั้ง | บาท --}}
+      {{--  Visit OP_PP : ครั้ง --}}
       <div class="col-12 col-sm-6 col-xl-3">
         <div class="glass p-3 h-100">
           <div class="d-flex align-items-center justify-content-between mb-2">
-            <h6 class="mb-0 text-primary">UC-สมุนไพร 32 รายการ</h6>
-            <span class="text-danger"><i class="bi bi-capsule fs-5"></i></span>
+            <h6 class="mb-0 text-primary">จำนวนผู้มารับบริการ OP-PP</h6>
+            <span class="text-success"><i class="bi bi-person-heart fs-5"></i></span>
           </div>
           <div class="d-flex align-items-end gap-4">
             <div class="text-end">
-              <div class="small text-secondary text-center">visit</div>
+              <div class="small text-secondary text-center">op visit</div>
               <div class="fw-bold" style="font-size:1.5rem;">
-                {{ $fmtInt($visit_ucs_herb ?? 0) }}
+                {{ $fmtInt($visit_total_op ?? 0) }}
               </div>
             </div>
             <div class="vr d-none d-sm-block"></div>
             <div class="text-end">
-              <div class="small text-secondary text-center">บาท</div>
-              <div class="fw-bold text-success" style="font-size:1.5rem;">
-                {{ $fmtMoney($inc_herb ?? 0) }}
+              <div class="small text-secondary text-center">pp visit</div>
+              <div class="fw-bold text-primary" style="font-size:1.5rem;">
+                {{ $fmtInt($visit_total_pp ?? 0) }}
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {{-- 4) PP Fee Schedule : ครั้ง --}}
+      {{--  กำลังรักษาอยู่ --}}
+      <div class="col-12 col-sm-6 col-xl-3">
+        <div class="glass p-3 h-100">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <h6 class="mb-0 text-primary"><strong>กำลังรักษาอยู่</strong></h6>
+            <span class="text-danger"><i class="bi bi-hospital fs-5"></i></span>
+          </div>
+          <div class="d-flex align-items-end gap-4">
+            <div class="text-end">
+              <div class="small text-secondary text-center">AN</div>
+              <div class="fw-bold" style="font-size:1.5rem;">
+                {{ $fmtInt($total_bed_qty ?? 0) }}
+              </div>
+            </div>
+            <div class="vr d-none d-sm-block"></div>
+            <div class="text-end">
+              <div class="small text-secondary text-center">เตียงว่าง</div>
+              <div class="fw-bold text-success" style="font-size:1.5rem;">
+                {{ $fmtInt($total_bed_empty ?? 0) }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {{--  ส่งต่อ --}}
+      <div class="col-12 col-sm-6 col-xl-3">
+        <div class="glass p-3 h-100">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <h6 class="mb-0 text-primary"><strong>การส่งต่อ Refer</strong></h6>
+            <span class="text-danger"><i class="bi bi-truck fs-5 text-danger"></i></span>
+          </div>
+          <div class="d-flex align-items-end gap-4">
+            <div class="text-end">
+              <div class="small text-secondary text-center">ในจังหวัด</div>
+              <div class="fw-bold" style="font-size:1.5rem;">
+                {{ $fmtInt($visit_referout_inprov ?? 0) }}
+              </div>
+            </div>
+            <div class="vr d-none d-sm-block"></div>
+            <div class="text-end">
+              <div class="small text-secondary text-center">ต่างจังหวัด</div>
+              <div class="fw-bold text-primary" style="font-size:1.5rem;">
+                {{ $fmtInt($visit_referout_outprov ?? 0) }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>  
+</section>
+<br>
+
+<!-- SUMMARY (4 blocks, no foreach) -->
+<section id="summary" class="pb-2">
+  <div class="container-fluid">
+    @php
+      $fmtInt   = fn($n) => number_format((int)($n ?? 0));
+      $fmtMoney = fn($n) => number_format((float)($n ?? 0), 2);
+    @endphp
+
+    <div class="row g-3">      
+
+      {{--  PP Fee Schedule : ครั้ง --}}
       <div class="col-12 col-sm-6 col-xl-3">
         <div class="glass p-3 h-100">
           <div class="d-flex align-items-center justify-content-between mb-2">
@@ -270,10 +310,87 @@
         </div>
       </div>
 
+      {{--  UC-OP Anywhere : ครั้ง | บาท --}}
+      <div class="col-12 col-sm-6 col-xl-3">
+        <div class="glass p-3 h-100">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <h6 class="mb-0 text-primary">UC-OP Anywhere</h6>
+            <span class="text-info"><i class="bi bi-people fs-5"></i></span>
+          </div>
+          <div class="d-flex align-items-end gap-4">
+            <div class="text-end">
+              <div class="small text-secondary text-center">visit</div>
+              <div class="fw-bold" style="font-size:1.5rem;">
+                {{ $fmtInt($visit_ucs_outprov ?? 0) }}
+              </div>
+            </div>
+            <div class="vr d-none d-sm-block"></div>
+            <div class="text-end">
+              <div class="small text-secondary text-center">บาท</div>
+              <div class="fw-bold text-success" style="font-size:1.5rem;">
+                {{ $fmtMoney($inc_ucs_outprov ?? 0) }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>      
+
+      {{-- UC-บริการเฉพาะ CR : ครั้ง | บาท --}}
+      <div class="col-12 col-sm-6 col-xl-3">
+        <div class="glass p-3 h-100">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <h6 class="mb-0 text-primary">UC-บริการเฉพาะ CR</h6>
+            <span class="text-success"><i class="bi bi-hospital fs-5"></i></span>
+          </div>
+          <div class="d-flex align-items-end gap-4">
+            <div class="text-end">
+              <div class="small text-secondary text-center">visit</div>
+              <div class="fw-bold " style="font-size:1.5rem;">
+                {{ $fmtInt($visit_ucs_cr ?? 0) }}
+              </div>
+            </div>
+            <div class="vr d-none d-sm-block"></div>
+            <div class="text-end">
+              <div class="small text-secondary text-center">บาท</div>
+              <div class="fw-bold text-success" style="font-size:1.5rem;">
+                {{ $fmtMoney($inc_uccr ?? 0) }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {{-- UC-สมุนไพร 32 รายการ : ครั้ง | บาท --}}
+      <div class="col-12 col-sm-6 col-xl-3">
+        <div class="glass p-3 h-100">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <h6 class="mb-0 text-primary">UC-สมุนไพร 32 รายการ</h6>
+            <span class="text-danger"><i class="bi bi-capsule fs-5"></i></span>
+          </div>
+          <div class="d-flex align-items-end gap-4">
+            <div class="text-end">
+              <div class="small text-secondary text-center">visit</div>
+              <div class="fw-bold" style="font-size:1.5rem;">
+                {{ $fmtInt($visit_ucs_herb ?? 0) }}
+              </div>
+            </div>
+            <div class="vr d-none d-sm-block"></div>
+            <div class="text-end">
+              <div class="small text-secondary text-center">บาท</div>
+              <div class="fw-bold text-success" style="font-size:1.5rem;">
+                {{ $fmtMoney($inc_herb ?? 0) }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>      
+
     </div>
   </div>  
 </section>
 <br>
+
+
 <section id="hospital" class="pb-2">
   <div class="container-fluid">
     <hr>

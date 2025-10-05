@@ -36,6 +36,7 @@ class DashboardController extends Controller
                 COALESCE(SUM(visit_total),0)        AS visit_total,
                 COALESCE(SUM(visit_total_op),0)     AS visit_total_op,
                 COALESCE(SUM(visit_total_pp),0)     AS visit_total_pp,
+                COALESCE(SUM(visit_endpoint),0)     AS visit_endpoint,
                 COALESCE(SUM(visit_ucs_outprov),0)  AS visit_ucs_outprov,
                 COALESCE(SUM(inc_ucs_outprov),0)    AS inc_ucs_outprov,
                 COALESCE(SUM(visit_ucs_cr),0)       AS visit_ucs_cr,
@@ -43,30 +44,40 @@ class DashboardController extends Controller
                 COALESCE(SUM(visit_ucs_herb),0)     AS visit_ucs_herb,
                 COALESCE(SUM(inc_herb),0)           AS inc_herb,
                 COALESCE(SUM(visit_ppfs),0)         AS visit_ppfs,
-                COALESCE(SUM(inc_ppfs),0)           AS inc_ppfs
+                COALESCE(SUM(inc_ppfs),0)           AS inc_ppfs,
+                COALESCE(SUM(visit_referout_inprov),0)      AS visit_referout_inprov,
+                COALESCE(SUM(visit_referout_outprov),0)     AS visit_referout_outprov
             ")->first();
 
         // ส่งเป็น array ใช้ง่าย ๆ ใน Blade
         $card = [
             'visit_total'       => (int)$total->visit_total,
             'visit_total_op'    => (int)$total->visit_total_op,
-            'visit_total_pp'    => (int)$total->visit_total_pp,
+            'visit_total_pp'    => (int)$total->visit_total_pp,           
+            'visit_endpoint'    => (int)$total->visit_endpoint,
             'visit_ucs_outprov' => (int)$total->visit_ucs_outprov,
-            'inc_ucs_outprov'   => (int)$total->inc_ucs_outprov,
+            'inc_ucs_outprov'   => (float)$total->inc_ucs_outprov,
             'visit_ucs_cr'      => (int)$total->visit_ucs_cr,
-            'inc_uccr'          => (int)$total->inc_uccr,
+            'inc_uccr'          => (float)$total->inc_uccr,
             'visit_ucs_herb'    => (int)$total->visit_ucs_herb,
-            'inc_herb'          => (int)$total->inc_herb,
-            'visit_ppfs'        => (int)$total->visit_ppfs,
-            'inc_ppfs'          => (int)$total->inc_ppfs,
+            'inc_herb'          => (float)$total->inc_herb,  
+            'visit_ppfs'        => (int)$total->visit_ppfs,         
+            'inc_ppfs'          => (float)$total->inc_ppfs,
+            'visit_referout_inprov'        => (int)$total->visit_referout_inprov, 
+            'visit_referout_outprov'       => (int)$total->visit_referout_outprov, 
         ];
+
+        $total_bed_qty = DB::table('hospital_config')->sum('bed_qty') ?? 0;
+        $total_bed_use = DB::table('hospital_config')->sum('bed_use') ?? 0;
+        $total_bed_empty = $total_bed_qty - $total_bed_use;
+    
 
         $update_at10985 = DB::table('opd')->where('hospcode', '10985')->max('updated_at');
         $update_at10986 = DB::table('opd')->where('hospcode', '10986')->max('updated_at');
         $update_at10987 = DB::table('opd')->where('hospcode', '10987')->max('updated_at');
         $update_at10988 = DB::table('opd')->where('hospcode', '10988')->max('updated_at');
         $update_at10989 = DB::table('opd')->where('hospcode', '10989')->max('updated_at');
-        $update_at10990 = DB::table('opd')->where('hospcode', '10989')->max('updated_at');
+        $update_at10990 = DB::table('opd')->where('hospcode', '10990')->max('updated_at');
 
         $total_10985 = DB::select("
             SELECT MIN(CASE
@@ -544,6 +555,6 @@ class DashboardController extends Controller
 
         return view('dashboard', array_merge($card,compact('budget_year_select','budget_year','update_at10985','total_10985',
             'update_at10986','total_10986','update_at10987','total_10987','update_at10988','total_10988','update_at10989','total_10989',
-            'update_at10990','total_10990')));
+            'update_at10990','total_10990','total_bed_qty','total_bed_empty')));
     }
 }
