@@ -318,8 +318,8 @@
       <div class="tab-pane fade show active" id="pane-10985" role="tabpanel" aria-labelledby="tab-10985" tabindex="0">
         <div class="glass p-3">
           <div class="d-flex justify-content-between align-items-center mb-2">
-            <h6 class="mb-0 text-decoration-underline">ข้อมูลบริการผู้ป่วยนอก OPD โรงพยาชานุมาน 10985 </h6>
-            <span class="text-secondary small">ปีงบประมาณ {{$budget_year}}</span>
+            <h6>[10985] ข้อมูลบริการผู้ป่วยนอกโรงพยาชานุมาน ปีงบประมาณ {{$budget_year}}</h6>
+            <span class="text-secondary small">Update {{$update_at10985}}</span>              
           </div>
           <div class="table-responsive">
             <table id="table10985" class="table table-bordered table-striped my-3" width ="100%">
@@ -618,8 +618,8 @@
       <div class="tab-pane fade" id="pane-10986" role="tabpanel" aria-labelledby="tab-10986" tabindex="0">
         <div class="glass p-3">
           <div class="d-flex justify-content-between align-items-center mb-2">
-            <h6 class="mb-0 text-decoration-underline">ข้อมูลบริการผู้ป่วยนอก OPD โรงพยาปทุมราชวงศา 10986</h6>
-            <span class="text-secondary small">ปีงบประมาณ {{$budget_year}}</span>
+            <h6>[10986] ข้อมูลบริการผู้ป่วยนอกโรงพยาปทุมราชวงศา ปีงบประมาณ {{$budget_year}}</h6>
+            <span class="text-secondary small">Update {{$update_at10986}}</span>            
           </div>
           <div class="table-responsive">
             <table id="table10986" class="table table-bordered table-striped my-3" width ="100%">
@@ -918,8 +918,8 @@
       <div class="tab-pane fade" id="pane-10987" role="tabpanel" aria-labelledby="tab-10987" tabindex="0">
         <div class="glass p-3">
           <div class="d-flex justify-content-between align-items-center mb-2">
-            <h6 class="mb-0 text-decoration-underline">ข้อมูลบริการผู้ป่วยนอก OPD โรงพยาพนา 10987</h6>
-            <span class="text-secondary small">ปีงบประมาณ {{$budget_year}}</span>
+            <h6>[10987] ข้อมูลบริการผู้ป่วยนอกโรงพยาพนา ปีงบประมาณ {{$budget_year}}</h6>
+            <span class="text-secondary small">Update {{$update_at10987}}</span>   
           </div>
           <div class="table-responsive">
             <table id="table10987" class="table table-bordered table-striped my-3" width ="100%">
@@ -1218,8 +1218,8 @@
       <div class="tab-pane fade" id="pane-10988" role="tabpanel" aria-labelledby="tab-10988" tabindex="0">
         <div class="glass p-3">
           <div class="d-flex justify-content-between align-items-center mb-2">
-            <h6 class="mb-0 text-decoration-underline">ข้อมูลบริการผู้ป่วยนอก OPD โรงพยาเสนางคนิคม 10988</h6>
-            <span class="text-secondary small">ปีงบประมาณ {{$budget_year}}</span>
+            <h6>[10988] ข้อมูลบริการผู้ป่วยนอกโรงพยาบาลเสนางคนิคม ปีงบประมาณ {{$budget_year}}</h6>
+            <span class="text-secondary small">Update {{$update_at10988}}</span>   
           </div>
           <div class="table-responsive">
             <table id="table10988" class="table table-bordered table-striped my-3" width ="100%">
@@ -1518,8 +1518,8 @@
       <div class="tab-pane fade" id="pane-10989" role="tabpanel" aria-labelledby="tab-10989" tabindex="0">
         <div class="glass p-3">
           <div class="d-flex justify-content-between align-items-center mb-2">
-            <h6 class="mb-0 text-decoration-underline">ข้อมูลบริการผู้ป่วยนอก OPD โรงพยาหัวตะพาน 10989</h6>
-            <span class="text-secondary small">ปีงบประมาณ {{$budget_year}}</span>
+            <h6>[10989] ข้อมูลบริการผู้ป่วยนอกโรงพยาบาลหัวตะพาน ปีงบประมาณ {{$budget_year}}</h6>
+            <span class="text-secondary small">Update {{$update_at10989}}</span>   
           </div>
           <div class="table-responsive">
             <table id="table10989" class="table table-bordered table-striped my-3" width ="100%">
@@ -1818,8 +1818,8 @@
       <div class="tab-pane fade" id="pane-10990" role="tabpanel" aria-labelledby="tab-10990" tabindex="0">
         <div class="glass p-3">
           <div class="d-flex justify-content-between align-items-center mb-2">
-            <h6 class="mb-0 text-decoration-underline">ข้อมูลบริการผู้ป่วยนอก OPD โรงพยาลืออำนาจ 10990</h6>
-            <span class="text-secondary small">ปีงบประมาณ {{$budget_year}}</span>
+            <h6>[10990] ข้อมูลบริการผู้ป่วยนอกโรงพยาบาลลืออำนาจ ปีงบประมาณ {{$budget_year}}</h6>
+            <span class="text-secondary small">Update {{$update_at10990}}</span>   
           </div>
           <div class="table-responsive">
             <table id="table10990" class="table table-bordered table-striped my-3" width ="100%">

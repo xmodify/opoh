@@ -26,15 +26,15 @@ class IpdController extends Controller
             // จำนวน visit (int)
             'records.*.an_total'            => ['required', 'integer', 'min:0'],
             'records.*.admdate'             => ['required', 'integer', 'min:0'],
-            'records.*.bed_occupancy'       => ['required', 'integer', 'min:0'],
-            'records.*.active_bed'          => ['required', 'integer', 'min:0'],
-            'records.*.cmi'                 => ['required', 'integer', 'min:0'],            
-            'records.*.adjrw'               => ['required', 'integer', 'min:0'],
            
             // รายได้ (float/double)
-            'records.*.inc_total'            => ['required', 'numeric', 'min:0'],
-            'records.*.inc_lab_total'        => ['required', 'numeric', 'min:0'],
-            'records.*.inc_drug_total'       => ['required', 'numeric', 'min:0'],           
+            'records.*.bed_occupancy'       => ['required', 'numeric', 'min:0'],
+            'records.*.active_bed'          => ['required', 'numeric', 'min:0'],
+            'records.*.cmi'                 => ['required', 'numeric', 'min:0'],            
+            'records.*.adjrw'               => ['required', 'numeric', 'min:0'],
+            'records.*.inc_total'           => ['required', 'numeric', 'min:0'],
+            'records.*.inc_lab_total'       => ['required', 'numeric', 'min:0'],
+            'records.*.inc_drug_total'      => ['required', 'numeric', 'min:0'],           
         ]);
 
         $hospcode = $hospital->hospcode;
@@ -75,15 +75,15 @@ class IpdController extends Controller
                 // Visits (int)
                 'an_total'          => $row['an_total'],                
                 'admdate'           => $row['admdate'],
+                               
+                // Income (float/double)
                 'bed_occupancy'     => $row['bed_occupancy'],
                 'active_bed'        => $row['active_bed'],                
                 'cmi'               => $row['cmi'],
                 'adjrw'             => $row['adjrw'],
-                               
-                // Income (float/double)
-                'inc_total'            => $row['inc_total'],
-                'inc_lab_total'        => $row['inc_lab_total'],
-                'inc_drug_total'       => $row['inc_drug_total'],
+                'inc_total'         => $row['inc_total'],
+                'inc_lab_total'     => $row['inc_lab_total'],
+                'inc_drug_total'    => $row['inc_drug_total'],
                
                 // timestamps
                 'updated_at' => $now,
@@ -105,9 +105,10 @@ class IpdController extends Controller
                     ['hospcode', 'dchdate'], // unique keys
                     [
                         // Visits
-                        'an_total', 'admdate', 'bed_occupancy', 'active_bed','cmi','adjrw',
+                        'an_total', 'admdate',
 
                         // Incomes
+                        'bed_occupancy', 'active_bed','cmi','adjrw',
                         'inc_total', 'inc_lab_total', 'inc_drug_total',                     
 
                         // Timestamp

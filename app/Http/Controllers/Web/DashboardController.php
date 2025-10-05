@@ -30,7 +30,7 @@ class DashboardController extends Controller
             ->where('LEAVE_YEAR_ID', $budget_year)
             ->value('DATE_END');
 
-        $total = DB::table('op_insurance')
+        $total = DB::table('opd')
             ->whereBetween('vstdate', [$start_date, $end_date])
             ->selectRaw("
                 COALESCE(SUM(visit_total),0)        AS visit_total,
@@ -60,6 +60,13 @@ class DashboardController extends Controller
             'visit_ppfs'        => (int)$total->visit_ppfs,
             'inc_ppfs'          => (int)$total->inc_ppfs,
         ];
+
+        $update_at10985 = DB::table('opd')->where('hospcode', '10985')->max('updated_at');
+        $update_at10986 = DB::table('opd')->where('hospcode', '10986')->max('updated_at');
+        $update_at10987 = DB::table('opd')->where('hospcode', '10987')->max('updated_at');
+        $update_at10988 = DB::table('opd')->where('hospcode', '10988')->max('updated_at');
+        $update_at10989 = DB::table('opd')->where('hospcode', '10989')->max('updated_at');
+        $update_at10990 = DB::table('opd')->where('hospcode', '10989')->max('updated_at');
 
         $total_10985 = DB::select("
             SELECT MIN(CASE
@@ -134,7 +141,7 @@ class DashboardController extends Controller
             SUM(inc_ppfs)             AS inc_ppfs,
             SUM(inc_uccr)             AS inc_uccr,
             SUM(inc_herb)             AS inc_herb
-            FROM op_insurance
+            FROM opd
             WHERE vstdate BETWEEN ? AND ?
             AND hospcode = 10985
             GROUP BY YEAR(vstdate), MONTH(vstdate)
@@ -213,7 +220,7 @@ class DashboardController extends Controller
             SUM(inc_ppfs)             AS inc_ppfs,
             SUM(inc_uccr)             AS inc_uccr,
             SUM(inc_herb)             AS inc_herb
-            FROM op_insurance
+            FROM opd
             WHERE vstdate BETWEEN ? AND ?
             AND hospcode = 10986
             GROUP BY YEAR(vstdate), MONTH(vstdate)
@@ -292,7 +299,7 @@ class DashboardController extends Controller
             SUM(inc_ppfs)             AS inc_ppfs,
             SUM(inc_uccr)             AS inc_uccr,
             SUM(inc_herb)             AS inc_herb
-            FROM op_insurance
+            FROM opd
             WHERE vstdate BETWEEN ? AND ?
             AND hospcode = 10987
             GROUP BY YEAR(vstdate), MONTH(vstdate)
@@ -371,7 +378,7 @@ class DashboardController extends Controller
             SUM(inc_ppfs)             AS inc_ppfs,
             SUM(inc_uccr)             AS inc_uccr,
             SUM(inc_herb)             AS inc_herb
-            FROM op_insurance
+            FROM opd
             WHERE vstdate BETWEEN ? AND ?
             AND hospcode = 10988
             GROUP BY YEAR(vstdate), MONTH(vstdate)
@@ -450,7 +457,7 @@ class DashboardController extends Controller
             SUM(inc_ppfs)             AS inc_ppfs,
             SUM(inc_uccr)             AS inc_uccr,
             SUM(inc_herb)             AS inc_herb
-            FROM op_insurance
+            FROM opd
             WHERE vstdate BETWEEN ? AND ?
             AND hospcode = 10989
             GROUP BY YEAR(vstdate), MONTH(vstdate)
@@ -529,13 +536,14 @@ class DashboardController extends Controller
             SUM(inc_ppfs)             AS inc_ppfs,
             SUM(inc_uccr)             AS inc_uccr,
             SUM(inc_herb)             AS inc_herb
-            FROM op_insurance
+            FROM opd
             WHERE vstdate BETWEEN ? AND ?
             AND hospcode = 10990
             GROUP BY YEAR(vstdate), MONTH(vstdate)
             ORDER BY YEAR(vstdate), MONTH(vstdate) ", [$start_date, $end_date]);
 
-        return view('dashboard', array_merge($card,compact('budget_year_select','budget_year','total_10985',
-            'total_10986','total_10987','total_10988','total_10989','total_10990')));
+        return view('dashboard', array_merge($card,compact('budget_year_select','budget_year','update_at10985','total_10985',
+            'update_at10986','total_10986','update_at10987','total_10987','update_at10988','total_10988','update_at10989','total_10989',
+            'update_at10990','total_10990')));
     }
 }
