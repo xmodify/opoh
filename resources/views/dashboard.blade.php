@@ -139,7 +139,7 @@
       @csrf
         <div class="row g-4 align-items-center">
           <div class="col-lg-9">          
-            <h6 class="text-danger mb-2">One Province One Hospital ปีงบประมาณ {{$budget_year}}</h6>          
+            <h6 class="text-success mb-2"><strong>One Province One Hospital ปีงบประมาณ {{$budget_year}}</strong></h6>          
           </div>
           {{-- ขวาสุด: select + ปุ่ม ติดกันและชิดขวา --}}
           <div class="col-lg-3 d-flex justify-content-lg-end">
@@ -169,6 +169,140 @@
     @endphp
 
     <div class="row g-3">
+      
+      {{--  กำลังรักษาอยู่ ------------------------------------------------------------------------------------------------------------ --}}
+      <div class="col-12 col-sm-6 col-xl-3">
+        <a href="#" data-bs-toggle="modal" data-bs-target="#AdmiitDetailModal" class="text-decoration-none text-dark">
+          <div class="glass p-3 h-100">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <h6 class="mb-0 text-danger"><strong>กำลังรักษาอยู่</strong></h6>
+              <span class="text-danger"><i class="bi bi-hospital fs-5"></i></span>
+            </div>
+            <div class="d-flex align-items-end gap-4">
+              <div class="text-end">
+                <div class="small text-secondary text-center">AN</div>
+                <div class="fw-bold text-danger" style="font-size:1.75rem;">
+                  {{ $fmtInt($total_bed_qty ?? 0) }}
+                </div>
+              </div>
+              <div class="vr d-none d-sm-block"></div>
+              <div class="text-end">
+                <div class="small text-secondary text-center">เตียงว่าง</div>
+                <div class="fw-bold text-success" style="font-size:1.75rem;">
+                  {{ $fmtInt($total_bed_empty ?? 0) }}
+                </div>
+              </div>
+            </div>              
+          </div>
+        </a>    
+      </div>      
+      {{-- Modal แสดงรายละเอียด รพ. --}}
+      <div class="modal fade" id="AdmiitDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+              <h5 class="modal-title" id="hospitalDetailLabel">
+                ข้อมูลจำนวนเตียง
+              </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+              <table class="table table-bordered table-hover align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th class="text-center">รหัส</th>
+                    <th class="text-center">ชื่อโรงพยาบาล</th>
+                    <th class="text-center">จำนวนเตียง</th>
+                    <th class="text-center">ใช้ไป</th>
+                    <th class="text-center">ว่าง</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach($hospitals as $h)
+                    <tr>
+                      <td align="right">{{ $h->hospcode }}</td>
+                      <td>{{ $h->hospname }}</td>
+                      <td align="right">{{ $h->bed_qty }}</td>
+                      <td align="right">{{ $h->bed_use }}</td>
+                      <td align="right" class="text-success fw-bold">{{ $h->bed_qty - $h->bed_use }}</td>
+                    </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {{--  ส่งต่อ-------------------------------------------------------------------------------------------------------------- --}}
+      <div class="col-12 col-sm-6 col-xl-3">
+        <a href="#" data-bs-toggle="modal" data-bs-target="#ReferDetailModal" class="text-decoration-none text-dark">
+          <div class="glass p-3 h-100">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <h6 class="mb-0 text-primary"><strong>การส่งต่อ Refer</strong></h6>
+              <span class="text-danger"><i class="bi bi-truck fs-5 text-danger"></i></span>
+            </div>
+            <div class="d-flex align-items-end gap-4">
+              <div class="text-end">
+                <div class="small text-secondary text-center">ในจังหวัด</div>
+                <div class="fw-bold" style="font-size:1.75rem;">
+                  {{ $fmtInt($visit_referout_inprov ?? 0) }}
+                </div>
+              </div>
+              <div class="vr d-none d-sm-block"></div>
+              <div class="text-end">
+                <div class="small text-secondary text-center">ต่างจังหวัด</div>
+                <div class="fw-bold text-primary" style="font-size:1.75rem;">
+                  {{ $fmtInt($visit_referout_outprov ?? 0) }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      {{-- Modal แสดงรายละเอียด รพ. --}}
+      <div class="modal fade" id="ReferDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+              <h5 class="modal-title" id="hospitalDetailLabel">
+                การส่งต่อ Refer
+              </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table table-bordered table-hover align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th class="text-center">รหัส</th>
+                    <th class="text-center">ชื่อโรงพยาบาล</th>
+                    <th class="text-center">ในจังหวัด</th>
+                    <th class="text-center">ต่างจังหวัด</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach($hospitalSummary as $h)
+                    <tr>
+                      <td align="right">{{ $h->hospcode }}</td>
+                      <td>{{ $h->hospname }}</td>
+                      <td align="right">{{ $h->visit_referout_inprov }}</td>
+                      <td align="right">{{ $h->visit_referout_outprov }}</td>
+                    </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {{--  Visit Total : ครั้ง----------------------------------------------------------------------------------------------- --}}
       <div class="col-12 col-sm-6 col-xl-3">
@@ -181,14 +315,14 @@
             <div class="d-flex align-items-end gap-4">
               <div class="text-end">
                 <div class="small text-secondary text-center">visit total</div>
-                <div class="fw-bold" style="font-size:1.5rem;">
+                <div class="fw-bold" style="font-size:1.75rem;">
                   {{ $fmtInt($visit_total ?? 0) }}
                 </div>
               </div>
               <div class="vr d-none d-sm-block"></div>
               <div class="text-end">
                 <div class="small text-secondary text-center">ปิดสิทธิ สปสช.</div>
-                <div class="fw-bold text-primary" style="font-size:1.5rem;">
+                <div class="fw-bold text-primary" style="font-size:1.75rem;">
                   {{ $fmtInt($visit_endpoint ?? 0) }}
                 </div>
               </div>
@@ -246,14 +380,14 @@
             <div class="d-flex align-items-end gap-4">
               <div class="text-end">
                 <div class="small text-secondary text-center">op visit</div>
-                <div class="fw-bold" style="font-size:1.5rem;">
+                <div class="fw-bold" style="font-size:1.75rem;">
                   {{ $fmtInt($visit_total_op ?? 0) }}
                 </div>
               </div>
               <div class="vr d-none d-sm-block"></div>
               <div class="text-end">
                 <div class="small text-secondary text-center">pp visit</div>
-                <div class="fw-bold text-primary" style="font-size:1.5rem;">
+                <div class="fw-bold text-primary" style="font-size:1.75rem;">
                   {{ $fmtInt($visit_total_pp ?? 0) }}
                 </div>
               </div>
@@ -300,142 +434,6 @@
         </div>
       </div>
 
-      {{--  กำลังรักษาอยู่ ------------------------------------------------------------------------------------------------------------ --}}
-      
-      <div class="col-12 col-sm-6 col-xl-3">
-        <a href="#" data-bs-toggle="modal" data-bs-target="#AdmiitDetailModal" class="text-decoration-none text-dark">
-          <div class="glass p-3 h-100">
-            <div class="d-flex align-items-center justify-content-between mb-2">
-              <h6 class="mb-0 text-primary"><strong>กำลังรักษาอยู่</strong></h6>
-              <span class="text-danger"><i class="bi bi-hospital fs-5"></i></span>
-            </div>
-            <div class="d-flex align-items-end gap-4">
-              <div class="text-end">
-                <div class="small text-secondary text-center">AN</div>
-                <div class="fw-bold" style="font-size:1.5rem;">
-                  {{ $fmtInt($total_bed_qty ?? 0) }}
-                </div>
-              </div>
-              <div class="vr d-none d-sm-block"></div>
-              <div class="text-end">
-                <div class="small text-secondary text-center">เตียงว่าง</div>
-                <div class="fw-bold text-success" style="font-size:1.5rem;">
-                  {{ $fmtInt($total_bed_empty ?? 0) }}
-                </div>
-              </div>
-            </div>              
-          </div>
-        </a>    
-      </div>
-      
-      {{-- Modal แสดงรายละเอียด รพ. --}}
-      <div class="modal fade" id="AdmiitDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-              <h5 class="modal-title" id="hospitalDetailLabel">
-                ข้อมูลจำนวนเตียง
-              </h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <div class="modal-body">
-              <table class="table table-bordered table-hover align-middle">
-                <thead class="table-light">
-                  <tr>
-                    <th class="text-center">รหัส</th>
-                    <th class="text-center">ชื่อโรงพยาบาล</th>
-                    <th class="text-center">จำนวนเตียง</th>
-                    <th class="text-center">ใช้ไป</th>
-                    <th class="text-center">ว่าง</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @foreach($hospitals as $h)
-                    <tr>
-                      <td align="right">{{ $h->hospcode }}</td>
-                      <td>{{ $h->hospname }}</td>
-                      <td align="right">{{ $h->bed_qty }}</td>
-                      <td align="right">{{ $h->bed_use }}</td>
-                      <td align="right" class="text-success fw-bold">{{ $h->bed_qty - $h->bed_use }}</td>
-                    </tr>
-                  @endforeach
-                </tbody>
-              </table>
-            </div>
-
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {{--  ส่งต่อ-------------------------------------------------------------------------------------------------------------- --}}
-      <div class="col-12 col-sm-6 col-xl-3">
-        <a href="#" data-bs-toggle="modal" data-bs-target="#ReferDetailModal" class="text-decoration-none text-dark">
-          <div class="glass p-3 h-100">
-            <div class="d-flex align-items-center justify-content-between mb-2">
-              <h6 class="mb-0 text-primary"><strong>การส่งต่อ Refer</strong></h6>
-              <span class="text-danger"><i class="bi bi-truck fs-5 text-danger"></i></span>
-            </div>
-            <div class="d-flex align-items-end gap-4">
-              <div class="text-end">
-                <div class="small text-secondary text-center">ในจังหวัด</div>
-                <div class="fw-bold" style="font-size:1.5rem;">
-                  {{ $fmtInt($visit_referout_inprov ?? 0) }}
-                </div>
-              </div>
-              <div class="vr d-none d-sm-block"></div>
-              <div class="text-end">
-                <div class="small text-secondary text-center">ต่างจังหวัด</div>
-                <div class="fw-bold text-primary" style="font-size:1.5rem;">
-                  {{ $fmtInt($visit_referout_outprov ?? 0) }}
-                </div>
-              </div>
-            </div>
-          </div>
-        </a>
-      </div>
-
-      {{-- Modal แสดงรายละเอียด รพ. --}}
-      <div class="modal fade" id="ReferDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-              <h5 class="modal-title" id="hospitalDetailLabel">
-                การส่งต่อ Refer
-              </h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <table class="table table-bordered table-hover align-middle">
-                <thead class="table-light">
-                  <tr>
-                    <th class="text-center">รหัส</th>
-                    <th class="text-center">ชื่อโรงพยาบาล</th>
-                    <th class="text-center">ในจังหวัด</th>
-                    <th class="text-center">ต่างจังหวัด</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @foreach($hospitalSummary as $h)
-                    <tr>
-                      <td align="right">{{ $h->hospcode }}</td>
-                      <td>{{ $h->hospname }}</td>
-                      <td align="right">{{ $h->visit_referout_inprov }}</td>
-                      <td align="right">{{ $h->visit_referout_outprov }}</td>
-                    </tr>
-                  @endforeach
-                </tbody>
-              </table>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
-            </div>
-          </div>
-        </div>
-      </div>
       {{-- -------------------------------------------------------------------------------------------------------------- --}}
     </div>
   </div>  
