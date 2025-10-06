@@ -67,8 +67,38 @@ class DashboardController extends Controller
             'visit_referout_outprov'       => (int)$total->visit_referout_outprov, 
         ];
 
-        $total_bed_qty = DB::table('hospital_config')->sum('bed_qty') ?? 0;
-        $total_bed_use = DB::table('hospital_config')->sum('bed_use') ?? 0;
+        $hospitalSummary = DB::table('opd')
+            ->join('hospital_config', 'opd.hospcode', '=', 'hospital_config.hospcode')
+            ->whereBetween('vstdate', [$start_date, $end_date])
+            ->select(
+                'opd.hospcode',
+                'hospital_config.hospname',
+                DB::raw('COALESCE(SUM(visit_total),0) AS visit_total'),
+                DB::raw('COALESCE(SUM(visit_total_op),0) AS visit_total_op'),
+                DB::raw('COALESCE(SUM(visit_total_pp),0) AS visit_total_pp'),
+                DB::raw('COALESCE(SUM(visit_endpoint),0) AS visit_endpoint'),
+                DB::raw('COALESCE(SUM(visit_ucs_outprov),0) AS visit_ucs_outprov'),
+                DB::raw('COALESCE(SUM(inc_ucs_outprov),0) AS inc_ucs_outprov'),
+                DB::raw('COALESCE(SUM(visit_ucs_cr),0) AS visit_ucs_cr'),
+                DB::raw('COALESCE(SUM(inc_uccr),0) AS inc_uccr'),
+                DB::raw('COALESCE(SUM(visit_ucs_herb),0) AS visit_ucs_herb'),
+                DB::raw('COALESCE(SUM(inc_herb),0) AS inc_herb'),
+                DB::raw('COALESCE(SUM(visit_ppfs),0) AS visit_ppfs'),
+                DB::raw('COALESCE(SUM(inc_ppfs),0) AS inc_ppfs'),
+                DB::raw('COALESCE(SUM(visit_referout_inprov),0) AS visit_referout_inprov'),
+                DB::raw('COALESCE(SUM(visit_referout_outprov),0) AS visit_referout_outprov')
+            )
+            ->groupBy('opd.hospcode', 'hospital_config.hospname')
+            ->orderBy('hospital_config.hospname')
+            ->get();
+
+        // ดึงข้อมูลโรงพยาบาลทั้งหมด
+        $hospitals = DB::table('hospital_config')
+            ->select('hospcode', 'hospname', 'bed_qty', 'bed_use')
+            ->get();
+        // รวมยอดเตียงทั้งหมด
+        $total_bed_qty = $hospitals->sum('bed_qty') ?? 0;
+        $total_bed_use = $hospitals->sum('bed_use') ?? 0;
         $total_bed_empty = $total_bed_qty - $total_bed_use;
     
 
@@ -555,6 +585,6 @@ class DashboardController extends Controller
 
         return view('dashboard', array_merge($card,compact('budget_year_select','budget_year','update_at10985','total_10985',
             'update_at10986','total_10986','update_at10987','total_10987','update_at10988','total_10988','update_at10989','total_10989',
-            'update_at10990','total_10990','total_bed_qty','total_bed_empty')));
+            'update_at10990','total_10990','total_bed_qty','total_bed_empty','hospitals','hospitalSummary')));
     }
 }
