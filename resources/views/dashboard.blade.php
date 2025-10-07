@@ -172,7 +172,7 @@
             </div>
             <div class="d-flex align-items-end gap-4">
               <div class="text-end">
-                <div class="small text-secondary text-center">AN</div>
+                <div class="small text-secondary text-center">Admit</div>
                 <div class="fw-bold text-danger" style="font-size:1.75rem;">
                   {{ $fmtInt($total_bed_qty ?? 0) }}
                 </div>
