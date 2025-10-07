@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\OpInsurance;
+// ใช้ Carbon ของ Laravel เพื่อความยืดหยุ่น (แทน date('Y-m-d'))
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -30,8 +32,10 @@ class DashboardController extends Controller
             ->where('LEAVE_YEAR_ID', $budget_year)
             ->value('DATE_END');
 
+        $today = Carbon::today()->toDateString(); // ได้รูปแบบ YYYY-MM-DD เช่น 2025-10-07
+
         $total = DB::table('opd')
-            ->whereBetween('vstdate', [$start_date, $end_date])
+            ->whereBetween('vstdate', [$today, $today])
             ->selectRaw("
                 COALESCE(SUM(visit_total),0)        AS visit_total,
                 COALESCE(SUM(visit_total_op),0)     AS visit_total_op,
@@ -69,10 +73,11 @@ class DashboardController extends Controller
 
         $hospitalSummary = DB::table('opd')
             ->join('hospital_config', 'opd.hospcode', '=', 'hospital_config.hospcode')
-            ->whereBetween('vstdate', [$start_date, $end_date])
+            ->whereBetween('vstdate', [$today, $today])
             ->select(
                 'opd.hospcode',
                 'hospital_config.hospname',
+                DB::raw('MAX(opd.updated_at) AS last_updated_at'),
                 DB::raw('COALESCE(SUM(visit_total),0) AS visit_total'),
                 DB::raw('COALESCE(SUM(visit_total_op),0) AS visit_total_op'),
                 DB::raw('COALESCE(SUM(visit_total_pp),0) AS visit_total_pp'),
@@ -94,7 +99,7 @@ class DashboardController extends Controller
 
         // ดึงข้อมูลโรงพยาบาลทั้งหมด
         $hospitals = DB::table('hospital_config')
-            ->select('hospcode', 'hospname', 'bed_qty', 'bed_use')
+            ->select('hospcode', 'hospname', 'bed_qty', 'bed_use','updated_at')
             ->get();
         // รวมยอดเตียงทั้งหมด
         $total_bed_qty = $hospitals->sum('bed_qty') ?? 0;

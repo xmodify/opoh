@@ -134,29 +134,21 @@
 
   <!-- HERO -->
   <header class="py-4">
-    <div class="container-fluid">
-      <form method="POST" action="{{ route('web.index') }}" enctype="multipart/form-data">
-      @csrf
+    <div class="container-fluid">      
         <div class="row g-4 align-items-center">
           <div class="col-lg-9">          
             <h6 class="text-success mb-2"><strong>One Province One Hospital ปีงบประมาณ {{$budget_year}}</strong></h6>          
           </div>
           {{-- ขวาสุด: select + ปุ่ม ติดกันและชิดขวา --}}
           <div class="col-lg-3 d-flex justify-content-lg-end">
-            <div class="d-flex align-items-center gap-2">
-              <select class="form-select" name="budget_year">
-                @foreach ($budget_year_select as $row)
-                  <option value="{{ $row->LEAVE_YEAR_ID }}"
-                    {{ (int)$budget_year === (int)$row->LEAVE_YEAR_ID ? 'selected' : '' }}>
-                    {{ $row->LEAVE_YEAR_NAME }}
-                  </option>
-                @endforeach
-              </select>
-              <button type="submit" class="btn btn-primary">{{ __('ค้นหา') }}</button>
-            </div>
+            <span class="text-secondary my-1">
+                วันที่ {{ \Carbon\Carbon::now()->locale('th')->isoFormat('D MMM YYYY เวลา H:mm') }} น.&nbsp;&nbsp;
+            </span>
+            <button type="button" class="btn btn-sm btn-outline-success" onclick="location.reload();">
+              <i class="bi bi-arrow-clockwise"></i> โหลดใหม่
+            </button>
           </div>
         </div>
-      </form>
     </div>
   </header>
 
@@ -175,8 +167,8 @@
         <a href="#" data-bs-toggle="modal" data-bs-target="#AdmiitDetailModal" class="text-decoration-none text-dark">
           <div class="glass p-3 h-100">
             <div class="d-flex align-items-center justify-content-between mb-2">
-              <h6 class="mb-0 text-danger"><strong>กำลังรักษาอยู่</strong></h6>
-              <span class="text-danger"><i class="bi bi-hospital fs-5"></i></span>
+              <h6 class="mb-0 text-danger"><strong>กำลังรักษาอยู่ </strong></h6>
+              <span> <i class="bi bi-hospital fs-5 text-danger"></i> </span>
             </div>
             <div class="d-flex align-items-end gap-4">
               <div class="text-end">
@@ -222,7 +214,11 @@
                   @foreach($hospitals as $h)
                     <tr>
                       <td align="right">{{ $h->hospcode }}</td>
-                      <td>{{ $h->hospname }}</td>
+                      <td>{{ $h->hospname }} 
+                        <span class="text-secondary small">
+                            {{ \Carbon\Carbon::parse($h->updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
+                        </span>
+                      </td>
                       <td align="right">{{ $h->bed_qty }}</td>
                       <td align="right">{{ $h->bed_use }}</td>
                       <td align="right" class="text-success fw-bold">{{ $h->bed_qty - $h->bed_use }}</td>
@@ -244,8 +240,8 @@
         <a href="#" data-bs-toggle="modal" data-bs-target="#ReferDetailModal" class="text-decoration-none text-dark">
           <div class="glass p-3 h-100">
             <div class="d-flex align-items-center justify-content-between mb-2">
-              <h6 class="mb-0 text-primary"><strong>การส่งต่อ Refer</strong></h6>
-              <span class="text-danger"><i class="bi bi-truck fs-5 text-danger"></i></span>
+              <h6 class="mb-0 text-primary"><strong>การส่งต่อ Refer</strong></h6>              
+              <span> <i class="bi bi-truck fs-5 text-danger"></i> </span>
             </div>
             <div class="d-flex align-items-end gap-4">
               <div class="text-end">
@@ -289,7 +285,11 @@
                   @foreach($hospitalSummary as $h)
                     <tr>
                       <td align="right">{{ $h->hospcode }}</td>
-                      <td>{{ $h->hospname }}</td>
+                      <td>{{ $h->hospname }} 
+                        <span class="text-secondary small">
+                            {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
+                        </span>
+                      </td>                     
                       <td align="right">{{ $h->visit_referout_inprov }}</td>
                       <td align="right">{{ $h->visit_referout_outprov }}</td>
                     </tr>
@@ -310,7 +310,7 @@
           <div class="glass p-3 h-100">
             <div class="d-flex align-items-center justify-content-between mb-2">
               <h6 class="mb-0 text-primary">จำนวนผู้มารับบริการผู้ป่วยนอก</h6>
-              <span class="text-primary"><i class="bi bi-person-heart fs-5"></i></span>
+              <span><i class="bi bi-person-heart fs-5 text-primary"></i> </span>
             </div>
             <div class="d-flex align-items-end gap-4">
               <div class="text-end">
@@ -354,7 +354,11 @@
                   @foreach($hospitalSummary as $h)
                     <tr>
                       <td align="right">{{ $h->hospcode }}</td>
-                      <td>{{ $h->hospname }}</td>
+                      <td>{{ $h->hospname }} 
+                        <span class="text-secondary small">
+                            {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
+                        </span>
+                      </td>
                       <td align="right">{{ number_format($h->visit_total) }}</td>
                       <td align="right">{{ number_format($h->visit_endpoint) }}</td>
                     </tr>
@@ -375,7 +379,7 @@
           <div class="glass p-3 h-100">
             <div class="d-flex align-items-center justify-content-between mb-2">
               <h6 class="mb-0 text-primary">จำนวนผู้มารับบริการ OP-PP</h6>
-              <span class="text-success"><i class="bi bi-person-heart fs-5"></i></span>
+              <span><i class="bi bi-person-heart fs-5 text-success"></i></span>
             </div>
             <div class="d-flex align-items-end gap-4">
               <div class="text-end">
@@ -419,7 +423,11 @@
                   @foreach($hospitalSummary as $h)
                     <tr>
                       <td align="right">{{ $h->hospcode }}</td>
-                      <td>{{ $h->hospname }}</td>
+                      <td>{{ $h->hospname }} 
+                        <span class="text-secondary small">
+                            {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
+                        </span>
+                      </td>
                       <td align="right">{{ number_format($h->visit_total_op) }}</td>
                       <td align="right">{{ number_format($h->visit_total_pp) }}</td>
                     </tr>
@@ -456,7 +464,7 @@
           <div class="glass p-3 h-100">
             <div class="d-flex align-items-center justify-content-between mb-2">
               <h6 class="mb-0 text-primary">PP Fee Schedule</h6>
-              <span class="text-warning"><i class="bi bi-diagram-3 fs-5"></i></span>
+              <span><i class="bi bi-diagram-3 fs-5 text-warning"></i></span>
             </div>
             <div class="d-flex align-items-end gap-4">
               <div class="text-end">
@@ -500,7 +508,11 @@
                   @foreach($hospitalSummary as $h)
                     <tr>
                       <td align="right">{{ $h->hospcode }}</td>
-                      <td>{{ $h->hospname }}</td>
+                      <td>{{ $h->hospname }} 
+                        <span class="text-secondary small">
+                            {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
+                        </span>
+                      </td>
                       <td align="right">{{ number_format($h->visit_ppfs) }}</td>
                       <td align="right">{{ number_format($h->inc_ppfs,2) }}</td>
                     </tr>
@@ -521,7 +533,7 @@
           <div class="glass p-3 h-100">
             <div class="d-flex align-items-center justify-content-between mb-2">
               <h6 class="mb-0 text-primary">UC-OP Anywhere</h6>
-              <span class="text-info"><i class="bi bi-people fs-5"></i></span>
+              <span><i class="bi bi-people fs-5 text-info"></i> </span>
             </div>
             <div class="d-flex align-items-end gap-4">
               <div class="text-end">
@@ -565,7 +577,11 @@
                   @foreach($hospitalSummary as $h)
                     <tr>
                       <td align="right">{{ $h->hospcode }}</td>
-                      <td>{{ $h->hospname }}</td>
+                      <td>{{ $h->hospname }} 
+                        <span class="text-secondary small">
+                            {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
+                        </span>
+                      </td>
                       <td align="right">{{ number_format($h->visit_ucs_outprov) }}</td>
                       <td align="right">{{ number_format($h->inc_ucs_outprov,2) }}</td>
                     </tr>
@@ -585,8 +601,8 @@
         <a href="#" data-bs-toggle="modal" data-bs-target="#CrDetailModal" class="text-decoration-none text-dark">
           <div class="glass p-3 h-100">
             <div class="d-flex align-items-center justify-content-between mb-2">
-              <h6 class="mb-0 text-primary">UC-บริการเฉพาะ CR</h6>
-              <span class="text-success"><i class="bi bi-hospital fs-5"></i></span>
+              <h6 class="mb-0 text-primary">UC-บริการเฉพาะ CR </h6>
+              <span><i class="bi bi-hospital fs-5 text-success"></i> </span>
             </div>
             <div class="d-flex align-items-end gap-4">
               <div class="text-end">
@@ -630,7 +646,11 @@
                   @foreach($hospitalSummary as $h)
                     <tr>
                       <td align="right">{{ $h->hospcode }}</td>
-                      <td>{{ $h->hospname }}</td>
+                      <td>{{ $h->hospname }} 
+                        <span class="text-secondary small">
+                            {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
+                        </span>
+                      </td>
                       <td align="right">{{ number_format($h->visit_ucs_cr) }}</td>
                       <td align="right">{{ number_format($h->inc_uccr,2) }}</td>
                     </tr>
@@ -651,7 +671,7 @@
           <div class="glass p-3 h-100">
             <div class="d-flex align-items-center justify-content-between mb-2">
               <h6 class="mb-0 text-primary">UC-สมุนไพร 32 รายการ</h6>
-              <span class="text-danger"><i class="bi bi-capsule fs-5"></i></span>
+              <span><i class="bi bi-capsule fs-5 text-danger"></i></span></span>
             </div>
             <div class="d-flex align-items-end gap-4">
               <div class="text-end">
@@ -695,7 +715,11 @@
                   @foreach($hospitalSummary as $h)
                     <tr>
                       <td align="right">{{ $h->hospcode }}</td>
-                      <td>{{ $h->hospname }}</td>
+                      <td>{{ $h->hospname }} 
+                        <span class="text-secondary small">
+                            {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
+                        </span>
+                      </td>
                       <td align="right">{{ number_format($h->visit_ucs_herb) }}</td>
                       <td align="right">{{ number_format($h->inc_herb,2) }}</td>
                     </tr>
@@ -715,11 +739,40 @@
   </div>  
 </section>
 <br>
+<hr>
 
+{{-- เลือกปีงบประมาณ ----------------------------------------------------------------------------------------------------------}}
+<section id="summary" class="pb-2">
+    <div class="container-fluid">
+      <form method="POST" action="{{ route('web.index') }}" enctype="multipart/form-data">
+      @csrf
+        <div class="row g-4 align-items-center">
+          <div class="col-lg-9">          
+            <h6 class="text-success mb-2"><strong></strong></h6>          
+          </div>
+          {{-- ขวาสุด: select + ปุ่ม ติดกันและชิดขวา --}}
+          <div class="col-lg-3 d-flex justify-content-lg-end">
+            <div class="d-flex align-items-center gap-2">
+              <select class="form-select" name="budget_year">
+                @foreach ($budget_year_select as $row)
+                  <option value="{{ $row->LEAVE_YEAR_ID }}"
+                    {{ (int)$budget_year === (int)$row->LEAVE_YEAR_ID ? 'selected' : '' }}>
+                    {{ $row->LEAVE_YEAR_NAME }}
+                  </option>
+                @endforeach
+              </select>
+              <button type="submit" class="btn btn-primary">{{ __('ค้นหา') }}</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+</section>
 
+{{-- ข้อมูลบริการผู้ป่วยนอก ----------------------------------------------------------------------------------------------------------}}
 <section id="hospital" class="pb-2">
   <div class="container-fluid">
-    <hr>
+  
     <!-- NAV PILLS -->
     <ul class="nav nav-pills overflow-auto flex-nowrap" id="hospPills" role="tablist">
       <li class="nav-item me-2" role="presentation">
