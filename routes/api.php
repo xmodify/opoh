@@ -19,10 +19,11 @@ use App\Http\Controllers\Api\HospitalUpdateController;
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/op_insurance', [OpInsuranceController::class, 'ingest']);
     Route::post('/opd', [OpdController::class, 'opd']);
-    Route::get('/opd', [OpdController::class, 'get_opd']);
+    Route::get('/opd', [OpdController::class, 'get_opd']);    
     Route::post('/ipd', [IpdController::class, 'ipd']);
+    Route::get('/ipd', [IpdController::class, 'get_ipd']);
     Route::post('/hospital_config', [HospitalUpdateController::class, 'update']);
 });
-
+ 
 
 

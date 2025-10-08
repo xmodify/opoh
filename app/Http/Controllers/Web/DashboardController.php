@@ -50,7 +50,17 @@ class DashboardController extends Controller
                 COALESCE(SUM(visit_ppfs),0)         AS visit_ppfs,
                 COALESCE(SUM(inc_ppfs),0)           AS inc_ppfs,
                 COALESCE(SUM(visit_referout_inprov),0)      AS visit_referout_inprov,
-                COALESCE(SUM(visit_referout_outprov),0)     AS visit_referout_outprov
+                COALESCE(SUM(visit_referout_outprov),0)     AS visit_referout_outprov,
+                COALESCE(SUM(visit_ucs_incup),0)+COALESCE(SUM(visit_ucs_inprov),0)+COALESCE(SUM(visit_ucs_outprov),0)     AS visit_ucs,
+                COALESCE(SUM(inc_ucs_incup),0)+COALESCE(SUM(inc_ucs_inprov),0)+COALESCE(SUM(inc_ucs_outprov),0)     AS inc_ucs,
+                COALESCE(SUM(visit_ofc),0)         AS visit_ofc,
+                COALESCE(SUM(inc_ofc),0)           AS inc_ofc,
+                COALESCE(SUM(visit_lgo),0)         AS visit_lgo,
+                COALESCE(SUM(inc_lgo),0)           AS inc_lgo,
+                COALESCE(SUM(visit_sss),0)         AS visit_sss,
+                COALESCE(SUM(inc_sss),0)           AS inc_sss,
+                COALESCE(SUM(visit_pay),0)         AS visit_pay,
+                COALESCE(SUM(inc_pay),0)           AS inc_pay
             ")->first();
 
         // ส่งเป็น array ใช้ง่าย ๆ ใน Blade
@@ -69,6 +79,16 @@ class DashboardController extends Controller
             'inc_ppfs'          => (float)$total->inc_ppfs,
             'visit_referout_inprov'        => (int)$total->visit_referout_inprov, 
             'visit_referout_outprov'       => (int)$total->visit_referout_outprov, 
+            'visit_ucs'         => (int)$total->visit_ucs,
+            'inc_ucs'           => (float)$total->inc_ucs,
+            'visit_ofc'         => (int)$total->visit_ofc,
+            'inc_ofc'           => (float)$total->inc_ofc,
+            'visit_lgo'         => (int)$total->visit_lgo,
+            'inc_lgo'           => (float)$total->inc_lgo,
+            'visit_sss'         => (int)$total->visit_sss,
+            'inc_sss'           => (float)$total->inc_sss,
+            'visit_pay'         => (int)$total->visit_pay,
+            'inc_pay'           => (float)$total->inc_pay,
         ];
 
         $hospitalSummary = DB::table('opd')
@@ -91,7 +111,17 @@ class DashboardController extends Controller
                 DB::raw('COALESCE(SUM(visit_ppfs),0) AS visit_ppfs'),
                 DB::raw('COALESCE(SUM(inc_ppfs),0) AS inc_ppfs'),
                 DB::raw('COALESCE(SUM(visit_referout_inprov),0) AS visit_referout_inprov'),
-                DB::raw('COALESCE(SUM(visit_referout_outprov),0) AS visit_referout_outprov')
+                DB::raw('COALESCE(SUM(visit_referout_outprov),0) AS visit_referout_outprov'),
+                DB::raw('COALESCE(SUM(visit_ucs_incup),0)+COALESCE(SUM(visit_ucs_inprov),0)+COALESCE(SUM(visit_ucs_outprov),0) AS visit_ucs'),
+                DB::raw('COALESCE(SUM(inc_ucs_incup),0)+COALESCE(SUM(inc_ucs_inprov),0)+COALESCE(SUM(inc_ucs_outprov),0) AS inc_ucs'),
+                DB::raw('COALESCE(SUM(visit_ofc),0) AS visit_ofc'),
+                DB::raw('COALESCE(SUM(inc_ofc),0) AS inc_ofc'),
+                DB::raw('COALESCE(SUM(visit_lgo),0) AS visit_lgo'),
+                DB::raw('COALESCE(SUM(inc_lgo),0) AS inc_lgo'),
+                DB::raw('COALESCE(SUM(visit_sss),0) AS visit_sss'),
+                DB::raw('COALESCE(SUM(inc_sss),0) AS inc_sss'),
+                 DB::raw('COALESCE(SUM(visit_pay),0) AS visit_pay'),
+                DB::raw('COALESCE(SUM(inc_pay),0) AS inc_pay')
             )
             ->groupBy('opd.hospcode', 'hospital_config.hospname')
             ->orderBy('hospital_config.hospname')

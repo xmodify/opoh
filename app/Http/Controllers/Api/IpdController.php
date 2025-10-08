@@ -7,6 +7,7 @@ use App\Models\Ipd;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class IpdController extends Controller
 {
@@ -152,4 +153,49 @@ class IpdController extends Controller
         }
         return response()->json(['ok' => true, 'hospcode' => $hospital->hospcode]);
     }
+
+//############################################################################################################################ 
+    public function get_ipd(Request $request)
+    {
+        $hospital = Auth::user();
+
+        // ตรวจสิทธิ์ token
+        if (!$hospital || !$hospital->tokenCan('ingest')) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        $hospcode = $hospital->hospcode;
+
+        // ✅ รายชื่อ hospcode ที่ดูได้ทุก hospcode
+        $superHospcodes = ['00025']; // แก้ตามที่ต้องการ
+
+        $start_date = $request->query('start_date') ?? Carbon::now()->subDays(10)->format('Y-m-d'); // 10 วันย้อนหลัง
+        $end_date = $request->query('end_date') ?? Carbon::now()->format('Y-m-d'); // วันนี้
+        $limit = $request->query('limit', 200);
+        
+        // ✅ เริ่มจาก query builder (ไม่ใช้ get() ทันที)
+        $query = DB::table('ipd');
+
+
+        // ✅ ถ้าไม่ใช่ super hospcode → เห็นเฉพาะของตัวเอง
+        if (!in_array($hospcode, $superHospcodes)) {
+            $query->where('hospcode', $hospcode);
+        }
+
+        // ✅ filter วันที่ (ถ้ามี)
+        if ($start_date && $end_date) {
+            $query->whereBetween('dchdate', [$start_date, $end_date]);
+        }
+
+        $data = $query->orderBy('dchdate', 'desc')->limit($limit)->get();
+
+        return response()->json([
+            'ok' => true,
+            'hospcode' => $hospcode,
+            'super' => in_array($hospcode, $superHospcodes),
+            'count' => $data->count(),
+            'data' => $data,
+        ]);
+    }
+
 }

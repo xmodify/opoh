@@ -119,7 +119,7 @@
   <!-- NAV -->
   <nav class="navbar navbar-expand-lg bg-white bg-opacity-75 border-bottom sticky-top glass" style="border-radius:0">
     <div class="container-fluid">
-      <a class="navbar-brand d-flex align-items-center brand-title fw-bold" href="#">
+      <a class="navbar-brand d-flex align-items-center brand-title fw-bold" href="{{url('web/')}}">
         <i class="bi bi-shield-check me-2 text-green"></i> Amnatcharoen Dashboard
       </a>      
       {{-- <div id="topnav" class="collapse navbar-collapse">
@@ -304,28 +304,35 @@
         </div>
       </div>
 
-      {{--  Visit Total : ครั้ง----------------------------------------------------------------------------------------------- --}}
+      {{--  ผู้ป่วยนอก ----------------------------------------------------------------------------------------------- --}}
       <div class="col-12 col-sm-6 col-xl-3">
         <a href="#" data-bs-toggle="modal" data-bs-target="#VisitDetailModal" class="text-decoration-none text-dark">
           <div class="glass p-3 h-100">
             <div class="d-flex align-items-center justify-content-between mb-2">
-              <h6 class="mb-0 text-primary">จำนวนผู้มารับบริการผู้ป่วยนอก</h6>
+              <h6 class="mb-0 text-primary"><strong>ผู้ป่วยนอก OPD</strong></h6>
               <span><i class="bi bi-person-heart fs-5 text-primary"></i> </span>
             </div>
             <div class="d-flex align-items-end gap-4">
               <div class="text-end">
-                <div class="small text-secondary text-center">visit total</div>
+                <div class="small text-secondary text-center">visit op</div>
                 <div class="fw-bold" style="font-size:1.75rem;">
-                  {{ $fmtInt($visit_total ?? 0) }}
+                  {{ $fmtInt($visit_total_op ?? 0) }}
                 </div>
               </div>
               <div class="vr d-none d-sm-block"></div>
               <div class="text-end">
-                <div class="small text-secondary text-center">ปิดสิทธิ สปสช.</div>
+                <div class="small text-secondary text-center">visit pp</div>
                 <div class="fw-bold text-primary" style="font-size:1.75rem;">
+                  {{ $fmtInt($visit_total_pp ?? 0) }}
+                </div>
+              </div>          
+              <div class="vr d-none d-sm-block"></div>
+              <div class="text-end">
+                <div class="small text-secondary text-center">ปิดสิทธิ สปสช.</div>
+                <div class="fw-bold text-success" style="font-size:1.75rem;">
                   {{ $fmtInt($visit_endpoint ?? 0) }}
                 </div>
-              </div>
+              </div>                  
             </div>
           </div>
         </a>
@@ -336,76 +343,7 @@
           <div class="modal-content">
             <div class="modal-header bg-primary text-white">
               <h5 class="modal-title" id="hospitalDetailLabel">
-                จำนวนผู้มารับบริการผู้ป่วยนอก
-              </h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <table class="table table-bordered table-hover align-middle">
-                <thead class="table-light">
-                  <tr>
-                    <th class="text-center">รหัส</th>
-                    <th class="text-center">ชื่อโรงพยาบาล</th>
-                    <th class="text-center">Visit</th>
-                    <th class="text-center">ปิดสิทธิ สปสช.</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @foreach($hospitalSummary as $h)
-                    <tr>
-                      <td align="right">{{ $h->hospcode }}</td>
-                      <td>{{ $h->hospname }} 
-                        <span class="text-secondary small">
-                            {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
-                        </span>
-                      </td>
-                      <td align="right">{{ number_format($h->visit_total) }}</td>
-                      <td align="right">{{ number_format($h->visit_endpoint) }}</td>
-                    </tr>
-                  @endforeach
-                </tbody>
-              </table>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {{--  Visit OP_PP : ครั้ง------------------------------------------------------------------------------------------------ --}}
-      <div class="col-12 col-sm-6 col-xl-3">
-        <a href="#" data-bs-toggle="modal" data-bs-target="#VisitOPDetailModal" class="text-decoration-none text-dark">
-          <div class="glass p-3 h-100">
-            <div class="d-flex align-items-center justify-content-between mb-2">
-              <h6 class="mb-0 text-primary">จำนวนผู้มารับบริการ OP-PP</h6>
-              <span><i class="bi bi-person-heart fs-5 text-success"></i></span>
-            </div>
-            <div class="d-flex align-items-end gap-4">
-              <div class="text-end">
-                <div class="small text-secondary text-center">op visit</div>
-                <div class="fw-bold" style="font-size:1.75rem;">
-                  {{ $fmtInt($visit_total_op ?? 0) }}
-                </div>
-              </div>
-              <div class="vr d-none d-sm-block"></div>
-              <div class="text-end">
-                <div class="small text-secondary text-center">pp visit</div>
-                <div class="fw-bold text-primary" style="font-size:1.75rem;">
-                  {{ $fmtInt($visit_total_pp ?? 0) }}
-                </div>
-              </div>
-            </div>
-          </div>
-        </a>
-      </div>
-      {{-- Modal แสดงรายละเอียด รพ. --}}
-      <div class="modal fade" id="VisitOPDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-              <h5 class="modal-title" id="hospitalDetailLabel">
-                จำนวนผู้มารับบริการ OP-PP
+                ผู้ป่วยนอก OPD
               </h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -417,6 +355,7 @@
                     <th class="text-center">ชื่อโรงพยาบาล</th>
                     <th class="text-center">Visit OP</th>
                     <th class="text-center">Visit PP</th>
+                    <th class="text-center">ปิดสิทธิ สปสช.</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -430,6 +369,76 @@
                       </td>
                       <td align="right">{{ number_format($h->visit_total_op) }}</td>
                       <td align="right">{{ number_format($h->visit_total_pp) }}</td>
+                      <td align="right">{{ number_format($h->visit_endpoint) }}</td>
+                    </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {{--  สิทธิประกันสุขภาพ UCS------------------------------------------------------------------------------------------------ --}}
+      <div class="col-12 col-sm-6 col-xl-3">
+        <a href="#" data-bs-toggle="modal" data-bs-target="#UCSDetailModal" class="text-decoration-none text-dark">
+          <div class="glass p-3 h-100">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <h6 class="mb-0 text-primary"><strong>สิทธิประกันสุขภาพ UCS</strong></h6>
+              <span><i class="bi bi-person-heart fs-5 text-success"></i></span>
+            </div>
+            <div class="d-flex align-items-end gap-4">
+              <div class="text-end">
+                <div class="small text-secondary text-center">visit</div>
+                <div class="fw-bold" style="font-size:1.5rem;">
+                  {{ $fmtInt($visit_ucs ?? 0) }}
+                </div>
+              </div>
+              <div class="vr d-none d-sm-block"></div>
+              <div class="text-end">
+                <div class="small text-secondary text-center">บาท</div>
+                <div class="fw-bold text-success" style="font-size:1.5rem;">
+                  {{ $fmtMoney($inc_ucs ?? 0) }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      {{-- Modal แสดงรายละเอียด รพ. --}}
+      <div class="modal fade" id="UCSDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+              <h5 class="modal-title" id="hospitalDetailLabel">
+                สิทธิประกันสุขภาพ UCS
+              </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table table-bordered table-hover align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th class="text-center">รหัส</th>
+                    <th class="text-center">ชื่อโรงพยาบาล</th>
+                    <th class="text-center">Visit</th>
+                    <th class="text-center">ค่ารักษารวม</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach($hospitalSummary as $h)
+                    <tr>
+                      <td align="right">{{ $h->hospcode }}</td>
+                      <td>{{ $h->hospname }} 
+                        <span class="text-secondary small">
+                            {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
+                        </span>
+                      </td>
+                      <td align="right">{{ number_format($h->visit_ucs) }}</td>
+                      <td align="right">{{ number_format($h->inc_ucs,2) }}</td>
                     </tr>
                   @endforeach
                 </tbody>
@@ -446,7 +455,298 @@
     </div>
   </div>  
 </section>
-<br>
+
+<!-- SUMMARY (4 blocks, no foreach) -->
+<section id="summary" class="pb-2">
+  <div class="container-fluid">
+    @php
+      $fmtInt   = fn($n) => number_format((int)($n ?? 0));
+      $fmtMoney = fn($n) => number_format((float)($n ?? 0), 2);
+    @endphp
+
+    <div class="row g-3">      
+
+      {{--  สิทธิกรมบัญชีกลาง OFC -------------------------------------------------------------------------------}}
+      <div class="col-12 col-sm-6 col-xl-3">
+        <a href="#" data-bs-toggle="modal" data-bs-target="#OFCDetailModal" class="text-decoration-none text-dark">
+          <div class="glass p-3 h-100">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <h6 class="mb-0 text-primary"><strong>สิทธิกรมบัญชีกลาง OFC</strong></h6>
+              <span><i class="bi bi-people fs-5 text-info"></i> </span>
+            </div>
+            <div class="d-flex align-items-end gap-4">
+              <div class="text-end">
+                <div class="small text-secondary text-center">visit</div>
+                <div class="fw-bold" style="font-size:1.5rem;">
+                  {{ $fmtInt($visit_ofc ?? 0) }}
+                </div>
+              </div>
+              <div class="vr d-none d-sm-block"></div>
+              <div class="text-end">
+                <div class="small text-secondary text-center">บาท</div>
+                <div class="fw-bold text-success" style="font-size:1.5rem;">
+                  {{ $fmtMoney($inc_ofc ?? 0) }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      {{-- Modal แสดงรายละเอียด รพ. --}}
+      <div class="modal fade" id="OFCDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+              <h5 class="modal-title" id="hospitalDetailLabel">
+                สิทธิกรมบัญชีกลาง OFC
+              </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table table-bordered table-hover align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th class="text-center">รหัส</th>
+                    <th class="text-center">ชื่อโรงพยาบาล</th>
+                    <th class="text-center">Visit</th>
+                    <th class="text-center">ค่ารักษารวม</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach($hospitalSummary as $h)
+                    <tr>
+                      <td align="right">{{ $h->hospcode }}</td>
+                      <td>{{ $h->hospname }} 
+                        <span class="text-secondary small">
+                            {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
+                        </span>
+                      </td>
+                      <td align="right">{{ number_format($h->visit_ofc) }}</td>
+                      <td align="right">{{ number_format($h->inc_ofc,2) }}</td>
+                    </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {{--  สิทธิ อปท. LGO -------------------------------------------------------------------------------}}
+      <div class="col-12 col-sm-6 col-xl-3">
+        <a href="#" data-bs-toggle="modal" data-bs-target="#LGODetailModal" class="text-decoration-none text-dark">
+          <div class="glass p-3 h-100">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <h6 class="mb-0 text-primary"><strong>สิทธิ อปท. LGO</strong></h6>
+              <span><i class="bi bi-people fs-5 text-success"></i> </span>
+            </div>
+            <div class="d-flex align-items-end gap-4">
+              <div class="text-end">
+                <div class="small text-secondary text-center">visit</div>
+                <div class="fw-bold" style="font-size:1.5rem;">
+                  {{ $fmtInt($visit_lgo ?? 0) }}
+                </div>
+              </div>
+              <div class="vr d-none d-sm-block"></div>
+              <div class="text-end">
+                <div class="small text-secondary text-center">บาท</div>
+                <div class="fw-bold text-success" style="font-size:1.5rem;">
+                  {{ $fmtMoney($inc_lgo ?? 0) }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      {{-- Modal แสดงรายละเอียด รพ. --}}
+      <div class="modal fade" id="LGODetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+              <h5 class="modal-title" id="hospitalDetailLabel">
+                สิทธิ อปท. LGO
+              </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table table-bordered table-hover align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th class="text-center">รหัส</th>
+                    <th class="text-center">ชื่อโรงพยาบาล</th>
+                    <th class="text-center">Visit</th>
+                    <th class="text-center">ค่ารักษารวม</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach($hospitalSummary as $h)
+                    <tr>
+                      <td align="right">{{ $h->hospcode }}</td>
+                      <td>{{ $h->hospname }} 
+                        <span class="text-secondary small">
+                            {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
+                        </span>
+                      </td>
+                      <td align="right">{{ number_format($h->visit_lgo) }}</td>
+                      <td align="right">{{ number_format($h->inc_lgo,2) }}</td>
+                    </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {{--  สิทธิประกันสังคม SSS -------------------------------------------------------------------------------}}
+      <div class="col-12 col-sm-6 col-xl-3">
+        <a href="#" data-bs-toggle="modal" data-bs-target="#SSSDetailModal" class="text-decoration-none text-dark">
+          <div class="glass p-3 h-100">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <h6 class="mb-0 text-primary"><strong>สิทธิประกันสังคม SSS</strong></h6>
+              <span><i class="bi bi-people fs-5 text-warning"></i> </span>
+            </div>
+            <div class="d-flex align-items-end gap-4">
+              <div class="text-end">
+                <div class="small text-secondary text-center">visit</div>
+                <div class="fw-bold" style="font-size:1.5rem;">
+                  {{ $fmtInt($visit_sss ?? 0) }}
+                </div>
+              </div>
+              <div class="vr d-none d-sm-block"></div>
+              <div class="text-end">
+                <div class="small text-secondary text-center">บาท</div>
+                <div class="fw-bold text-success" style="font-size:1.5rem;">
+                  {{ $fmtMoney($inc_sss ?? 0) }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      {{-- Modal แสดงรายละเอียด รพ. --}}
+      <div class="modal fade" id="SSSDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+              <h5 class="modal-title" id="hospitalDetailLabel">
+                สิทธิประกันสังคม SSS
+              </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table table-bordered table-hover align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th class="text-center">รหัส</th>
+                    <th class="text-center">ชื่อโรงพยาบาล</th>
+                    <th class="text-center">Visit</th>
+                    <th class="text-center">ค่ารักษารวม</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach($hospitalSummary as $h)
+                    <tr>
+                      <td align="right">{{ $h->hospcode }}</td>
+                      <td>{{ $h->hospname }} 
+                        <span class="text-secondary small">
+                            {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
+                        </span>
+                      </td>
+                      <td align="right">{{ number_format($h->visit_sss) }}</td>
+                      <td align="right">{{ number_format($h->inc_sss,2) }}</td>
+                    </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {{--  ชำระเงิน/พรบ. -------------------------------------------------------------------------------}}
+      <div class="col-12 col-sm-6 col-xl-3">
+        <a href="#" data-bs-toggle="modal" data-bs-target="#PayDetailModal" class="text-decoration-none text-dark">
+          <div class="glass p-3 h-100">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <h6 class="mb-0 text-primary"><strong>สิทธิชำระเงิน/พรบ.</strong></h6>
+              <span><i class="bi bi-people fs-5 text-primary"></i> </span>
+            </div>
+            <div class="d-flex align-items-end gap-4">
+              <div class="text-end">
+                <div class="small text-secondary text-center">visit</div>
+                <div class="fw-bold" style="font-size:1.5rem;">
+                  {{ $fmtInt($visit_pay ?? 0) }}
+                </div>
+              </div>
+              <div class="vr d-none d-sm-block"></div>
+              <div class="text-end">
+                <div class="small text-secondary text-center">บาท</div>
+                <div class="fw-bold text-success" style="font-size:1.5rem;">
+                  {{ $fmtMoney($inc_pay ?? 0) }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      {{-- Modal แสดงรายละเอียด รพ. --}}
+      <div class="modal fade" id="PayDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+              <h5 class="modal-title" id="hospitalDetailLabel">
+                สิทธิชำระเงิน/พรบ.
+              </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table table-bordered table-hover align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th class="text-center">รหัส</th>
+                    <th class="text-center">ชื่อโรงพยาบาล</th>
+                    <th class="text-center">Visit</th>
+                    <th class="text-center">ค่ารักษารวม</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach($hospitalSummary as $h)
+                    <tr>
+                      <td align="right">{{ $h->hospcode }}</td>
+                      <td>{{ $h->hospname }} 
+                        <span class="text-secondary small">
+                            {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
+                        </span>
+                      </td>
+                      <td align="right">{{ number_format($h->visit_pay) }}</td>
+                      <td align="right">{{ number_format($h->inc_pay,2) }}</td>
+                    </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {{-- -------------------------------------------------------------------------------------------------------------- --}}
+        
+    </div>
+  </div>  
+</section>
 
 <!-- SUMMARY (4 blocks, no foreach) -->
 <section id="summary" class="pb-2">
@@ -463,7 +763,7 @@
         <a href="#" data-bs-toggle="modal" data-bs-target="#PPFSDetailModal" class="text-decoration-none text-dark">
           <div class="glass p-3 h-100">
             <div class="d-flex align-items-center justify-content-between mb-2">
-              <h6 class="mb-0 text-primary">PP Fee Schedule</h6>
+              <h6 class="mb-0 text-primary"><strong>PP Fee Schedule</strong></h6>
               <span><i class="bi bi-diagram-3 fs-5 text-warning"></i></span>
             </div>
             <div class="d-flex align-items-end gap-4">
@@ -532,7 +832,7 @@
         <a href="#" data-bs-toggle="modal" data-bs-target="#AnywhereDetailModal" class="text-decoration-none text-dark">
           <div class="glass p-3 h-100">
             <div class="d-flex align-items-center justify-content-between mb-2">
-              <h6 class="mb-0 text-primary">UC-OP Anywhere</h6>
+              <h6 class="mb-0 text-primary"><strong>UC-OP Anywhere</strong></h6>
               <span><i class="bi bi-people fs-5 text-info"></i> </span>
             </div>
             <div class="d-flex align-items-end gap-4">
@@ -601,8 +901,8 @@
         <a href="#" data-bs-toggle="modal" data-bs-target="#CrDetailModal" class="text-decoration-none text-dark">
           <div class="glass p-3 h-100">
             <div class="d-flex align-items-center justify-content-between mb-2">
-              <h6 class="mb-0 text-primary">UC-บริการเฉพาะ CR </h6>
-              <span><i class="bi bi-hospital fs-5 text-success"></i> </span>
+              <h6 class="mb-0 text-primary"><strong>UC-บริการเฉพาะ CR </strong></h6>
+              <span><i class="bi bi-hospital fs-5 text-danger"></i> </span>
             </div>
             <div class="d-flex align-items-end gap-4">
               <div class="text-end">
@@ -670,7 +970,7 @@
         <a href="#" data-bs-toggle="modal" data-bs-target="#HerbDetailModal" class="text-decoration-none text-dark">
           <div class="glass p-3 h-100">
             <div class="d-flex align-items-center justify-content-between mb-2">
-              <h6 class="mb-0 text-primary">UC-สมุนไพร 32 รายการ</h6>
+              <h6 class="mb-0 text-primary"><strong>UC-สมุนไพร 32 รายการ</strong></h6>
               <span><i class="bi bi-capsule fs-5 text-danger"></i></span></span>
             </div>
             <div class="d-flex align-items-end gap-4">
