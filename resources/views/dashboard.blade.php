@@ -1425,7 +1425,7 @@
                   <th class="text-center" rowspan="2">Active Base</th>       
                   <th class="text-center" rowspan="2">AdjRW</th>  
                   <th class="text-center" rowspan="2">CMI</th>
-                  <th class="text-center" colspan="3">ค่ารักษาพยาาบาล</th>                
+                  <th class="text-center" colspan="3">ค่ารักษาพยาบาล</th>                
                 </tr>    
                 <tr class="table-danger"> 
                   <td class="text-center text-primary">ค่ารักษารวม</td>
@@ -1798,7 +1798,7 @@
                   <th class="text-center" rowspan="2">Active Base</th>       
                   <th class="text-center" rowspan="2">AdjRW</th>  
                   <th class="text-center" rowspan="2">CMI</th>
-                  <th class="text-center" colspan="3">ค่ารักษาพยาาบาล</th>                
+                  <th class="text-center" colspan="3">ค่ารักษาพยาบาล</th>                
                 </tr>    
                 <tr class="table-danger"> 
                   <td class="text-center text-primary">ค่ารักษารวม</td>
@@ -2171,7 +2171,7 @@
                   <th class="text-center" rowspan="2">Active Base</th>       
                   <th class="text-center" rowspan="2">AdjRW</th>  
                   <th class="text-center" rowspan="2">CMI</th>
-                  <th class="text-center" colspan="3">ค่ารักษาพยาาบาล</th>                
+                  <th class="text-center" colspan="3">ค่ารักษาพยาบาล</th>                
                 </tr>    
                 <tr class="table-danger"> 
                   <td class="text-center text-primary">ค่ารักษารวม</td>
@@ -2544,7 +2544,7 @@
                   <th class="text-center" rowspan="2">Active Base</th>       
                   <th class="text-center" rowspan="2">AdjRW</th>  
                   <th class="text-center" rowspan="2">CMI</th>
-                  <th class="text-center" colspan="3">ค่ารักษาพยาาบาล</th>                
+                  <th class="text-center" colspan="3">ค่ารักษาพยาบาล</th>                
                 </tr>    
                 <tr class="table-danger"> 
                   <td class="text-center text-primary">ค่ารักษารวม</td>
@@ -2917,7 +2917,7 @@
                   <th class="text-center" rowspan="2">Active Base</th>       
                   <th class="text-center" rowspan="2">AdjRW</th>  
                   <th class="text-center" rowspan="2">CMI</th>
-                  <th class="text-center" colspan="3">ค่ารักษาพยาาบาล</th>                
+                  <th class="text-center" colspan="3">ค่ารักษาพยาบาล</th>                
                 </tr>    
                 <tr class="table-danger"> 
                   <td class="text-center text-primary">ค่ารักษารวม</td>
@@ -3290,7 +3290,7 @@
                   <th class="text-center" rowspan="2">Active Base</th>       
                   <th class="text-center" rowspan="2">AdjRW</th>  
                   <th class="text-center" rowspan="2">CMI</th>
-                  <th class="text-center" colspan="3">ค่ารักษาพยาาบาล</th>                
+                  <th class="text-center" colspan="3">ค่ารักษาพยาบาล</th>                
                 </tr>    
                 <tr class="table-danger"> 
                   <td class="text-center text-primary">ค่ารักษารวม</td>
