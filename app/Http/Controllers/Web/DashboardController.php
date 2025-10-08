@@ -114,6 +114,8 @@ class DashboardController extends Controller
         $update_at10989 = DB::table('opd')->where('hospcode', '10989')->max('updated_at');
         $update_at10990 = DB::table('opd')->where('hospcode', '10990')->max('updated_at');
 
+// OPD------------------------------------------------------------------------------------------------------------------
+
         $total_10985 = DB::select("
             SELECT MIN(CASE
             WHEN MONTH(vstdate)=10 THEN CONCAT('ต.ค. ', RIGHT(YEAR(vstdate)+543, 2))
@@ -588,8 +590,167 @@ class DashboardController extends Controller
             GROUP BY YEAR(vstdate), MONTH(vstdate)
             ORDER BY YEAR(vstdate), MONTH(vstdate) ", [$start_date, $end_date]);
 
+// IPD------------------------------------------------------------------------------------------------------------------
+
+        $total_10985_ipd = DB::select("
+            SELECT  CASE WHEN MONTH(i.dchdate)=10 THEN CONCAT('ต.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=11 THEN CONCAT('พ.ย. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=12 THEN CONCAT('ธ.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=1 THEN CONCAT('ม.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=2 THEN CONCAT('ก.พ. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=3 THEN CONCAT('มี.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=4 THEN CONCAT('เม.ย. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=5 THEN CONCAT('พ.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=6 THEN CONCAT('มิ.ย. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=7 THEN CONCAT('ก.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=8 THEN CONCAT('ส.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=9 THEN CONCAT('ก.ย. ',RIGHT(YEAR(i.dchdate)+543,2))
+            END AS 'month',
+            SUM(i.an_total) AS an_total ,SUM(i.admdate) AS admdate,
+            ROUND((SUM(i.admdate)*100)/(h.bed_report*DAY(LAST_DAY(i.dchdate))),2) AS 'bed_occupancy',
+            ROUND(((SUM(i.admdate)*100)/(h.bed_report*DAY(LAST_DAY(i.dchdate)))*h.bed_report)/100,2) AS 'active_bed',
+            ROUND(SUM(i.adjrw),4) AS adjrw ,
+            ROUND(SUM(i.adjrw)/SUM(i.an_total),2) AS cmi,i.inc_total,i.inc_lab_total,i.inc_drug_total
+            FROM ipd i
+            LEFT JOIN hospital_config h ON h.hospcode=i.hospcode 
+            WHERE i.dchdate BETWEEN ? AND ?
+            AND i.hospcode = 10985
+            GROUP BY MONTH(i.dchdate)
+            ORDER BY YEAR(i.dchdate) , MONTH(i.dchdate)", [$start_date, $end_date]);
+
+        $total_10986_ipd = DB::select("
+            SELECT  CASE WHEN MONTH(i.dchdate)=10 THEN CONCAT('ต.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=11 THEN CONCAT('พ.ย. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=12 THEN CONCAT('ธ.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=1 THEN CONCAT('ม.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=2 THEN CONCAT('ก.พ. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=3 THEN CONCAT('มี.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=4 THEN CONCAT('เม.ย. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=5 THEN CONCAT('พ.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=6 THEN CONCAT('มิ.ย. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=7 THEN CONCAT('ก.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=8 THEN CONCAT('ส.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=9 THEN CONCAT('ก.ย. ',RIGHT(YEAR(i.dchdate)+543,2))
+            END AS 'month',
+            SUM(i.an_total) AS an_total ,SUM(i.admdate) AS admdate,
+            ROUND((SUM(i.admdate)*100)/(h.bed_report*DAY(LAST_DAY(i.dchdate))),2) AS 'bed_occupancy',
+            ROUND(((SUM(i.admdate)*100)/(h.bed_report*DAY(LAST_DAY(i.dchdate)))*h.bed_report)/100,2) AS 'active_bed',
+            ROUND(SUM(i.adjrw),4) AS adjrw ,
+            ROUND(SUM(i.adjrw)/SUM(i.an_total),2) AS cmi,i.inc_total,i.inc_lab_total,i.inc_drug_total
+            FROM ipd i
+            LEFT JOIN hospital_config h ON h.hospcode=i.hospcode 
+            WHERE i.dchdate BETWEEN ? AND ?
+            AND i.hospcode = 10986
+            GROUP BY MONTH(i.dchdate)
+            ORDER BY YEAR(i.dchdate) , MONTH(i.dchdate)", [$start_date, $end_date]);
+        
+        $total_10987_ipd = DB::select("
+            SELECT  CASE WHEN MONTH(i.dchdate)=10 THEN CONCAT('ต.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=11 THEN CONCAT('พ.ย. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=12 THEN CONCAT('ธ.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=1 THEN CONCAT('ม.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=2 THEN CONCAT('ก.พ. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=3 THEN CONCAT('มี.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=4 THEN CONCAT('เม.ย. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=5 THEN CONCAT('พ.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=6 THEN CONCAT('มิ.ย. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=7 THEN CONCAT('ก.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=8 THEN CONCAT('ส.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=9 THEN CONCAT('ก.ย. ',RIGHT(YEAR(i.dchdate)+543,2))
+            END AS 'month',
+            SUM(i.an_total) AS an_total ,SUM(i.admdate) AS admdate,
+            ROUND((SUM(i.admdate)*100)/(h.bed_report*DAY(LAST_DAY(i.dchdate))),2) AS 'bed_occupancy',
+            ROUND(((SUM(i.admdate)*100)/(h.bed_report*DAY(LAST_DAY(i.dchdate)))*h.bed_report)/100,2) AS 'active_bed',
+            ROUND(SUM(i.adjrw),4) AS adjrw ,
+            ROUND(SUM(i.adjrw)/SUM(i.an_total),2) AS cmi,i.inc_total,i.inc_lab_total,i.inc_drug_total
+            FROM ipd i
+            LEFT JOIN hospital_config h ON h.hospcode=i.hospcode 
+            WHERE i.dchdate BETWEEN ? AND ?
+            AND i.hospcode = 10987
+            GROUP BY MONTH(i.dchdate)
+            ORDER BY YEAR(i.dchdate) , MONTH(i.dchdate)", [$start_date, $end_date]);
+
+        $total_10988_ipd = DB::select("
+            SELECT  CASE WHEN MONTH(i.dchdate)=10 THEN CONCAT('ต.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=11 THEN CONCAT('พ.ย. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=12 THEN CONCAT('ธ.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=1 THEN CONCAT('ม.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=2 THEN CONCAT('ก.พ. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=3 THEN CONCAT('มี.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=4 THEN CONCAT('เม.ย. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=5 THEN CONCAT('พ.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=6 THEN CONCAT('มิ.ย. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=7 THEN CONCAT('ก.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=8 THEN CONCAT('ส.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=9 THEN CONCAT('ก.ย. ',RIGHT(YEAR(i.dchdate)+543,2))
+            END AS 'month',
+            SUM(i.an_total) AS an_total ,SUM(i.admdate) AS admdate,
+            ROUND((SUM(i.admdate)*100)/(h.bed_report*DAY(LAST_DAY(i.dchdate))),2) AS 'bed_occupancy',
+            ROUND(((SUM(i.admdate)*100)/(h.bed_report*DAY(LAST_DAY(i.dchdate)))*h.bed_report)/100,2) AS 'active_bed',
+            ROUND(SUM(i.adjrw),4) AS adjrw ,
+            ROUND(SUM(i.adjrw)/SUM(i.an_total),2) AS cmi,i.inc_total,i.inc_lab_total,i.inc_drug_total
+            FROM ipd i
+            LEFT JOIN hospital_config h ON h.hospcode=i.hospcode 
+            WHERE i.dchdate BETWEEN ? AND ?
+            AND i.hospcode = 10988
+            GROUP BY MONTH(i.dchdate)
+            ORDER BY YEAR(i.dchdate) , MONTH(i.dchdate)", [$start_date, $end_date]);
+
+        $total_10989_ipd = DB::select("
+            SELECT  CASE WHEN MONTH(i.dchdate)=10 THEN CONCAT('ต.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=11 THEN CONCAT('พ.ย. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=12 THEN CONCAT('ธ.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=1 THEN CONCAT('ม.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=2 THEN CONCAT('ก.พ. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=3 THEN CONCAT('มี.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=4 THEN CONCAT('เม.ย. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=5 THEN CONCAT('พ.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=6 THEN CONCAT('มิ.ย. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=7 THEN CONCAT('ก.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=8 THEN CONCAT('ส.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=9 THEN CONCAT('ก.ย. ',RIGHT(YEAR(i.dchdate)+543,2))
+            END AS 'month',
+            SUM(i.an_total) AS an_total ,SUM(i.admdate) AS admdate,
+            ROUND((SUM(i.admdate)*100)/(h.bed_report*DAY(LAST_DAY(i.dchdate))),2) AS 'bed_occupancy',
+            ROUND(((SUM(i.admdate)*100)/(h.bed_report*DAY(LAST_DAY(i.dchdate)))*h.bed_report)/100,2) AS 'active_bed',
+            ROUND(SUM(i.adjrw),4) AS adjrw ,
+            ROUND(SUM(i.adjrw)/SUM(i.an_total),2) AS cmi,i.inc_total,i.inc_lab_total,i.inc_drug_total
+            FROM ipd i
+            LEFT JOIN hospital_config h ON h.hospcode=i.hospcode 
+            WHERE i.dchdate BETWEEN ? AND ?
+            AND i.hospcode = 10989
+            GROUP BY MONTH(i.dchdate)
+            ORDER BY YEAR(i.dchdate) , MONTH(i.dchdate)", [$start_date, $end_date]);
+
+        $total_10990_ipd = DB::select("
+            SELECT  CASE WHEN MONTH(i.dchdate)=10 THEN CONCAT('ต.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=11 THEN CONCAT('พ.ย. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=12 THEN CONCAT('ธ.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=1 THEN CONCAT('ม.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=2 THEN CONCAT('ก.พ. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=3 THEN CONCAT('มี.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=4 THEN CONCAT('เม.ย. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=5 THEN CONCAT('พ.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=6 THEN CONCAT('มิ.ย. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=7 THEN CONCAT('ก.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=8 THEN CONCAT('ส.ค. ',RIGHT(YEAR(i.dchdate)+543,2))
+            WHEN MONTH(i.dchdate)=9 THEN CONCAT('ก.ย. ',RIGHT(YEAR(i.dchdate)+543,2))
+            END AS 'month',
+            SUM(i.an_total) AS an_total ,SUM(i.admdate) AS admdate,
+            ROUND((SUM(i.admdate)*100)/(h.bed_report*DAY(LAST_DAY(i.dchdate))),2) AS 'bed_occupancy',
+            ROUND(((SUM(i.admdate)*100)/(h.bed_report*DAY(LAST_DAY(i.dchdate)))*h.bed_report)/100,2) AS 'active_bed',
+            ROUND(SUM(i.adjrw),4) AS adjrw ,
+            ROUND(SUM(i.adjrw)/SUM(i.an_total),2) AS cmi,i.inc_total,i.inc_lab_total,i.inc_drug_total
+            FROM ipd i
+            LEFT JOIN hospital_config h ON h.hospcode=i.hospcode 
+            WHERE i.dchdate BETWEEN ? AND ?
+            AND i.hospcode = 10990
+            GROUP BY MONTH(i.dchdate)
+            ORDER BY YEAR(i.dchdate) , MONTH(i.dchdate)", [$start_date, $end_date]);
+
         return view('dashboard', array_merge($card,compact('budget_year_select','budget_year','update_at10985','total_10985',
             'update_at10986','total_10986','update_at10987','total_10987','update_at10988','total_10988','update_at10989','total_10989',
-            'update_at10990','total_10990','total_bed_qty','total_bed_empty','hospitals','hospitalSummary')));
+            'update_at10990','total_10990','total_bed_qty','total_bed_empty','hospitals','hospitalSummary','total_10985_ipd',
+            'total_10986_ipd','total_10987_ipd','total_10988_ipd','total_10989_ipd','total_10990_ipd')));
     }
 }

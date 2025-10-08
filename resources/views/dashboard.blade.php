@@ -769,7 +769,7 @@
     </div>
 </section>
 
-{{-- ข้อมูลบริการผู้ป่วยนอก ----------------------------------------------------------------------------------------------------------}}
+{{-- ข้อมูลบริการ----------------------------------------------------------------------------------------------------------}}
 <section id="hospital" class="pb-2">
   <div class="container-fluid">
   
@@ -810,11 +810,11 @@
     <!-- TAB PANES -->
     <div class="tab-content mt-3" id="hospPillsContent">
 
-      <!-- 10985 -->
+      <!-- 10985 OPD -->
       <div class="tab-pane fade show active" id="pane-10985" role="tabpanel" aria-labelledby="tab-10985" tabindex="0">
         <div class="glass p-3">
           <div class="d-flex justify-content-between align-items-center mb-2">
-            <h6>[10985] ข้อมูลบริการผู้ป่วยนอกโรงพยาชานุมาน ปีงบประมาณ {{$budget_year}}</h6>
+            <h6>[10985] ข้อมูลบริการผู้ป่วยนอก OPD โรงพยาชานุมาน ปีงบประมาณ {{$budget_year}}</h6>
             <span class="text-secondary small">Update {{$update_at10985}}</span>              
           </div>
           <div class="table-responsive">
@@ -1108,13 +1108,86 @@
             </table>
           </div>
         </div>
+        <br> <!-- 10985 IPD -->
+        <div class="glass p-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h6>[10985] ข้อมูลบริการผู้ป่วยใน IPD โรงพยาชานุมาน ปีงบประมาณ {{$budget_year}}</h6>
+            <span class="text-secondary small">Update {{$update_at10985}}</span>              
+          </div>
+          <div class="table-responsive">
+            <table id="table10985_ipd" class="table table-bordered table-striped my-3" width ="100%">
+              <thead class="table-light">
+                <tr class="table-danger">
+                  <th class="text-center" rowspan="2" width ="4%">เดือน</th>
+                  <th class="text-center" rowspan="2">จำนวน AN</th>
+                  <th class="text-center" rowspan="2">วันนอนรวม</th> 
+                  <th class="text-center" rowspan="2">อัตราครองเตียง</th>
+                  <th class="text-center" rowspan="2">Active Base</th>       
+                  <th class="text-center" rowspan="2">AdjRW</th>  
+                  <th class="text-center" rowspan="2">CMI</th>
+                  <th class="text-center" colspan="3">ค่ารักษาพยาาบาล</th>                
+                </tr>    
+                <tr class="table-danger"> 
+                  <td class="text-center text-primary">ค่ารักษารวม</td>
+                  <td class="text-center text-primary">ค่า Lab</td>
+                  <td class="text-center text-primary">ค่า ยา</td>                 
+                </tr>    
+              </thead>
+              <tbody>
+                <?php $count = 1 ; ?> 
+                <?php $sum_an_total = 0 ; ?> 
+                <?php $sum_admdate = 0 ; ?>   
+                <?php $sum_adjrw = 0 ; ?>  
+                <?php $sum_cmi = 0 ; ?> 
+                <?php $sum_inc_total = 0 ; ?>  
+                <?php $sum_inc_lab_total = 0 ; ?>
+                <?php $sum_inc_drug_total = 0 ; ?> 
+
+                @foreach($total_10985_ipd as $row) 
+                <tr>
+                  <td align="center"width ="4%">{{ $row->month }}</td>
+                  <td align="right">{{ number_format($row->an_total) }}</td>
+                  <td align="right">{{ number_format($row->admdate) }}</td>
+                  <td align="right">{{ number_format($row->bed_occupancy,2) }}</td>
+                  <td align="right">{{ number_format($row->active_bed,2) }}</td>
+                  <td align="right">{{ number_format($row->adjrw,5) }}</td>
+                  <td align="right">{{ number_format($row->cmi,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_total,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_lab_total,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_drug_total,2) }}</td>
+                </tr>
+                <?php $count++; ?>
+                <?php $sum_an_total += $row->an_total ; ?>
+                <?php $sum_admdate += $row->admdate ; ?>
+                <?php $sum_adjrw += $row->adjrw ; ?>
+                <?php $sum_cmi += $row->cmi ; ?>
+                <?php $sum_inc_total += $row->inc_total ; ?>
+                <?php $sum_inc_lab_total += $row->inc_lab_total ; ?>
+                <?php $sum_inc_drug_total += $row->inc_drug_total ; ?>
+                @endforeach    
+                <tr>
+                  <td align="right"><strong>รวม</strong></td>
+                  <td align="right"><strong>{{number_format($sum_an_total)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_admdate)}}</strong></td>
+                  <td align="right"><strong></strong></td>     
+                  <td align="right"><strong></strong></td>   
+                  <td align="right"><strong>{{number_format($sum_adjrw,4)}}</strong></td>  
+                  <td align="right"><strong>{{number_format($sum_cmi,2)}}</strong></td> 
+                  <td align="right"><strong>{{number_format($sum_inc_total,2)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_lab_total)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_drug_total,2)}}</strong></td>
+                </tr>   
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
 
-      <!-- 10986 -->
+      <!-- 10986 OPD -->
       <div class="tab-pane fade" id="pane-10986" role="tabpanel" aria-labelledby="tab-10986" tabindex="0">
         <div class="glass p-3">
           <div class="d-flex justify-content-between align-items-center mb-2">
-            <h6>[10986] ข้อมูลบริการผู้ป่วยนอกโรงพยาปทุมราชวงศา ปีงบประมาณ {{$budget_year}}</h6>
+            <h6>[10986] ข้อมูลบริการผู้ป่วยนอก OPD โรงพยาปทุมราชวงศา ปีงบประมาณ {{$budget_year}}</h6>
             <span class="text-secondary small">Update {{$update_at10986}}</span>            
           </div>
           <div class="table-responsive">
@@ -1408,13 +1481,86 @@
             </table>
           </div>
         </div>
+        <br> <!-- 10986 IPD -->
+        <div class="glass p-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h6>[10986] ข้อมูลบริการผู้ป่วยใน IPD โรงพยาบาลปทุมราช ปีงบประมาณ {{$budget_year}}</h6>
+            <span class="text-secondary small">Update {{$update_at10986}}</span>              
+          </div>
+          <div class="table-responsive">
+            <table id="table10986_ipd" class="table table-bordered table-striped my-3" width ="100%">
+              <thead class="table-light">
+                <tr class="table-danger">
+                  <th class="text-center" rowspan="2" width ="4%">เดือน</th>
+                  <th class="text-center" rowspan="2">จำนวน AN</th>
+                  <th class="text-center" rowspan="2">วันนอนรวม</th> 
+                  <th class="text-center" rowspan="2">อัตราครองเตียง</th>
+                  <th class="text-center" rowspan="2">Active Base</th>       
+                  <th class="text-center" rowspan="2">AdjRW</th>  
+                  <th class="text-center" rowspan="2">CMI</th>
+                  <th class="text-center" colspan="3">ค่ารักษาพยาาบาล</th>                
+                </tr>    
+                <tr class="table-danger"> 
+                  <td class="text-center text-primary">ค่ารักษารวม</td>
+                  <td class="text-center text-primary">ค่า Lab</td>
+                  <td class="text-center text-primary">ค่า ยา</td>                 
+                </tr>    
+              </thead>
+              <tbody>
+                <?php $count = 1 ; ?> 
+                <?php $sum_an_total = 0 ; ?> 
+                <?php $sum_admdate = 0 ; ?>   
+                <?php $sum_adjrw = 0 ; ?>  
+                <?php $sum_cmi = 0 ; ?> 
+                <?php $sum_inc_total = 0 ; ?>  
+                <?php $sum_inc_lab_total = 0 ; ?>
+                <?php $sum_inc_drug_total = 0 ; ?> 
+
+                @foreach($total_10986_ipd as $row) 
+                <tr>
+                  <td align="center"width ="4%">{{ $row->month }}</td>
+                  <td align="right">{{ number_format($row->an_total) }}</td>
+                  <td align="right">{{ number_format($row->admdate) }}</td>
+                  <td align="right">{{ number_format($row->bed_occupancy,2) }}</td>
+                  <td align="right">{{ number_format($row->active_bed,2) }}</td>
+                  <td align="right">{{ number_format($row->adjrw,5) }}</td>
+                  <td align="right">{{ number_format($row->cmi,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_total,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_lab_total,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_drug_total,2) }}</td>
+                </tr>
+                <?php $count++; ?>
+                <?php $sum_an_total += $row->an_total ; ?>
+                <?php $sum_admdate += $row->admdate ; ?>
+                <?php $sum_adjrw += $row->adjrw ; ?>
+                <?php $sum_cmi += $row->cmi ; ?>
+                <?php $sum_inc_total += $row->inc_total ; ?>
+                <?php $sum_inc_lab_total += $row->inc_lab_total ; ?>
+                <?php $sum_inc_drug_total += $row->inc_drug_total ; ?>
+                @endforeach    
+                <tr>
+                  <td align="right"><strong>รวม</strong></td>
+                  <td align="right"><strong>{{number_format($sum_an_total)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_admdate)}}</strong></td>
+                  <td align="right"><strong></strong></td>     
+                  <td align="right"><strong></strong></td>   
+                  <td align="right"><strong>{{number_format($sum_adjrw,4)}}</strong></td>  
+                  <td align="right"><strong>{{number_format($sum_cmi,2)}}</strong></td> 
+                  <td align="right"><strong>{{number_format($sum_inc_total,2)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_lab_total)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_drug_total,2)}}</strong></td>
+                </tr>   
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
 
-      <!-- 10987 -->
+      <!-- 10987 OPD-->
       <div class="tab-pane fade" id="pane-10987" role="tabpanel" aria-labelledby="tab-10987" tabindex="0">
         <div class="glass p-3">
           <div class="d-flex justify-content-between align-items-center mb-2">
-            <h6>[10987] ข้อมูลบริการผู้ป่วยนอกโรงพยาพนา ปีงบประมาณ {{$budget_year}}</h6>
+            <h6>[10987] ข้อมูลบริการผู้ป่วยนอก OPD โรงพยาพนา ปีงบประมาณ {{$budget_year}}</h6>
             <span class="text-secondary small">Update {{$update_at10987}}</span>   
           </div>
           <div class="table-responsive">
@@ -1708,13 +1854,86 @@
             </table>
           </div>
         </div>
+        <br> <!-- 10987 IPD -->
+        <div class="glass p-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h6>[10987] ข้อมูลบริการผู้ป่วยใน IPD โรงพยาบาลพนา ปีงบประมาณ {{$budget_year}}</h6>
+            <span class="text-secondary small">Update {{$update_at10987}}</span>              
+          </div>
+          <div class="table-responsive">
+            <table id="table10987_ipd" class="table table-bordered table-striped my-3" width ="100%">
+              <thead class="table-light">
+                <tr class="table-danger">
+                  <th class="text-center" rowspan="2" width ="4%">เดือน</th>
+                  <th class="text-center" rowspan="2">จำนวน AN</th>
+                  <th class="text-center" rowspan="2">วันนอนรวม</th> 
+                  <th class="text-center" rowspan="2">อัตราครองเตียง</th>
+                  <th class="text-center" rowspan="2">Active Base</th>       
+                  <th class="text-center" rowspan="2">AdjRW</th>  
+                  <th class="text-center" rowspan="2">CMI</th>
+                  <th class="text-center" colspan="3">ค่ารักษาพยาาบาล</th>                
+                </tr>    
+                <tr class="table-danger"> 
+                  <td class="text-center text-primary">ค่ารักษารวม</td>
+                  <td class="text-center text-primary">ค่า Lab</td>
+                  <td class="text-center text-primary">ค่า ยา</td>                 
+                </tr>    
+              </thead>
+              <tbody>
+                <?php $count = 1 ; ?> 
+                <?php $sum_an_total = 0 ; ?> 
+                <?php $sum_admdate = 0 ; ?>   
+                <?php $sum_adjrw = 0 ; ?>  
+                <?php $sum_cmi = 0 ; ?> 
+                <?php $sum_inc_total = 0 ; ?>  
+                <?php $sum_inc_lab_total = 0 ; ?>
+                <?php $sum_inc_drug_total = 0 ; ?> 
+
+                @foreach($total_10987_ipd as $row) 
+                <tr>
+                  <td align="center"width ="4%">{{ $row->month }}</td>
+                  <td align="right">{{ number_format($row->an_total) }}</td>
+                  <td align="right">{{ number_format($row->admdate) }}</td>
+                  <td align="right">{{ number_format($row->bed_occupancy,2) }}</td>
+                  <td align="right">{{ number_format($row->active_bed,2) }}</td>
+                  <td align="right">{{ number_format($row->adjrw,5) }}</td>
+                  <td align="right">{{ number_format($row->cmi,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_total,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_lab_total,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_drug_total,2) }}</td>
+                </tr>
+                <?php $count++; ?>
+                <?php $sum_an_total += $row->an_total ; ?>
+                <?php $sum_admdate += $row->admdate ; ?>
+                <?php $sum_adjrw += $row->adjrw ; ?>
+                <?php $sum_cmi += $row->cmi ; ?>
+                <?php $sum_inc_total += $row->inc_total ; ?>
+                <?php $sum_inc_lab_total += $row->inc_lab_total ; ?>
+                <?php $sum_inc_drug_total += $row->inc_drug_total ; ?>
+                @endforeach    
+                <tr>
+                  <td align="right"><strong>รวม</strong></td>
+                  <td align="right"><strong>{{number_format($sum_an_total)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_admdate)}}</strong></td>
+                  <td align="right"><strong></strong></td>     
+                  <td align="right"><strong></strong></td>   
+                  <td align="right"><strong>{{number_format($sum_adjrw,4)}}</strong></td>  
+                  <td align="right"><strong>{{number_format($sum_cmi,2)}}</strong></td> 
+                  <td align="right"><strong>{{number_format($sum_inc_total,2)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_lab_total)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_drug_total,2)}}</strong></td>
+                </tr>   
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
 
-      <!-- 10988 -->
+      <!-- 10988 OPD -->
       <div class="tab-pane fade" id="pane-10988" role="tabpanel" aria-labelledby="tab-10988" tabindex="0">
         <div class="glass p-3">
           <div class="d-flex justify-content-between align-items-center mb-2">
-            <h6>[10988] ข้อมูลบริการผู้ป่วยนอกโรงพยาบาลเสนางคนิคม ปีงบประมาณ {{$budget_year}}</h6>
+            <h6>[10988] ข้อมูลบริการผู้ป่วยนอก OPD โรงพยาบาลเสนางคนิคม ปีงบประมาณ {{$budget_year}}</h6>
             <span class="text-secondary small">Update {{$update_at10988}}</span>   
           </div>
           <div class="table-responsive">
@@ -2008,13 +2227,86 @@
             </table>
           </div>
         </div>
+        <br> <!-- 10988 IPD -->
+        <div class="glass p-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h6>[10988] ข้อมูลบริการผู้ป่วยใน IPD โรงพยาบาลเสนางคนิคม ปีงบประมาณ {{$budget_year}}</h6>
+            <span class="text-secondary small">Update {{$update_at10988}}</span>              
+          </div>
+          <div class="table-responsive">
+            <table id="table10988_ipd" class="table table-bordered table-striped my-3" width ="100%">
+              <thead class="table-light">
+                <tr class="table-danger">
+                  <th class="text-center" rowspan="2" width ="4%">เดือน</th>
+                  <th class="text-center" rowspan="2">จำนวน AN</th>
+                  <th class="text-center" rowspan="2">วันนอนรวม</th> 
+                  <th class="text-center" rowspan="2">อัตราครองเตียง</th>
+                  <th class="text-center" rowspan="2">Active Base</th>       
+                  <th class="text-center" rowspan="2">AdjRW</th>  
+                  <th class="text-center" rowspan="2">CMI</th>
+                  <th class="text-center" colspan="3">ค่ารักษาพยาาบาล</th>                
+                </tr>    
+                <tr class="table-danger"> 
+                  <td class="text-center text-primary">ค่ารักษารวม</td>
+                  <td class="text-center text-primary">ค่า Lab</td>
+                  <td class="text-center text-primary">ค่า ยา</td>                 
+                </tr>    
+              </thead>
+              <tbody>
+                <?php $count = 1 ; ?> 
+                <?php $sum_an_total = 0 ; ?> 
+                <?php $sum_admdate = 0 ; ?>   
+                <?php $sum_adjrw = 0 ; ?>  
+                <?php $sum_cmi = 0 ; ?> 
+                <?php $sum_inc_total = 0 ; ?>  
+                <?php $sum_inc_lab_total = 0 ; ?>
+                <?php $sum_inc_drug_total = 0 ; ?> 
+
+                @foreach($total_10988_ipd as $row) 
+                <tr>
+                  <td align="center"width ="4%">{{ $row->month }}</td>
+                  <td align="right">{{ number_format($row->an_total) }}</td>
+                  <td align="right">{{ number_format($row->admdate) }}</td>
+                  <td align="right">{{ number_format($row->bed_occupancy,2) }}</td>
+                  <td align="right">{{ number_format($row->active_bed,2) }}</td>
+                  <td align="right">{{ number_format($row->adjrw,5) }}</td>
+                  <td align="right">{{ number_format($row->cmi,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_total,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_lab_total,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_drug_total,2) }}</td>
+                </tr>
+                <?php $count++; ?>
+                <?php $sum_an_total += $row->an_total ; ?>
+                <?php $sum_admdate += $row->admdate ; ?>
+                <?php $sum_adjrw += $row->adjrw ; ?>
+                <?php $sum_cmi += $row->cmi ; ?>
+                <?php $sum_inc_total += $row->inc_total ; ?>
+                <?php $sum_inc_lab_total += $row->inc_lab_total ; ?>
+                <?php $sum_inc_drug_total += $row->inc_drug_total ; ?>
+                @endforeach    
+                <tr>
+                  <td align="right"><strong>รวม</strong></td>
+                  <td align="right"><strong>{{number_format($sum_an_total)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_admdate)}}</strong></td>
+                  <td align="right"><strong></strong></td>     
+                  <td align="right"><strong></strong></td>   
+                  <td align="right"><strong>{{number_format($sum_adjrw,4)}}</strong></td>  
+                  <td align="right"><strong>{{number_format($sum_cmi,2)}}</strong></td> 
+                  <td align="right"><strong>{{number_format($sum_inc_total,2)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_lab_total)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_drug_total,2)}}</strong></td>
+                </tr>   
+              </tbody>
+            </table>
+          </div>
+        </div>        
       </div>
 
-      <!-- 10989 -->
+      <!-- 10989 OPD -->
       <div class="tab-pane fade" id="pane-10989" role="tabpanel" aria-labelledby="tab-10989" tabindex="0">
         <div class="glass p-3">
           <div class="d-flex justify-content-between align-items-center mb-2">
-            <h6>[10989] ข้อมูลบริการผู้ป่วยนอกโรงพยาบาลหัวตะพาน ปีงบประมาณ {{$budget_year}}</h6>
+            <h6>[10989] ข้อมูลบริการผู้ป่วยนอก OPD โรงพยาบาลหัวตะพาน ปีงบประมาณ {{$budget_year}}</h6>
             <span class="text-secondary small">Update {{$update_at10989}}</span>   
           </div>
           <div class="table-responsive">
@@ -2308,13 +2600,86 @@
             </table>
           </div>
         </div>
+        <br> <!-- 10989 IPD -->
+        <div class="glass p-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h6>[10989] ข้อมูลบริการผู้ป่วยใน IPD โรงพยาบาลหัวตะพาน ปีงบประมาณ {{$budget_year}}</h6>
+            <span class="text-secondary small">Update {{$update_at10989}}</span>              
+          </div>
+          <div class="table-responsive">
+            <table id="table10989_ipd" class="table table-bordered table-striped my-3" width ="100%">
+              <thead class="table-light">
+                <tr class="table-danger">
+                  <th class="text-center" rowspan="2" width ="4%">เดือน</th>
+                  <th class="text-center" rowspan="2">จำนวน AN</th>
+                  <th class="text-center" rowspan="2">วันนอนรวม</th> 
+                  <th class="text-center" rowspan="2">อัตราครองเตียง</th>
+                  <th class="text-center" rowspan="2">Active Base</th>       
+                  <th class="text-center" rowspan="2">AdjRW</th>  
+                  <th class="text-center" rowspan="2">CMI</th>
+                  <th class="text-center" colspan="3">ค่ารักษาพยาาบาล</th>                
+                </tr>    
+                <tr class="table-danger"> 
+                  <td class="text-center text-primary">ค่ารักษารวม</td>
+                  <td class="text-center text-primary">ค่า Lab</td>
+                  <td class="text-center text-primary">ค่า ยา</td>                 
+                </tr>    
+              </thead>
+              <tbody>
+                <?php $count = 1 ; ?> 
+                <?php $sum_an_total = 0 ; ?> 
+                <?php $sum_admdate = 0 ; ?>   
+                <?php $sum_adjrw = 0 ; ?>  
+                <?php $sum_cmi = 0 ; ?> 
+                <?php $sum_inc_total = 0 ; ?>  
+                <?php $sum_inc_lab_total = 0 ; ?>
+                <?php $sum_inc_drug_total = 0 ; ?> 
+
+                @foreach($total_10989_ipd as $row) 
+                <tr>
+                  <td align="center"width ="4%">{{ $row->month }}</td>
+                  <td align="right">{{ number_format($row->an_total) }}</td>
+                  <td align="right">{{ number_format($row->admdate) }}</td>
+                  <td align="right">{{ number_format($row->bed_occupancy,2) }}</td>
+                  <td align="right">{{ number_format($row->active_bed,2) }}</td>
+                  <td align="right">{{ number_format($row->adjrw,5) }}</td>
+                  <td align="right">{{ number_format($row->cmi,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_total,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_lab_total,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_drug_total,2) }}</td>
+                </tr>
+                <?php $count++; ?>
+                <?php $sum_an_total += $row->an_total ; ?>
+                <?php $sum_admdate += $row->admdate ; ?>
+                <?php $sum_adjrw += $row->adjrw ; ?>
+                <?php $sum_cmi += $row->cmi ; ?>
+                <?php $sum_inc_total += $row->inc_total ; ?>
+                <?php $sum_inc_lab_total += $row->inc_lab_total ; ?>
+                <?php $sum_inc_drug_total += $row->inc_drug_total ; ?>
+                @endforeach    
+                <tr>
+                  <td align="right"><strong>รวม</strong></td>
+                  <td align="right"><strong>{{number_format($sum_an_total)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_admdate)}}</strong></td>
+                  <td align="right"><strong></strong></td>     
+                  <td align="right"><strong></strong></td>   
+                  <td align="right"><strong>{{number_format($sum_adjrw,4)}}</strong></td>  
+                  <td align="right"><strong>{{number_format($sum_cmi,2)}}</strong></td> 
+                  <td align="right"><strong>{{number_format($sum_inc_total,2)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_lab_total)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_drug_total,2)}}</strong></td>
+                </tr>   
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
 
-      <!-- 10990 -->
+      <!-- 10990 OPD -->
       <div class="tab-pane fade" id="pane-10990" role="tabpanel" aria-labelledby="tab-10990" tabindex="0">
         <div class="glass p-3">
           <div class="d-flex justify-content-between align-items-center mb-2">
-            <h6>[10990] ข้อมูลบริการผู้ป่วยนอกโรงพยาบาลลืออำนาจ ปีงบประมาณ {{$budget_year}}</h6>
+            <h6>[10990] ข้อมูลบริการผู้ป่วยนอก OPD โรงพยาบาลลืออำนาจ ปีงบประมาณ {{$budget_year}}</h6>
             <span class="text-secondary small">Update {{$update_at10990}}</span>   
           </div>
           <div class="table-responsive">
@@ -2608,6 +2973,79 @@
             </table>
           </div>
         </div>
+        <br> <!-- 10990 IPD -->
+        <div class="glass p-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h6>[10990] ข้อมูลบริการผู้ป่วยใน IPD โรงพยาบาลลืออำนาจ ปีงบประมาณ {{$budget_year}}</h6>
+            <span class="text-secondary small">Update {{$update_at10990}}</span>              
+          </div>
+          <div class="table-responsive">
+            <table id="table10990_ipd" class="table table-bordered table-striped my-3" width ="100%">
+              <thead class="table-light">
+                <tr class="table-danger">
+                  <th class="text-center" rowspan="2" width ="4%">เดือน</th>
+                  <th class="text-center" rowspan="2">จำนวน AN</th>
+                  <th class="text-center" rowspan="2">วันนอนรวม</th> 
+                  <th class="text-center" rowspan="2">อัตราครองเตียง</th>
+                  <th class="text-center" rowspan="2">Active Base</th>       
+                  <th class="text-center" rowspan="2">AdjRW</th>  
+                  <th class="text-center" rowspan="2">CMI</th>
+                  <th class="text-center" colspan="3">ค่ารักษาพยาาบาล</th>                
+                </tr>    
+                <tr class="table-danger"> 
+                  <td class="text-center text-primary">ค่ารักษารวม</td>
+                  <td class="text-center text-primary">ค่า Lab</td>
+                  <td class="text-center text-primary">ค่า ยา</td>                 
+                </tr>    
+              </thead>
+              <tbody>
+                <?php $count = 1 ; ?> 
+                <?php $sum_an_total = 0 ; ?> 
+                <?php $sum_admdate = 0 ; ?>   
+                <?php $sum_adjrw = 0 ; ?>  
+                <?php $sum_cmi = 0 ; ?> 
+                <?php $sum_inc_total = 0 ; ?>  
+                <?php $sum_inc_lab_total = 0 ; ?>
+                <?php $sum_inc_drug_total = 0 ; ?> 
+
+                @foreach($total_10990_ipd as $row) 
+                <tr>
+                  <td align="center"width ="4%">{{ $row->month }}</td>
+                  <td align="right">{{ number_format($row->an_total) }}</td>
+                  <td align="right">{{ number_format($row->admdate) }}</td>
+                  <td align="right">{{ number_format($row->bed_occupancy,2) }}</td>
+                  <td align="right">{{ number_format($row->active_bed,2) }}</td>
+                  <td align="right">{{ number_format($row->adjrw,5) }}</td>
+                  <td align="right">{{ number_format($row->cmi,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_total,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_lab_total,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_drug_total,2) }}</td>
+                </tr>
+                <?php $count++; ?>
+                <?php $sum_an_total += $row->an_total ; ?>
+                <?php $sum_admdate += $row->admdate ; ?>
+                <?php $sum_adjrw += $row->adjrw ; ?>
+                <?php $sum_cmi += $row->cmi ; ?>
+                <?php $sum_inc_total += $row->inc_total ; ?>
+                <?php $sum_inc_lab_total += $row->inc_lab_total ; ?>
+                <?php $sum_inc_drug_total += $row->inc_drug_total ; ?>
+                @endforeach    
+                <tr>
+                  <td align="right"><strong>รวม</strong></td>
+                  <td align="right"><strong>{{number_format($sum_an_total)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_admdate)}}</strong></td>
+                  <td align="right"><strong></strong></td>     
+                  <td align="right"><strong></strong></td>   
+                  <td align="right"><strong>{{number_format($sum_adjrw,4)}}</strong></td>  
+                  <td align="right"><strong>{{number_format($sum_cmi,2)}}</strong></td> 
+                  <td align="right"><strong>{{number_format($sum_inc_total,2)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_lab_total)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_drug_total,2)}}</strong></td>
+                </tr>   
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -2746,6 +3184,127 @@
             text: '<i class="bi bi-file-earmark-excel"></i> ส่งออก Excel',
             className: 'btn btn-success btn-sm',
             title: 'ข้อมูลบริการผู้ป่วยนอก OPD โรงพยาบาลลืออำนาจ {{ $budget_year ?? "" }}'
+          }
+        ],
+        ordering: false,
+        paging: false,
+        info: false,
+        lengthChange: false,
+        language: { search: "ค้นหา:" }
+      });
+    });
+  </script>
+
+<script>
+    $(function () {
+      $('#table10985_ipd').DataTable({
+        dom: '<"d-flex justify-content-end mb-2"B>rt',
+        buttons: [
+          {
+            extend: 'excelHtml5',
+            text: '<i class="bi bi-file-earmark-excel"></i> ส่งออก Excel',
+            className: 'btn btn-success btn-sm',
+            title: 'ข้อมูลบริการผู้ป่วยใน IPD โรงพยาบาลชานุมาน {{ $budget_year ?? "" }}'
+          }
+        ],
+        ordering: false,
+        paging: false,
+        info: false,
+        lengthChange: false,
+        language: { search: "ค้นหา:" }
+      });
+    });
+  </script>
+  <script>
+    $(function () {
+      $('#table10986_ipd').DataTable({
+        dom: '<"d-flex justify-content-end mb-2"B>rt',
+        buttons: [
+          {
+            extend: 'excelHtml5',
+            text: '<i class="bi bi-file-earmark-excel"></i> ส่งออก Excel',
+            className: 'btn btn-success btn-sm',
+            title: 'ข้อมูลบริการผู้ป่วยใน IPD โรงพยาบาลปทุมราชวงศา {{ $budget_year ?? "" }}'
+          }
+        ],
+        ordering: false,
+        paging: false,
+        info: false,
+        lengthChange: false,
+        language: { search: "ค้นหา:" }
+      });
+    });
+  </script>
+  <script>
+    $(function () {
+      $('#table10987_ipd').DataTable({
+        dom: '<"d-flex justify-content-end mb-2"B>rt',
+        buttons: [
+          {
+            extend: 'excelHtml5',
+            text: '<i class="bi bi-file-earmark-excel"></i> ส่งออก Excel',
+            className: 'btn btn-success btn-sm',
+            title: 'ข้อมูลบริการผู้ป่วยใน IPD โรงพยาบาลพนา {{ $budget_year ?? "" }}'
+          }
+        ],
+        ordering: false,
+        paging: false,
+        info: false,
+        lengthChange: false,
+        language: { search: "ค้นหา:" }
+      });
+    });
+  </script>
+  <script>
+    $(function () {
+      $('#table10988_ipd').DataTable({
+        dom: '<"d-flex justify-content-end mb-2"B>rt',
+        buttons: [
+          {
+            extend: 'excelHtml5',
+            text: '<i class="bi bi-file-earmark-excel"></i> ส่งออก Excel',
+            className: 'btn btn-success btn-sm',
+            title: 'ข้อมูลบริการผู้ป่วยใน IPD โรงพยาบาลเสนางคนิคม {{ $budget_year ?? "" }}'
+          }
+        ],
+        ordering: false,
+        paging: false,
+        info: false,
+        lengthChange: false,
+        language: { search: "ค้นหา:" }
+      });
+    });
+  </script>
+  <script>
+    $(function () {
+      $('#table10989_ipd').DataTable({
+        dom: '<"d-flex justify-content-end mb-2"B>rt',
+        buttons: [
+          {
+            extend: 'excelHtml5',
+            text: '<i class="bi bi-file-earmark-excel"></i> ส่งออก Excel',
+            className: 'btn btn-success btn-sm',
+            title: 'ข้อมูลบริการผู้ป่วยใน IPD โรงพยาบาลหัวตะพาน {{ $budget_year ?? "" }}'
+          }
+        ],
+        ordering: false,
+        paging: false,
+        info: false,
+        lengthChange: false,
+        language: { search: "ค้นหา:" }
+      });
+    });
+  </script>
+  <script>
+    $(function () {
+      $('#table10990_ipd').DataTable({
+        dom: '<"d-flex justify-content-end mb-2"B>rt',
+        buttons: [
+          {
+            extend: 'excelHtml5',
+            text: '<i class="bi bi-file-earmark-excel"></i> ส่งออก Excel',
+            className: 'btn btn-success btn-sm',
+            title: 'ข้อมูลบริการผู้ป่วยใน IPD โรงพยาบาลลืออำนาจ {{ $budget_year ?? "" }}'
           }
         ],
         ordering: false,
