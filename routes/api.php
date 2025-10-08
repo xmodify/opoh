@@ -7,17 +7,19 @@ use App\Http\Controllers\Api\OpdController;
 use App\Http\Controllers\Api\IpdController;
 use App\Http\Controllers\Api\HospitalUpdateController;
 
-Route::get('/hospitals/{hospcode}/tokens', [HospitalTokenController::class, 'index']);
-Route::post('/hospitals/{hospcode}/tokens', [HospitalTokenController::class, 'issue']);
+// Route::get('/hospitals/{hospcode}/tokens', [HospitalTokenController::class, 'index']);
+//Route::post('/hospitals/{hospcode}/tokens', [HospitalTokenController::class, 'issue']);
+    // http://1.179.128.29:3394/api/hospitals/00025/tokens
     // {
     // "name": "10987-ingest",
     // "abilities": ["ingest"]
     // }
-Route::delete('/hospitals/{hospcode}/tokens/{tokenId}', [HospitalTokenController::class, 'revoke']);
+// Route::delete('/hospitals/{hospcode}/tokens/{tokenId}', [HospitalTokenController::class, 'revoke']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/op_insurance', [OpInsuranceController::class, 'ingest']);
     Route::post('/opd', [OpdController::class, 'opd']);
+    Route::get('/opd', [OpdController::class, 'get_opd']);
     Route::post('/ipd', [IpdController::class, 'ipd']);
     Route::post('/hospital_config', [HospitalUpdateController::class, 'update']);
 });
