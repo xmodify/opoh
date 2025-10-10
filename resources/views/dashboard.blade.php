@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Amnatcharoen Dashboard</title>
+  <title>Amnatcharoen One Province One Data : OPOD</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
@@ -120,7 +120,7 @@
   <nav class="navbar navbar-expand-lg bg-white bg-opacity-75 border-bottom sticky-top glass" style="border-radius:0">
     <div class="container-fluid">
       <a class="navbar-brand d-flex align-items-center brand-title fw-bold" href="{{url('web/')}}">
-        <i class="bi bi-shield-check me-2 text-green"></i> Amnatcharoen Dashboard
+        <i class="bi bi-shield-check me-2 text-green"></i> Home
       </a>      
       {{-- <div id="topnav" class="collapse navbar-collapse">
         <ul class="navbar-nav ms-auto">
@@ -137,7 +137,7 @@
     <div class="container-fluid">      
         <div class="row g-4 align-items-center">
           <div class="col-lg-9">          
-            <h6 class="text-success mb-2"><strong>One Province One Hospital (OPOH) </strong></h6>          
+            <h4 class="text-success mb-2"><strong>Amnatcharoen One Province One Data : AOPOD</strong></h4>          
           </div>
           {{-- ขวาสุด: select + ปุ่ม ติดกันและชิดขวา --}}
           <div class="col-lg-3 d-flex justify-content-lg-end">
