@@ -3356,7 +3356,7 @@
 <!-- FOOTER -->
 <footer class="py-4">
   <div class="container container-compact text-center text-secondary small">
-    © {{ now()->year }} Amnat Dashboard
+    © {{ now()->year }} Amnatcharoen One Province One Data : AOPOD
   </div>
 </footer>
 
