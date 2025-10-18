@@ -3,18 +3,21 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Amnatcharoen One Province One Data : OPOD</title>
+  <title>Amnatcharoen One Province One Data : AOPOD</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
-<!-- Bootstrap 5 (optional for styling DataTables BS5 skin) -->
+  <!-- Bootstrap 5 (optional for styling DataTables BS5 skin) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 
   <!-- DataTables + Buttons + Bootstrap 5 CSS -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+  <!-- Include SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <style>
     :root{
@@ -116,20 +119,46 @@
   </style>
 </head>
 <body>
-  <!-- NAV -->
+<!-- NAV -->
   <nav class="navbar navbar-expand-lg bg-white bg-opacity-75 border-bottom sticky-top glass" style="border-radius:0">
-    <div class="container-fluid">
-      <a class="navbar-brand d-flex align-items-center brand-title fw-bold" href="{{url('web/')}}">
-        <i class="bi bi-shield-check me-2 text-green"></i> Home
-      </a>      
-      {{-- <div id="topnav" class="collapse navbar-collapse">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="#summary">ภาพรวม</a></li>
-          <li class="nav-item"><a class="nav-link" href="#insights">อินไซต์</a></li>
-          <li class="nav-item"><a class="nav-link" href="#table">ตาราง</a></li>
-        </ul>
-      </div> --}}
-    </div>
+      <div class="container-fluid">
+          <a class="navbar-brand d-flex align-items-center brand-title fw-bold" href="{{ url('web/') }}">
+              <i class="bi bi-shield-check me-2 text-green"></i> Home
+          </a>
+
+          <!-- ปุ่ม toggle สำหรับมือถือ -->
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topnav" 
+                  aria-controls="topnav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="topnav">
+              <ul class="navbar-nav ms-auto">
+                  @if(Auth::check())
+                      <!-- ถ้าล็อกอินแล้ว: dropdown ชื่อผู้ใช้ + logout -->
+                      <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle text-primary" href="#" id="userDropdown" role="button" 
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                              {{ Auth::user()->name }}
+                          </a>
+                          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                              <li>
+                                  <form action="{{ route('logout') }}" method="POST">
+                                      @csrf
+                                      <button type="submit" class="dropdown-item text-primary">Logout</button>
+                                  </form>
+                              </li>
+                          </ul>
+                      </li>
+                  @else
+                      <!-- ถ้าไม่ล็อกอิน: ปุ่มเปิด Modal -->
+                      <li class="nav-item">
+                          <a class="nav-link text-primary" href="#" data-bs-toggle="modal" data-bs-target="#loginModal"><strong>Login</strong></a>
+                      </li>
+                  @endif
+              </ul>
+          </div>
+      </div>
   </nav>
 
   <!-- HERO -->
@@ -3352,13 +3381,55 @@
   </div>
 </section>
 
+<!-- แจังเตือน login--------------------------------------------------------------------------------------------------- -->
+   @if($errors->any())
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'ผิดพลาด',
+            text: '{{ $errors->first() }}', // แสดง error แรก
+            confirmButtonText: 'ตกลง'
+        });
+    </script>
+    @endif
 
-<!-- FOOTER -->
+<!-- FOOTER -------------------------------------------------------------------------------------------------------------->
 <footer class="py-4">
   <div class="container container-compact text-center text-secondary small">
     © {{ now()->year }} Amnatcharoen One Province One Data : AOPOD
   </div>
 </footer>
+
+<!-- Login Modal (อย่าลืมวางท้าย body) -------------------------------------------------------------------------------------->
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form method="POST" action="{{ route('login') }}">
+          @csrf
+          <div class="modal-header">
+            <h5 class="modal-title" id="loginModalLabel">เข้าสู่ระบบ</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <div class="mb-3">
+                  <label class="form-label">อีเมล</label>
+                  <input type="email" name="email" class="form-control" required autofocus>
+              </div>
+              <div class="mb-3">
+                  <label class="form-label">รหัสผ่าน</label>
+                  <input type="password" name="password" class="form-control" required>
+              </div>
+              @error('email')
+                  <div class="text-danger small">{{ $message }}</div>
+              @enderror
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary w-100">เข้าสู่ระบบ</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
