@@ -124,7 +124,7 @@ class DashboardController extends Controller
                 DB::raw('COALESCE(SUM(inc_pay),0) AS inc_pay')
             )
             ->groupBy('opd.hospcode', 'hospital_config.hospname')
-            ->orderBy('hospital_config.hospname')
+            ->orderBy('opd.hospcode')
             ->get();
 
         // ดึงข้อมูลโรงพยาบาลทั้งหมด
@@ -134,8 +134,7 @@ class DashboardController extends Controller
         // รวมยอดเตียงทั้งหมด
         $total_bed_qty = $hospitals->sum('bed_qty') ?? 0;
         $total_bed_use = $hospitals->sum('bed_use') ?? 0;
-        $total_bed_empty = $total_bed_qty - $total_bed_use;
-    
+        $total_bed_empty = $total_bed_qty - $total_bed_use;    
 
         $update_at10985 = DB::table('opd')->where('hospcode', '10985')->max('updated_at');
         $update_at10986 = DB::table('opd')->where('hospcode', '10986')->max('updated_at');
@@ -143,6 +142,7 @@ class DashboardController extends Controller
         $update_at10988 = DB::table('opd')->where('hospcode', '10988')->max('updated_at');
         $update_at10989 = DB::table('opd')->where('hospcode', '10989')->max('updated_at');
         $update_at10990 = DB::table('opd')->where('hospcode', '10990')->max('updated_at');
+        $update_at10703 = DB::table('opd')->where('hospcode', '10703')->max('updated_at');
 
 // OPD------------------------------------------------------------------------------------------------------------------
 
@@ -620,6 +620,85 @@ class DashboardController extends Controller
             GROUP BY YEAR(vstdate), MONTH(vstdate)
             ORDER BY YEAR(vstdate), MONTH(vstdate) ", [$start_date, $end_date]);
 
+        $total_10703 = DB::select("
+            SELECT MIN(CASE
+            WHEN MONTH(vstdate)=10 THEN CONCAT('ต.ค. ', RIGHT(YEAR(vstdate)+543, 2))
+            WHEN MONTH(vstdate)=11 THEN CONCAT('พ.ย. ', RIGHT(YEAR(vstdate)+543, 2))
+            WHEN MONTH(vstdate)=12 THEN CONCAT('ธ.ค. ', RIGHT(YEAR(vstdate)+543, 2))
+            WHEN MONTH(vstdate)=1  THEN CONCAT('ม.ค. ', RIGHT(YEAR(vstdate)+543, 2))
+            WHEN MONTH(vstdate)=2  THEN CONCAT('ก.พ. ', RIGHT(YEAR(vstdate)+543, 2))
+            WHEN MONTH(vstdate)=3  THEN CONCAT('มี.ค. ', RIGHT(YEAR(vstdate)+543, 2))
+            WHEN MONTH(vstdate)=4  THEN CONCAT('เม.ย. ', RIGHT(YEAR(vstdate)+543, 2))
+            WHEN MONTH(vstdate)=5  THEN CONCAT('พ.ค. ', RIGHT(YEAR(vstdate)+543, 2))
+            WHEN MONTH(vstdate)=6  THEN CONCAT('มิ.ย. ', RIGHT(YEAR(vstdate)+543, 2))
+            WHEN MONTH(vstdate)=7  THEN CONCAT('ก.ค. ', RIGHT(YEAR(vstdate)+543, 2))
+            WHEN MONTH(vstdate)=8  THEN CONCAT('ส.ค. ', RIGHT(YEAR(vstdate)+543, 2))
+            WHEN MONTH(vstdate)=9  THEN CONCAT('ก.ย. ', RIGHT(YEAR(vstdate)+543, 2))
+            END) AS month, 
+            SUM(hn_total)            AS hn_total,
+            SUM(visit_total)         AS visit_total,
+            SUM(visit_total_op)      AS visit_total_op,
+            SUM(visit_total_pp)      AS visit_total_pp,
+            SUM(visit_ucs_incup)     AS visit_ucs_incup,
+            SUM(visit_ucs_inprov)    AS visit_ucs_inprov,
+            SUM(visit_ucs_outprov)   AS visit_ucs_outprov,
+            SUM(visit_ofc)           AS visit_ofc,
+            SUM(visit_bkk)           AS visit_bkk,
+            SUM(visit_bmt)           AS visit_bmt,
+            SUM(visit_sss)           AS visit_sss,
+            SUM(visit_lgo)           AS visit_lgo,
+            SUM(visit_fss)           AS visit_fss,
+            SUM(visit_stp)           AS visit_stp,
+            SUM(visit_pay)           AS visit_pay,
+            SUM(visit_ppfs)          AS visit_ppfs,
+            SUM(visit_ucs_cr)        AS visit_ucs_cr,
+            SUM(visit_ucs_herb)      AS visit_ucs_herb,
+            SUM(visit_ucs_healthmed) AS visit_ucs_healthmed,
+            SUM(inc_total)            AS inc_total,
+            SUM(inc_lab_total)        AS inc_lab_total,
+            SUM(inc_drug_total)       AS inc_drug_total,
+            SUM(inc_ucs_incup)        AS inc_ucs_incup,
+            SUM(inc_lab_ucs_incup)    AS inc_lab_ucs_incup,
+            SUM(inc_drug_ucs_incup)   AS inc_drug_ucs_incup,
+            SUM(inc_ucs_inprov)       AS inc_ucs_inprov,
+            SUM(inc_lab_ucs_inprov)   AS inc_lab_ucs_inprov,
+            SUM(inc_drug_ucs_inprov)  AS inc_drug_ucs_inprov,
+            SUM(inc_ucs_outprov)      AS inc_ucs_outprov,
+            SUM(inc_lab_ucs_outprov)  AS inc_lab_ucs_outprov,
+            SUM(inc_drug_ucs_outprov) AS inc_drug_ucs_outprov,
+            SUM(inc_ofc)              AS inc_ofc,
+            SUM(inc_lab_ofc)          AS inc_lab_ofc,
+            SUM(inc_drug_ofc)         AS inc_drug_ofc,
+            SUM(inc_bkk)              AS inc_bkk,
+            SUM(inc_lab_bkk)          AS inc_lab_bkk,
+            SUM(inc_drug_bkk)         AS inc_drug_bkk,
+            SUM(inc_bmt)              AS inc_bmt,
+            SUM(inc_lab_bmt)          AS inc_lab_bmt,
+            SUM(inc_drug_bmt)         AS inc_drug_bmt,
+            SUM(inc_sss)              AS inc_sss,
+            SUM(inc_lab_sss)          AS inc_lab_sss,
+            SUM(inc_drug_sss)         AS inc_drug_sss,
+            SUM(inc_lgo)              AS inc_lgo,
+            SUM(inc_lab_lgo)          AS inc_lab_lgo,
+            SUM(inc_drug_lgo)         AS inc_drug_lgo,
+            SUM(inc_fss)              AS inc_fss,
+            SUM(inc_lab_fss)          AS inc_lab_fss,
+            SUM(inc_drug_fss)         AS inc_drug_fss,
+            SUM(inc_stp)              AS inc_stp,
+            SUM(inc_lab_stp)          AS inc_lab_stp,
+            SUM(inc_drug_stp)         AS inc_drug_stp,
+            SUM(inc_pay)              AS inc_pay,
+            SUM(inc_lab_pay)          AS inc_lab_pay,
+            SUM(inc_drug_pay)         AS inc_drug_pay,
+            SUM(inc_ppfs)             AS inc_ppfs,
+            SUM(inc_uccr)             AS inc_uccr,
+            SUM(inc_herb)             AS inc_herb
+            FROM opd
+            WHERE vstdate BETWEEN ? AND ?
+            AND hospcode = 10703
+            GROUP BY YEAR(vstdate), MONTH(vstdate)
+            ORDER BY YEAR(vstdate), MONTH(vstdate) ", [$start_date, $end_date]);
+
 // IPD------------------------------------------------------------------------------------------------------------------
 
         $total_10985_ipd = DB::select("
@@ -780,7 +859,7 @@ class DashboardController extends Controller
 
         return view('dashboard', array_merge($card,compact('budget_year_select','budget_year','update_at10985','total_10985',
             'update_at10986','total_10986','update_at10987','total_10987','update_at10988','total_10988','update_at10989','total_10989',
-            'update_at10990','total_10990','total_bed_qty','total_bed_empty','hospitals','hospitalSummary','total_10985_ipd',
+            'update_at10990','total_10990','update_at10703','total_10703','total_bed_qty','total_bed_empty','hospitals','hospitalSummary','total_10985_ipd',
             'total_10986_ipd','total_10987_ipd','total_10988_ipd','total_10989_ipd','total_10990_ipd')));
     }
 }

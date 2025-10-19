@@ -1134,6 +1134,11 @@
           รพ.ลืออำนาจ
         </button>
       </li>
+      <li class="nav-item me-2" role="presentation">
+        <button class="nav-link" id="tab-10703" data-bs-toggle="pill" data-bs-target="#pane-10703" type="button" role="tab" aria-controls="pane-10703" aria-selected="false">
+          รพ.อำนาจเจริญ
+        </button>
+      </li>
     </ul>
 
     <!-- TAB PANES -->
@@ -3377,6 +3382,307 @@
         </div>
       </div>
 
+      <!-- 10703 OPD -->
+      <div class="tab-pane fade" id="pane-10703" role="tabpanel" aria-labelledby="tab-10703" tabindex="0">
+        <div class="glass p-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h6>[10703] ข้อมูลบริการผู้ป่วยนอก OPD โรงพยาบาลอำนาจเจริญ ปีงบประมาณ {{$budget_year}}</h6>
+            <span class="text-secondary small">Update {{$update_at10703}}</span>   
+          </div>
+          <div class="table-responsive">
+            <table id="table10703" class="table table-bordered table-striped my-3" width ="100%">
+              <thead class="table-light">
+                <tr class="table-primary">
+                  <th class="text-center" rowspan="2" width ="4%">เดือน</th>
+                  <th class="text-center" colspan="7">ทั้งหมด</th>
+                  <th class="text-center" colspan="4">UCS ใน CUP</th> 
+                  <th class="text-center" colspan="4">UCS ในจังหวัด</th>
+                  <th class="text-center" colspan="4">UCS นอกจังหวัด</th>       
+                  <th class="text-center" colspan="4">OFC ข้าราชการ</th>  
+                  <th class="text-center" colspan="4">BKK กทม.</th>
+                  <th class="text-center" colspan="4">BMT ขสมก.</th>
+                  <th class="text-center" colspan="4">SSS ประกันสังคม</th>
+                  <th class="text-center" colspan="4">LGO อปท.</th>
+                  <th class="text-center" colspan="4">FSS ต่างด้าว</th>
+                  <th class="text-center" colspan="4">STP Stateless</th>
+                  <th class="text-center" colspan="4">ชำระเงิน/พรบ.</th>                 
+                </tr>    
+                <tr class="table-primary">            
+                  <td class="text-center text-primary">HN Total</td>
+                  <td class="text-center text-primary">Visit Total</td>
+                  <td class="text-center text-primary">Visit OP</td>
+                  <td class="text-center text-primary">Visit PP</td>
+                  <td class="text-center text-primary">ค่ารักษารวม</td>
+                  <td class="text-center text-primary">ค่า Lab</td>
+                  <td class="text-center text-primary">ค่า ยา</td>
+                  <td class="text-center text-primary">Visit</td>
+                  <td class="text-center text-primary">ค่ารักษารวม</td>
+                  <td class="text-center text-primary">ค่า Lab</td>
+                  <td class="text-center text-primary">ค่า ยา</td>
+                  <td class="text-center text-primary">Visit</td>
+                  <td class="text-center text-primary">ค่ารักษารวม</td>
+                  <td class="text-center text-primary">ค่า Lab</td>
+                  <td class="text-center text-primary">ค่า ยา</td>
+                  <td class="text-center text-primary">Visit</td>
+                  <td class="text-center text-primary">ค่ารักษารวม</td>
+                  <td class="text-center text-primary">ค่า Lab</td>
+                  <td class="text-center text-primary">ค่า ยา</td>
+                  <td class="text-center text-primary">Visit</td>
+                  <td class="text-center text-primary">ค่ารักษารวม</td>
+                  <td class="text-center text-primary">ค่า Lab</td>
+                  <td class="text-center text-primary">ค่า ยา</td>
+                  <td class="text-center text-primary">Visit</td>
+                  <td class="text-center text-primary">ค่ารักษารวม</td>
+                  <td class="text-center text-primary">ค่า Lab</td>
+                  <td class="text-center text-primary">ค่า ยา</td>
+                  <td class="text-center text-primary">Visit</td>
+                  <td class="text-center text-primary">ค่ารักษารวม</td>
+                  <td class="text-center text-primary">ค่า Lab</td>
+                  <td class="text-center text-primary">ค่า ยา</td>
+                  <td class="text-center text-primary">Visit</td>
+                  <td class="text-center text-primary">ค่ารักษารวม</td>
+                  <td class="text-center text-primary">ค่า Lab</td>
+                  <td class="text-center text-primary">ค่า ยา</td>
+                  <td class="text-center text-primary">Visit</td>
+                  <td class="text-center text-primary">ค่ารักษารวม</td>
+                  <td class="text-center text-primary">ค่า Lab</td>
+                  <td class="text-center text-primary">ค่า ยา</td>
+                  <td class="text-center text-primary">Visit</td>
+                  <td class="text-center text-primary">ค่ารักษารวม</td>
+                  <td class="text-center text-primary">ค่า Lab</td>
+                  <td class="text-center text-primary">ค่า ยา</td>
+                  <td class="text-center text-primary">Visit</td>
+                  <td class="text-center text-primary">ค่ารักษารวม</td>
+                  <td class="text-center text-primary">ค่า Lab</td>
+                  <td class="text-center text-primary">ค่า ยา</td>
+                  <td class="text-center text-primary">Visit</td>
+                  <td class="text-center text-primary">ค่ารักษารวม</td>
+                  <td class="text-center text-primary">ค่า Lab</td>
+                  <td class="text-center text-primary">ค่า ยา</td>
+                </tr>    
+              </thead>
+              <tbody>
+                <?php $count = 1 ; ?> 
+                <?php $sum_hn_total = 0 ; ?> 
+                <?php $sum_visit_total = 0 ; ?>   
+                <?php $sum_visit_total_op = 0 ; ?>  
+                <?php $sum_visit_total_pp = 0 ; ?> 
+                <?php $sum_inc_total = 0 ; ?>  
+                <?php $sum_inc_lab_total = 0 ; ?>
+                <?php $sum_inc_drug_total = 0 ; ?> 
+                <?php $sum_visit_ucs_incup = 0 ; ?>  
+                <?php $sum_inc_ucs_incup = 0 ; ?>  
+                <?php $sum_inc_lab_ucs_incup = 0 ; ?>  
+                <?php $sum_inc_drug_ucs_incup = 0 ; ?>  
+                <?php $sum_visit_ucs_inprov = 0 ; ?>  
+                <?php $sum_inc_ucs_inprov = 0 ; ?>  
+                <?php $sum_inc_lab_ucs_inprov = 0 ; ?> 
+                <?php $sum_inc_drug_ucs_inprov = 0 ; ?>   
+                <?php $sum_visit_ucs_outprov = 0 ; ?>  
+                <?php $sum_inc_ucs_outprov = 0 ; ?>
+                <?php $sum_inc_lab_ucs_outprov = 0 ; ?>
+                <?php $sum_inc_drug_ucs_outprov = 0 ; ?>  
+                <?php $sum_visit_ofc = 0 ; ?>  
+                <?php $sum_inc_ofc = 0 ; ?>
+                <?php $sum_inc_lab_ofc = 0 ; ?>
+                <?php $sum_inc_drug_ofc = 0 ; ?>
+                <?php $sum_visit_bkk = 0 ; ?>  
+                <?php $sum_inc_bkk = 0 ; ?>
+                <?php $sum_inc_lab_bkk = 0 ; ?>
+                <?php $sum_inc_drug_bkk = 0 ; ?> 
+                <?php $sum_visit_bmt = 0 ; ?>  
+                <?php $sum_inc_bmt = 0 ; ?>
+                <?php $sum_inc_lab_bmt = 0 ; ?>
+                <?php $sum_inc_drug_bmt = 0 ; ?>  
+                <?php $sum_visit_sss = 0 ; ?>  
+                <?php $sum_inc_sss = 0 ; ?>
+                <?php $sum_inc_lab_sss = 0 ; ?>
+                <?php $sum_inc_drug_sss = 0 ; ?> 
+                <?php $sum_visit_lgo = 0 ; ?>  
+                <?php $sum_inc_lgo = 0 ; ?>
+                <?php $sum_inc_lab_lgo = 0 ; ?>
+                <?php $sum_inc_drug_lgo = 0 ; ?> 
+                <?php $sum_visit_fss = 0 ; ?>  
+                <?php $sum_inc_fss = 0 ; ?>
+                <?php $sum_inc_lab_fss = 0 ; ?>
+                <?php $sum_inc_drug_fss = 0 ; ?> 
+                <?php $sum_visit_stp = 0 ; ?>  
+                <?php $sum_inc_stp = 0 ; ?>
+                <?php $sum_inc_lab_stp = 0 ; ?>
+                <?php $sum_inc_drug_stp = 0 ; ?>
+                <?php $sum_visit_pay = 0 ; ?>  
+                <?php $sum_inc_pay = 0 ; ?>
+                <?php $sum_inc_lab_pay = 0 ; ?>
+                <?php $sum_inc_drug_pay = 0 ; ?>  
+                @foreach($total_10703 as $row) 
+                <tr>
+                  <td align="center"width ="4%">{{ $row->month }}</td>
+                  <td align="right">{{ number_format($row->hn_total) }}</td>
+                  <td align="right">{{ number_format($row->visit_total) }}</td>
+                  <td align="right">{{ number_format($row->visit_total_op) }}</td>
+                  <td align="right">{{ number_format($row->visit_total_pp) }}</td>
+                  <td align="right">{{ number_format($row->inc_total,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_lab_total,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_drug_total,2) }}</td>
+                  <td align="right">{{ number_format($row->visit_ucs_incup) }}</td>
+                  <td align="right">{{ number_format($row->inc_ucs_incup,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_lab_ucs_incup,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_drug_ucs_incup,2) }}</td>
+                  <td align="right">{{ number_format($row->visit_ucs_inprov) }}</td>
+                  <td align="right">{{ number_format($row->inc_ucs_inprov,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_lab_ucs_inprov,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_drug_ucs_inprov,2) }}</td>
+                  <td align="right">{{ number_format($row->visit_ucs_outprov) }}</td>
+                  <td align="right">{{ number_format($row->inc_ucs_outprov,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_lab_ucs_outprov,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_drug_ucs_outprov,2) }}</td>
+                  <td align="right">{{ number_format($row->visit_ofc) }}</td>
+                  <td align="right">{{ number_format($row->inc_ofc,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_lab_ofc,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_drug_ofc,2) }}</td>
+                  <td align="right">{{ number_format($row->visit_bkk) }}</td>
+                  <td align="right">{{ number_format($row->inc_bkk,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_lab_bkk,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_drug_bkk,2) }}</td>
+                  <td align="right">{{ number_format($row->visit_bmt) }}</td>
+                  <td align="right">{{ number_format($row->inc_bmt,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_lab_bmt,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_drug_bmt,2) }}</td>
+                  <td align="right">{{ number_format($row->visit_sss) }}</td>
+                  <td align="right">{{ number_format($row->inc_sss,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_lab_sss,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_drug_sss,2) }}</td>
+                  <td align="right">{{ number_format($row->visit_lgo) }}</td>
+                  <td align="right">{{ number_format($row->inc_lgo,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_lab_lgo,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_drug_lgo,2) }}</td>
+                  <td align="right">{{ number_format($row->visit_fss) }}</td>
+                  <td align="right">{{ number_format($row->inc_fss,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_lab_fss,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_drug_fss,2) }}</td>
+                  <td align="right">{{ number_format($row->visit_stp) }}</td>
+                  <td align="right">{{ number_format($row->inc_stp,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_lab_stp,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_drug_stp,2) }}</td>
+                  <td align="right">{{ number_format($row->visit_pay) }}</td>
+                  <td align="right">{{ number_format($row->inc_pay,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_lab_pay,2) }}</td>
+                  <td align="right">{{ number_format($row->inc_drug_pay,2) }}</td>
+                </tr>
+                <?php $count++; ?>
+                <?php $sum_hn_total += $row->hn_total ; ?>
+                <?php $sum_visit_total += $row->visit_total ; ?>
+                <?php $sum_visit_total_op += $row->visit_total_op ; ?>
+                <?php $sum_visit_total_pp += $row->visit_total_pp ; ?>
+                <?php $sum_inc_total += $row->inc_total ; ?>
+                <?php $sum_inc_lab_total += $row->inc_lab_total ; ?>
+                <?php $sum_inc_drug_total += $row->inc_drug_total ; ?>
+                <?php $sum_visit_ucs_incup += $row->visit_ucs_incup ; ?>
+                <?php $sum_inc_ucs_incup += $row->inc_ucs_incup ; ?>
+                <?php $sum_inc_lab_ucs_incup += $row->inc_lab_ucs_incup ; ?>
+                <?php $sum_inc_drug_ucs_incup += $row->inc_drug_ucs_incup ; ?>   
+                <?php $sum_visit_ucs_inprov += $row->visit_ucs_inprov ; ?>
+                <?php $sum_inc_ucs_inprov += $row->inc_ucs_inprov ; ?>
+                <?php $sum_inc_lab_ucs_inprov += $row->inc_lab_ucs_inprov ; ?>
+                <?php $sum_inc_drug_ucs_inprov += $row->inc_drug_ucs_inprov ; ?>
+                <?php $sum_visit_ucs_outprov += $row->visit_ucs_outprov ; ?>
+                <?php $sum_inc_ucs_outprov += $row->inc_ucs_outprov ; ?>
+                <?php $sum_inc_lab_ucs_outprov += $row->inc_lab_ucs_outprov ; ?>
+                <?php $sum_inc_drug_ucs_outprov += $row->inc_drug_ucs_outprov ; ?> 
+                <?php $sum_visit_ofc += $row->visit_ofc ; ?>
+                <?php $sum_inc_ofc += $row->inc_ofc ; ?>
+                <?php $sum_inc_lab_ofc += $row->inc_lab_ofc ; ?>
+                <?php $sum_inc_drug_ofc += $row->inc_drug_ofc ; ?> 
+                <?php $sum_visit_bkk += $row->visit_bkk ; ?>
+                <?php $sum_inc_bkk += $row->inc_bkk ; ?>
+                <?php $sum_inc_lab_bkk += $row->inc_lab_bkk ; ?>
+                <?php $sum_inc_drug_bkk += $row->inc_drug_bkk ; ?>  
+                <?php $sum_visit_bmt += $row->visit_bmt ; ?>
+                <?php $sum_inc_bmt += $row->inc_bmt ; ?>
+                <?php $sum_inc_lab_bmt += $row->inc_lab_bmt ; ?>
+                <?php $sum_inc_drug_bmt += $row->inc_drug_bmt ; ?> 
+                <?php $sum_visit_sss += $row->visit_sss ; ?>
+                <?php $sum_inc_sss += $row->inc_sss ; ?>
+                <?php $sum_inc_lab_sss += $row->inc_lab_sss ; ?>
+                <?php $sum_inc_drug_sss += $row->inc_drug_sss ; ?>   
+                <?php $sum_visit_lgo += $row->visit_lgo ; ?>
+                <?php $sum_inc_lgo += $row->inc_lgo ; ?>
+                <?php $sum_inc_lab_lgo += $row->inc_lab_lgo ; ?>
+                <?php $sum_inc_drug_lgo += $row->inc_drug_lgo ; ?>
+                <?php $sum_visit_fss += $row->visit_fss ; ?>
+                <?php $sum_inc_fss += $row->inc_fss ; ?>
+                <?php $sum_inc_lab_fss += $row->inc_lab_fss ; ?>
+                <?php $sum_inc_drug_fss += $row->inc_drug_fss ; ?>    
+                <?php $sum_visit_stp += $row->visit_stp ; ?>
+                <?php $sum_inc_stp += $row->inc_stp ; ?>
+                <?php $sum_inc_lab_stp += $row->inc_lab_stp ; ?>
+                <?php $sum_inc_drug_stp += $row->inc_drug_stp ; ?>   
+                <?php $sum_visit_pay += $row->visit_pay ; ?>
+                <?php $sum_inc_pay += $row->inc_pay ; ?>
+                <?php $sum_inc_lab_pay += $row->inc_lab_pay ; ?>
+                <?php $sum_inc_drug_pay += $row->inc_drug_pay ; ?> 
+                @endforeach    
+                <tr>
+                  <td align="right"><strong>รวม</strong></td>
+                  <td align="right"><strong>{{number_format($sum_hn_total)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_visit_total)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_visit_total_op)}}</strong></td>     
+                  <td align="right"><strong>{{number_format($sum_visit_total_pp)}}</strong></td>   
+                  <td align="right"><strong>{{number_format($sum_inc_total,2)}}</strong></td>  
+                  <td align="right"><strong>{{number_format($sum_inc_lab_total,2)}}</strong></td> 
+                  <td align="right"><strong>{{number_format($sum_inc_drug_total,2)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_visit_ucs_incup)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_ucs_incup,2)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_lab_ucs_incup,2)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_drug_ucs_incup,2)}}</strong></td>  
+                  <td align="right"><strong>{{number_format($sum_visit_ucs_inprov)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_ucs_inprov,2)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_lab_ucs_inprov,2)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_drug_ucs_inprov,2)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_visit_ucs_outprov)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_ucs_outprov,2)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_lab_ucs_outprov,2)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_drug_ucs_outprov,2)}}</strong></td> 
+                  <td align="right"><strong>{{number_format($sum_visit_ofc)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_ofc,2)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_lab_ofc,2)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_drug_ofc,2)}}</strong></td>   
+                  <td align="right"><strong>{{number_format($sum_visit_bkk)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_bkk,2)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_lab_bkk,2)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_drug_bkk,2)}}</strong></td>   
+                  <td align="right"><strong>{{number_format($sum_visit_bmt)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_bmt,2)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_lab_bmt,2)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_drug_bmt,2)}}</strong></td>    
+                  <td align="right"><strong>{{number_format($sum_visit_sss)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_sss,2)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_lab_sss,2)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_drug_sss,2)}}</strong></td>  
+                  <td align="right"><strong>{{number_format($sum_visit_lgo)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_lgo,2)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_lab_lgo,2)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_drug_lgo,2)}}</strong></td>       
+                  <td align="right"><strong>{{number_format($sum_visit_fss)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_fss,2)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_lab_fss,2)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_drug_fss,2)}}</strong></td>    
+                  <td align="right"><strong>{{number_format($sum_visit_stp)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_stp,2)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_lab_stp,2)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_drug_stp,2)}}</strong></td> 
+                  <td align="right"><strong>{{number_format($sum_visit_pay)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_pay,2)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_lab_pay,2)}}</strong></td>
+                  <td align="right"><strong>{{number_format($sum_inc_drug_pay,2)}}</strong></td> 
+                </tr>   
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+      </div>
+
     </div>
   </div>
 </section>
@@ -3565,8 +3871,28 @@
       });
     });
   </script>
+  <script>
+    $(function () {
+      $('#table10703').DataTable({
+        dom: '<"d-flex justify-content-end mb-2"B>rt',
+        buttons: [
+          {
+            extend: 'excelHtml5',
+            text: '<i class="bi bi-file-earmark-excel"></i> ส่งออก Excel',
+            className: 'btn btn-success btn-sm',
+            title: 'ข้อมูลบริการผู้ป่วยนอก OPD โรงพยาบาลอำนาจเจริญ {{ $budget_year ?? "" }}'
+          }
+        ],
+        ordering: false,
+        paging: false,
+        info: false,
+        lengthChange: false,
+        language: { search: "ค้นหา:" }
+      });
+    });
+  </script>
 
-<script>
+  <script>
     $(function () {
       $('#table10985_ipd').DataTable({
         dom: '<"d-flex justify-content-end mb-2"B>rt',
