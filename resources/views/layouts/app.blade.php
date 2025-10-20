@@ -70,10 +70,17 @@
                 <ul class="navbar-nav ms-auto">
                     @if(Auth::check())
                         <li class="nav-item dropdown">
+                            <!-- Home -->
                             <a class="nav-link dropdown-toggle text-primary" href="#" id="userDropdown" role="button" 
                               data-bs-toggle="dropdown" aria-expanded="false">
                                 {{ Auth::user()->name }}
                             </a>
+
+                            <!-- Inventory -->
+                            <a class="navbar-brand d-flex align-items-center brand-title fw-bold ms-3" href="http://1.179.175.230:89" target="_blank">
+                                <i class="bi bi-box-seam me-2 text-primary"></i> Inventory
+                            </a>
+
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 <li>
                                     <form action="{{ route('logout') }}" method="POST">

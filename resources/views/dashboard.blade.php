@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="{{ asset('/images/logo.png') }}" type="image/x-icon">
   <title>Amnatcharoen One Province One Data : AOPOD</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -122,10 +123,18 @@
 <!-- NAV -->
   <nav class="navbar navbar-expand-lg bg-white bg-opacity-75 border-bottom sticky-top glass" style="border-radius:0">
       <div class="container-fluid">
-          <a class="navbar-brand d-flex align-items-center brand-title fw-bold" href="{{ url('web/') }}">
-              <i class="bi bi-shield-check me-2 text-green"></i> Home
+
+          <!-- Home -->
+          <a class="navbar-brand d-flex align-items-center text-primary brand-title fw-bold" href="{{ url('web/') }}">
+              {{-- <i class="bi bi-shield-check me-2 text-green"></i> Home --}}
+              <i class="bi bi-house-door me-2 text-green"></i> Home
           </a>
 
+          <!-- Inventory -->
+          <a class="navbar-brand d-flex align-items-center text-primary brand-title fw-bold ms-3" href="http://1.179.175.230:89" target="_blank">
+              <i class="bi bi-box-seam me-2 text-success"></i> Inventory
+          </a>
+                            
           <!-- ปุ่ม toggle สำหรับมือถือ -->
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topnav" 
                   aria-controls="topnav" aria-expanded="false" aria-label="Toggle navigation">
@@ -216,49 +225,62 @@
             </div>              
           </div>
         </a>    
-      </div>      
-      {{-- Modal แสดงรายละเอียด รพ. --}}
+      </div> 
+      {{-- Modal แสดงรายละเอียด รพ. (โทนน้ำเงินพาสเทลเข้ม / กรอบเล็ก) --}}
       <div class="modal fade" id="AdmiitDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-              <h5 class="modal-title" id="hospitalDetailLabel">
-                ข้อมูลจำนวนเตียง
+          <div class="modal-content border-0 shadow-lg rounded-3" style="background-color:#f5f8fc;">
+            
+            <!-- Header -->
+            <div class="modal-header text-white rounded-top-3" 
+                style="background: linear-gradient(135deg, #2f6fb6, #4b8edc);">
+              <h5 class="modal-title fw-bold" id="hospitalDetailLabel">
+                <i class="bi bi-hospital me-2"></i> ข้อมูลจำนวนเตียง
               </h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <div class="modal-body">
-              <table class="table table-bordered table-hover align-middle">
-                <thead class="table-light">
-                  <tr>
-                    <th class="text-center">รหัส</th>
-                    <th class="text-center">ชื่อโรงพยาบาล</th>
-                    <th class="text-center">จำนวนเตียง</th>
-                    <th class="text-center">ใช้ไป</th>
-                    <th class="text-center">ว่าง</th>
+            <!-- Body -->
+            <div class="modal-body py-3">
+              <table class="table table-hover align-middle shadow-sm rounded-3 overflow-hidden mb-0" 
+                    style="background-color: #ffffff; border-radius: 0.75rem;">
+                <thead style="background-color:#d9e8fb;">
+                  <tr class="text-center text-primary fw-semibold">
+                    <th>รหัส</th>
+                    <th>ชื่อโรงพยาบาล</th>
+                    <th>เตียง</th>
+                    <th>ใช้</th>
+                    <th>ว่าง</th>
                   </tr>
                 </thead>
                 <tbody>
                   @foreach($hospitals as $h)
                     <tr>
-                      <td align="right">{{ $h->hospcode }}</td>
-                      <td>{{ $h->hospname }} 
-                        <span class="text-secondary small">
-                            {{ \Carbon\Carbon::parse($h->updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
-                        </span>
+                      <td align="right" class="text-secondary">{{ $h->hospcode }}</td>
+                      <td>
+                        <span class="fw-semibold text-dark">{{ $h->hospname }}</span><br>
+                        <small class="text-muted">
+                          {{ \Carbon\Carbon::parse($h->updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
+                        </small>
                       </td>
-                      <td align="right">{{ $h->bed_qty }}</td>
-                      <td align="right">{{ $h->bed_use }}</td>
-                      <td align="right" class="text-success fw-bold">{{ $h->bed_qty - $h->bed_use }}</td>
+                      <td align="right" class="text-primary">{{ $h->bed_qty }}</td>
+                      <td align="right" class="text-warning">{{ $h->bed_use }}</td>
+                      <td align="right" class="fw-bold text-success">
+                        {{ $h->bed_qty - $h->bed_use }}
+                      </td>
                     </tr>
                   @endforeach
                 </tbody>
               </table>
             </div>
 
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+            <!-- Footer -->
+            <div class="modal-footer" style="background-color:#eef4fb;">
+              <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm" 
+                      style="background-color:#3e7cc1; border-color:#3e7cc1;" 
+                      data-bs-dismiss="modal">
+                ปิด
+              </button>
             </div>
           </div>
         </div>
@@ -290,44 +312,57 @@
           </div>
         </a>
       </div>
-      {{-- Modal แสดงรายละเอียด รพ. --}}
+      {{-- Modal แสดงรายละเอียด รพ. (โทนน้ำเงินพาสเทลเข้ม / modal-lg) --}}
       <div class="modal fade" id="ReferDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-              <h5 class="modal-title" id="hospitalDetailLabel">
-                การส่งต่อ Refer
+          <div class="modal-content border-0 shadow-lg rounded-3" style="background-color:#f5f8fc;">
+
+            <!-- Header -->
+            <div class="modal-header text-white rounded-top-3"
+                style="background: linear-gradient(135deg, #2f6fb6, #4b8edc);">
+              <h5 class="modal-title fw-bold" id="hospitalDetailLabel">
+                <i class="bi bi-arrow-left-right me-2"></i> การส่งต่อ Refer
               </h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-              <table class="table table-bordered table-hover align-middle">
-                <thead class="table-light">
-                  <tr>
-                    <th class="text-center">รหัส</th>
-                    <th class="text-center">ชื่อโรงพยาบาล</th>
-                    <th class="text-center">ในจังหวัด</th>
-                    <th class="text-center">ต่างจังหวัด</th>
+
+            <!-- Body -->
+            <div class="modal-body py-3">
+              <table class="table table-hover align-middle shadow-sm rounded-3 overflow-hidden mb-0"
+                    style="background-color: #ffffff; border-radius: 0.75rem;">
+                <thead style="background-color:#d9e8fb;">
+                  <tr class="text-center text-primary fw-semibold">
+                    <th>รหัส</th>
+                    <th>ชื่อโรงพยาบาล</th>
+                    <th>ในจังหวัด</th>
+                    <th>ต่างจังหวัด</th>
                   </tr>
                 </thead>
                 <tbody>
                   @foreach($hospitalSummary as $h)
                     <tr>
-                      <td align="right">{{ $h->hospcode }}</td>
-                      <td>{{ $h->hospname }} 
-                        <span class="text-secondary small">
-                            {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
-                        </span>
-                      </td>                     
-                      <td align="right">{{ $h->visit_referout_inprov }}</td>
-                      <td align="right">{{ $h->visit_referout_outprov }}</td>
+                      <td align="right" class="text-secondary">{{ $h->hospcode }}</td>
+                      <td>
+                        <span class="fw-semibold text-dark">{{ $h->hospname }}</span><br>
+                        <small class="text-muted">
+                          {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
+                        </small>
+                      </td>
+                      <td align="right" class="text-primary">{{ $h->visit_referout_inprov }}</td>
+                      <td align="right" class="fw-bold text-success">{{ $h->visit_referout_outprov }}</td>
                     </tr>
                   @endforeach
                 </tbody>
               </table>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+
+            <!-- Footer -->
+            <div class="modal-footer" style="background-color:#eef4fb;">
+              <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm"
+                      style="background-color:#3e7cc1; border-color:#3e7cc1;"
+                      data-bs-dismiss="modal">
+                ปิด
+              </button>
             </div>
           </div>
         </div>
@@ -366,46 +401,59 @@
           </div>
         </a>
       </div>
-      {{-- Modal แสดงรายละเอียด รพ. --}}
+      {{-- Modal แสดงรายละเอียด รพ. (โทนน้ำเงินพาสเทลเข้ม / modal-lg) --}}
       <div class="modal fade" id="VisitDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-              <h5 class="modal-title" id="hospitalDetailLabel">
-                ผู้ป่วยนอก OPD
+          <div class="modal-content border-0 shadow-lg rounded-3" style="background-color:#f5f8fc;">
+
+            <!-- Header -->
+            <div class="modal-header text-white rounded-top-3"
+                style="background: linear-gradient(135deg, #2f6fb6, #4b8edc);">
+              <h5 class="modal-title fw-bold" id="hospitalDetailLabel">
+                <i class="bi bi-person-lines-fill me-2"></i> ผู้ป่วยนอก (OPD)
               </h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-              <table class="table table-bordered table-hover align-middle">
-                <thead class="table-light">
-                  <tr>
-                    <th class="text-center">รหัส</th>
-                    <th class="text-center">ชื่อโรงพยาบาล</th>
-                    <th class="text-center">Visit OP</th>
-                    <th class="text-center">Visit PP</th>
-                    <th class="text-center">ปิดสิทธิ สปสช.</th>
+
+            <!-- Body -->
+            <div class="modal-body py-3">
+              <table class="table table-hover align-middle shadow-sm rounded-3 overflow-hidden mb-0"
+                    style="background-color: #ffffff; border-radius: 0.75rem;">
+                <thead style="background-color:#d9e8fb;">
+                  <tr class="text-center text-primary fw-semibold">
+                    <th>รหัส</th>
+                    <th>ชื่อโรงพยาบาล</th>
+                    <th>Visit OP</th>
+                    <th>Visit PP</th>
+                    <th>ปิดสิทธิ สปสช.</th>
                   </tr>
                 </thead>
                 <tbody>
                   @foreach($hospitalSummary as $h)
                     <tr>
-                      <td align="right">{{ $h->hospcode }}</td>
-                      <td>{{ $h->hospname }} 
-                        <span class="text-secondary small">
-                            {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
-                        </span>
+                      <td align="right" class="text-secondary">{{ $h->hospcode }}</td>
+                      <td>
+                        <span class="fw-semibold text-dark">{{ $h->hospname }}</span><br>
+                        <small class="text-muted">
+                          {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
+                        </small>
                       </td>
-                      <td align="right">{{ number_format($h->visit_total_op) }}</td>
-                      <td align="right">{{ number_format($h->visit_total_pp) }}</td>
-                      <td align="right">{{ number_format($h->visit_endpoint) }}</td>
+                      <td align="right" class="text-primary">{{ number_format($h->visit_total_op) }}</td>
+                      <td align="right" class="text-info">{{ number_format($h->visit_total_pp) }}</td>
+                      <td align="right" class="fw-bold text-success">{{ number_format($h->visit_endpoint) }}</td>
                     </tr>
                   @endforeach
                 </tbody>
               </table>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+
+            <!-- Footer -->
+            <div class="modal-footer" style="background-color:#eef4fb;">
+              <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm"
+                      style="background-color:#3e7cc1; border-color:#3e7cc1;"
+                      data-bs-dismiss="modal">
+                ปิด
+              </button>
             </div>
           </div>
         </div>
@@ -437,44 +485,57 @@
           </div>
         </a>
       </div>
-      {{-- Modal แสดงรายละเอียด รพ. --}}
+      {{-- Modal แสดงรายละเอียด รพ. (โทนน้ำเงินพาสเทลเข้ม / modal-lg) --}}
       <div class="modal fade" id="UCSDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-              <h5 class="modal-title" id="hospitalDetailLabel">
-                สิทธิประกันสุขภาพ UCS
+          <div class="modal-content border-0 shadow-lg rounded-3" style="background-color:#f5f8fc;">
+
+            <!-- Header -->
+            <div class="modal-header text-white rounded-top-3"
+                style="background: linear-gradient(135deg, #2f6fb6, #4b8edc);">
+              <h5 class="modal-title fw-bold" id="hospitalDetailLabel">
+                <i class="bi bi-shield-check me-2"></i> สิทธิประกันสุขภาพ (UCS)
               </h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-              <table class="table table-bordered table-hover align-middle">
-                <thead class="table-light">
-                  <tr>
-                    <th class="text-center">รหัส</th>
-                    <th class="text-center">ชื่อโรงพยาบาล</th>
-                    <th class="text-center">Visit</th>
-                    <th class="text-center">ค่ารักษารวม</th>
+
+            <!-- Body -->
+            <div class="modal-body py-3">
+              <table class="table table-hover align-middle shadow-sm rounded-3 overflow-hidden mb-0"
+                    style="background-color: #ffffff; border-radius: 0.75rem;">
+                <thead style="background-color:#d9e8fb;">
+                  <tr class="text-center text-primary fw-semibold">
+                    <th>รหัส</th>
+                    <th>ชื่อโรงพยาบาล</th>
+                    <th>Visit</th>
+                    <th>ค่ารักษารวม (บาท)</th>
                   </tr>
                 </thead>
                 <tbody>
                   @foreach($hospitalSummary as $h)
                     <tr>
-                      <td align="right">{{ $h->hospcode }}</td>
-                      <td>{{ $h->hospname }} 
-                        <span class="text-secondary small">
-                            {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
-                        </span>
+                      <td align="right" class="text-secondary">{{ $h->hospcode }}</td>
+                      <td>
+                        <span class="fw-semibold text-dark">{{ $h->hospname }}</span><br>
+                        <small class="text-muted">
+                          {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
+                        </small>
                       </td>
-                      <td align="right">{{ number_format($h->visit_ucs) }}</td>
-                      <td align="right">{{ number_format($h->inc_ucs,2) }}</td>
+                      <td align="right" class="text-primary">{{ number_format($h->visit_ucs) }}</td>
+                      <td align="right" class="fw-bold text-success">{{ number_format($h->inc_ucs,2) }}</td>
                     </tr>
                   @endforeach
                 </tbody>
               </table>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+
+            <!-- Footer -->
+            <div class="modal-footer" style="background-color:#eef4fb;">
+              <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm"
+                      style="background-color:#3e7cc1; border-color:#3e7cc1;"
+                      data-bs-dismiss="modal">
+                ปิด
+              </button>
             </div>
           </div>
         </div>
@@ -521,44 +582,57 @@
           </div>
         </a>
       </div>
-      {{-- Modal แสดงรายละเอียด รพ. --}}
+      {{-- Modal แสดงรายละเอียด รพ. (โทนน้ำเงินพาสเทลเข้ม / modal-lg) --}}
       <div class="modal fade" id="OFCDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-              <h5 class="modal-title" id="hospitalDetailLabel">
-                สิทธิกรมบัญชีกลาง OFC
+          <div class="modal-content border-0 shadow-lg rounded-3" style="background-color:#f5f8fc;">
+
+            <!-- Header -->
+            <div class="modal-header text-white rounded-top-3"
+                style="background: linear-gradient(135deg, #2f6fb6, #4b8edc);">
+              <h5 class="modal-title fw-bold" id="hospitalDetailLabel">
+                <i class="bi bi-clipboard2-pulse me-2"></i> สิทธิกรมบัญชีกลาง (OFC)
               </h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-              <table class="table table-bordered table-hover align-middle">
-                <thead class="table-light">
-                  <tr>
-                    <th class="text-center">รหัส</th>
-                    <th class="text-center">ชื่อโรงพยาบาล</th>
-                    <th class="text-center">Visit</th>
-                    <th class="text-center">ค่ารักษารวม</th>
+
+            <!-- Body -->
+            <div class="modal-body py-3">
+              <table class="table table-hover align-middle shadow-sm rounded-3 overflow-hidden mb-0"
+                    style="background-color: #ffffff; border-radius: 0.75rem;">
+                <thead style="background-color:#d9e8fb;">
+                  <tr class="text-center text-primary fw-semibold">
+                    <th>รหัส</th>
+                    <th>ชื่อโรงพยาบาล</th>
+                    <th>Visit</th>
+                    <th>ค่ารักษารวม (บาท)</th>
                   </tr>
                 </thead>
                 <tbody>
                   @foreach($hospitalSummary as $h)
                     <tr>
-                      <td align="right">{{ $h->hospcode }}</td>
-                      <td>{{ $h->hospname }} 
-                        <span class="text-secondary small">
-                            {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
-                        </span>
+                      <td align="right" class="text-secondary">{{ $h->hospcode }}</td>
+                      <td>
+                        <span class="fw-semibold text-dark">{{ $h->hospname }}</span><br>
+                        <small class="text-muted">
+                          {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
+                        </small>
                       </td>
-                      <td align="right">{{ number_format($h->visit_ofc) }}</td>
-                      <td align="right">{{ number_format($h->inc_ofc,2) }}</td>
+                      <td align="right" class="text-primary">{{ number_format($h->visit_ofc) }}</td>
+                      <td align="right" class="fw-bold text-success">{{ number_format($h->inc_ofc,2) }}</td>
                     </tr>
                   @endforeach
                 </tbody>
               </table>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+
+            <!-- Footer -->
+            <div class="modal-footer" style="background-color:#eef4fb;">
+              <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm"
+                      style="background-color:#3e7cc1; border-color:#3e7cc1;"
+                      data-bs-dismiss="modal">
+                ปิด
+              </button>
             </div>
           </div>
         </div>
@@ -590,44 +664,57 @@
           </div>
         </a>
       </div>
-      {{-- Modal แสดงรายละเอียด รพ. --}}
+      {{-- Modal แสดงรายละเอียด รพ. (โทนน้ำเงินพาสเทลเข้ม / modal-lg) --}}
       <div class="modal fade" id="LGODetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-              <h5 class="modal-title" id="hospitalDetailLabel">
-                สิทธิ อปท. LGO
+          <div class="modal-content border-0 shadow-lg rounded-3" style="background-color:#f5f8fc;">
+
+            <!-- Header -->
+            <div class="modal-header text-white rounded-top-3"
+                style="background: linear-gradient(135deg, #2f6fb6, #4b8edc);">
+              <h5 class="modal-title fw-bold" id="hospitalDetailLabel">
+                <i class="bi bi-building-check me-2"></i> สิทธิ อปท. (LGO)
               </h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-              <table class="table table-bordered table-hover align-middle">
-                <thead class="table-light">
-                  <tr>
-                    <th class="text-center">รหัส</th>
-                    <th class="text-center">ชื่อโรงพยาบาล</th>
-                    <th class="text-center">Visit</th>
-                    <th class="text-center">ค่ารักษารวม</th>
+
+            <!-- Body -->
+            <div class="modal-body py-3">
+              <table class="table table-hover align-middle shadow-sm rounded-3 overflow-hidden mb-0"
+                    style="background-color: #ffffff; border-radius: 0.75rem;">
+                <thead style="background-color:#d9e8fb;">
+                  <tr class="text-center text-primary fw-semibold">
+                    <th>รหัส</th>
+                    <th>ชื่อโรงพยาบาล</th>
+                    <th>Visit</th>
+                    <th>ค่ารักษารวม (บาท)</th>
                   </tr>
                 </thead>
                 <tbody>
                   @foreach($hospitalSummary as $h)
                     <tr>
-                      <td align="right">{{ $h->hospcode }}</td>
-                      <td>{{ $h->hospname }} 
-                        <span class="text-secondary small">
-                            {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
-                        </span>
+                      <td align="right" class="text-secondary">{{ $h->hospcode }}</td>
+                      <td>
+                        <span class="fw-semibold text-dark">{{ $h->hospname }}</span><br>
+                        <small class="text-muted">
+                          {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
+                        </small>
                       </td>
-                      <td align="right">{{ number_format($h->visit_lgo) }}</td>
-                      <td align="right">{{ number_format($h->inc_lgo,2) }}</td>
+                      <td align="right" class="text-primary">{{ number_format($h->visit_lgo) }}</td>
+                      <td align="right" class="fw-bold text-success">{{ number_format($h->inc_lgo,2) }}</td>
                     </tr>
                   @endforeach
                 </tbody>
               </table>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+
+            <!-- Footer -->
+            <div class="modal-footer" style="background-color:#eef4fb;">
+              <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm"
+                      style="background-color:#3e7cc1; border-color:#3e7cc1;"
+                      data-bs-dismiss="modal">
+                ปิด
+              </button>
             </div>
           </div>
         </div>
@@ -659,44 +746,57 @@
           </div>
         </a>
       </div>
-      {{-- Modal แสดงรายละเอียด รพ. --}}
+      {{-- Modal แสดงรายละเอียด รพ. (โทนน้ำเงินพาสเทลเข้ม / modal-lg) --}}
       <div class="modal fade" id="SSSDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-              <h5 class="modal-title" id="hospitalDetailLabel">
-                สิทธิประกันสังคม SSS
+          <div class="modal-content border-0 shadow-lg rounded-3" style="background-color:#f5f8fc;">
+
+            <!-- Header -->
+            <div class="modal-header text-white rounded-top-3"
+                style="background: linear-gradient(135deg, #2f6fb6, #4b8edc);">
+              <h5 class="modal-title fw-bold" id="hospitalDetailLabel">
+                <i class="bi bi-person-vcard me-2"></i> สิทธิประกันสังคม (SSS)
               </h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-              <table class="table table-bordered table-hover align-middle">
-                <thead class="table-light">
-                  <tr>
-                    <th class="text-center">รหัส</th>
-                    <th class="text-center">ชื่อโรงพยาบาล</th>
-                    <th class="text-center">Visit</th>
-                    <th class="text-center">ค่ารักษารวม</th>
+
+            <!-- Body -->
+            <div class="modal-body py-3">
+              <table class="table table-hover align-middle shadow-sm rounded-3 overflow-hidden mb-0"
+                    style="background-color: #ffffff; border-radius: 0.75rem;">
+                <thead style="background-color:#d9e8fb;">
+                  <tr class="text-center text-primary fw-semibold">
+                    <th>รหัส</th>
+                    <th>ชื่อโรงพยาบาล</th>
+                    <th>Visit</th>
+                    <th>ค่ารักษารวม (บาท)</th>
                   </tr>
                 </thead>
                 <tbody>
                   @foreach($hospitalSummary as $h)
                     <tr>
-                      <td align="right">{{ $h->hospcode }}</td>
-                      <td>{{ $h->hospname }} 
-                        <span class="text-secondary small">
-                            {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
-                        </span>
+                      <td align="right" class="text-secondary">{{ $h->hospcode }}</td>
+                      <td>
+                        <span class="fw-semibold text-dark">{{ $h->hospname }}</span><br>
+                        <small class="text-muted">
+                          {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
+                        </small>
                       </td>
-                      <td align="right">{{ number_format($h->visit_sss) }}</td>
-                      <td align="right">{{ number_format($h->inc_sss,2) }}</td>
+                      <td align="right" class="text-primary">{{ number_format($h->visit_sss) }}</td>
+                      <td align="right" class="fw-bold text-success">{{ number_format($h->inc_sss,2) }}</td>
                     </tr>
                   @endforeach
                 </tbody>
               </table>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+
+            <!-- Footer -->
+            <div class="modal-footer" style="background-color:#eef4fb;">
+              <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm"
+                      style="background-color:#3e7cc1; border-color:#3e7cc1;"
+                      data-bs-dismiss="modal">
+                ปิด
+              </button>
             </div>
           </div>
         </div>
@@ -728,44 +828,57 @@
           </div>
         </a>
       </div>
-      {{-- Modal แสดงรายละเอียด รพ. --}}
+      {{-- Modal แสดงรายละเอียด รพ. (โทนน้ำเงินพาสเทลเข้ม / modal-lg) --}}
       <div class="modal fade" id="PayDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-              <h5 class="modal-title" id="hospitalDetailLabel">
-                สิทธิชำระเงิน/พรบ.
+          <div class="modal-content border-0 shadow-lg rounded-3" style="background-color:#f5f8fc;">
+
+            <!-- Header -->
+            <div class="modal-header text-white rounded-top-3"
+                style="background: linear-gradient(135deg, #2f6fb6, #4b8edc);">
+              <h5 class="modal-title fw-bold" id="hospitalDetailLabel">
+                <i class="bi bi-cash-coin me-2"></i> สิทธิชำระเงิน / พ.ร.บ.
               </h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-              <table class="table table-bordered table-hover align-middle">
-                <thead class="table-light">
-                  <tr>
-                    <th class="text-center">รหัส</th>
-                    <th class="text-center">ชื่อโรงพยาบาล</th>
-                    <th class="text-center">Visit</th>
-                    <th class="text-center">ค่ารักษารวม</th>
+
+            <!-- Body -->
+            <div class="modal-body py-3">
+              <table class="table table-hover align-middle shadow-sm rounded-3 overflow-hidden mb-0"
+                    style="background-color: #ffffff; border-radius: 0.75rem;">
+                <thead style="background-color:#d9e8fb;">
+                  <tr class="text-center text-primary fw-semibold">
+                    <th>รหัส</th>
+                    <th>ชื่อโรงพยาบาล</th>
+                    <th>Visit</th>
+                    <th>ค่ารักษารวม (บาท)</th>
                   </tr>
                 </thead>
                 <tbody>
                   @foreach($hospitalSummary as $h)
                     <tr>
-                      <td align="right">{{ $h->hospcode }}</td>
-                      <td>{{ $h->hospname }} 
-                        <span class="text-secondary small">
-                            {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
-                        </span>
+                      <td align="right" class="text-secondary">{{ $h->hospcode }}</td>
+                      <td>
+                        <span class="fw-semibold text-dark">{{ $h->hospname }}</span><br>
+                        <small class="text-muted">
+                          {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
+                        </small>
                       </td>
-                      <td align="right">{{ number_format($h->visit_pay) }}</td>
-                      <td align="right">{{ number_format($h->inc_pay,2) }}</td>
+                      <td align="right" class="text-primary">{{ number_format($h->visit_pay) }}</td>
+                      <td align="right" class="fw-bold text-success">{{ number_format($h->inc_pay,2) }}</td>
                     </tr>
                   @endforeach
                 </tbody>
               </table>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+
+            <!-- Footer -->
+            <div class="modal-footer" style="background-color:#eef4fb;">
+              <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm"
+                      style="background-color:#3e7cc1; border-color:#3e7cc1;"
+                      data-bs-dismiss="modal">
+                ปิด
+              </button>
             </div>
           </div>
         </div>
@@ -813,44 +926,57 @@
           </div>
         </a>
       </div>
-      {{-- Modal แสดงรายละเอียด รพ. --}}
+      {{-- Modal แสดงรายละเอียด รพ. (โทนน้ำเงินพาสเทลเข้ม / modal-lg) --}}
       <div class="modal fade" id="PPFSDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-              <h5 class="modal-title" id="hospitalDetailLabel">
-                PP Fee Schedule
+          <div class="modal-content border-0 shadow-lg rounded-3" style="background-color:#f5f8fc;">
+
+            <!-- Header -->
+            <div class="modal-header text-white rounded-top-3"
+                style="background: linear-gradient(135deg, #2f6fb6, #4b8edc);">
+              <h5 class="modal-title fw-bold" id="hospitalDetailLabel">
+                <i class="bi bi-clipboard-data me-2"></i> PP Fee Schedule
               </h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-              <table class="table table-bordered table-hover align-middle">
-                <thead class="table-light">
-                  <tr>
-                    <th class="text-center">รหัส</th>
-                    <th class="text-center">ชื่อโรงพยาบาล</th>
-                    <th class="text-center">Visit</th>
-                    <th class="text-center">ค่ารักษารวม</th>
+
+            <!-- Body -->
+            <div class="modal-body py-3">
+              <table class="table table-hover align-middle shadow-sm rounded-3 overflow-hidden mb-0"
+                    style="background-color: #ffffff; border-radius: 0.75rem;">
+                <thead style="background-color:#d9e8fb;">
+                  <tr class="text-center text-primary fw-semibold">
+                    <th>รหัส</th>
+                    <th>ชื่อโรงพยาบาล</th>
+                    <th>Visit</th>
+                    <th>ค่ารักษารวม (บาท)</th>
                   </tr>
                 </thead>
                 <tbody>
                   @foreach($hospitalSummary as $h)
                     <tr>
-                      <td align="right">{{ $h->hospcode }}</td>
-                      <td>{{ $h->hospname }} 
-                        <span class="text-secondary small">
-                            {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
-                        </span>
+                      <td align="right" class="text-secondary">{{ $h->hospcode }}</td>
+                      <td>
+                        <span class="fw-semibold text-dark">{{ $h->hospname }}</span><br>
+                        <small class="text-muted">
+                          {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
+                        </small>
                       </td>
-                      <td align="right">{{ number_format($h->visit_ppfs) }}</td>
-                      <td align="right">{{ number_format($h->inc_ppfs,2) }}</td>
+                      <td align="right" class="text-primary">{{ number_format($h->visit_ppfs) }}</td>
+                      <td align="right" class="fw-bold text-success">{{ number_format($h->inc_ppfs,2) }}</td>
                     </tr>
                   @endforeach
                 </tbody>
               </table>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+
+            <!-- Footer -->
+            <div class="modal-footer" style="background-color:#eef4fb;">
+              <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm"
+                      style="background-color:#3e7cc1; border-color:#3e7cc1;"
+                      data-bs-dismiss="modal">
+                ปิด
+              </button>
             </div>
           </div>
         </div>
@@ -882,48 +1008,61 @@
           </div>
         </a>
       </div> 
-      {{-- Modal แสดงรายละเอียด รพ. --}}
+      {{-- Modal แสดงรายละเอียด รพ. (โทนน้ำเงินพาสเทลเข้ม / modal-lg) --}}
       <div class="modal fade" id="AnywhereDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-              <h5 class="modal-title" id="hospitalDetailLabel">
-                UC-OP Anywhere
+          <div class="modal-content border-0 shadow-lg rounded-3" style="background-color:#f5f8fc;">
+
+            <!-- Header -->
+            <div class="modal-header text-white rounded-top-3"
+                style="background: linear-gradient(135deg, #2f6fb6, #4b8edc);">
+              <h5 class="modal-title fw-bold" id="hospitalDetailLabel">
+                <i class="bi bi-globe2 me-2"></i> UC-OP Anywhere
               </h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-              <table class="table table-bordered table-hover align-middle">
-                <thead class="table-light">
-                  <tr>
-                    <th class="text-center">รหัส</th>
-                    <th class="text-center">ชื่อโรงพยาบาล</th>
-                    <th class="text-center">Visit</th>
-                    <th class="text-center">ค่ารักษารวม</th>
+
+            <!-- Body -->
+            <div class="modal-body py-3">
+              <table class="table table-hover align-middle shadow-sm rounded-3 overflow-hidden mb-0"
+                    style="background-color: #ffffff; border-radius: 0.75rem;">
+                <thead style="background-color:#d9e8fb;">
+                  <tr class="text-center text-primary fw-semibold">
+                    <th>รหัส</th>
+                    <th>ชื่อโรงพยาบาล</th>
+                    <th>Visit</th>
+                    <th>ค่ารักษารวม (บาท)</th>
                   </tr>
                 </thead>
                 <tbody>
                   @foreach($hospitalSummary as $h)
                     <tr>
-                      <td align="right">{{ $h->hospcode }}</td>
-                      <td>{{ $h->hospname }} 
-                        <span class="text-secondary small">
-                            {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
-                        </span>
+                      <td align="right" class="text-secondary">{{ $h->hospcode }}</td>
+                      <td>
+                        <span class="fw-semibold text-dark">{{ $h->hospname }}</span><br>
+                        <small class="text-muted">
+                          {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
+                        </small>
                       </td>
-                      <td align="right">{{ number_format($h->visit_ucs_outprov) }}</td>
-                      <td align="right">{{ number_format($h->inc_ucs_outprov,2) }}</td>
+                      <td align="right" class="text-primary">{{ number_format($h->visit_ucs_outprov) }}</td>
+                      <td align="right" class="fw-bold text-success">{{ number_format($h->inc_ucs_outprov,2) }}</td>
                     </tr>
                   @endforeach
                 </tbody>
               </table>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+
+            <!-- Footer -->
+            <div class="modal-footer" style="background-color:#eef4fb;">
+              <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm"
+                      style="background-color:#3e7cc1; border-color:#3e7cc1;"
+                      data-bs-dismiss="modal">
+                ปิด
+              </button>
             </div>
           </div>
         </div>
-      </div>     
+      </div>
 
       {{-- UC-บริการเฉพาะ CR : ครั้ง | บาท ---------------------------------------------------------------------------------------}}
       <div class="col-12 col-sm-6 col-xl-3">
@@ -951,48 +1090,61 @@
           </div>
           </a>
       </div>
-      {{-- Modal แสดงรายละเอียด รพ. --}}
+      {{-- Modal แสดงรายละเอียด รพ. (โทนน้ำเงินพาสเทลเข้ม / modal-lg) --}}
       <div class="modal fade" id="CrDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-              <h5 class="modal-title" id="hospitalDetailLabel">
-                UC-บริการเฉพาะ CR 
+          <div class="modal-content border-0 shadow-lg rounded-3" style="background-color:#f5f8fc;">
+
+            <!-- Header -->
+            <div class="modal-header text-white rounded-top-3"
+                style="background: linear-gradient(135deg, #2f6fb6, #4b8edc);">
+              <h5 class="modal-title fw-bold" id="hospitalDetailLabel">
+                <i class="bi bi-activity me-2"></i> UC - บริการเฉพาะ (CR)
               </h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-              <table class="table table-bordered table-hover align-middle">
-                <thead class="table-light">
-                  <tr>
-                    <th class="text-center">รหัส</th>
-                    <th class="text-center">ชื่อโรงพยาบาล</th>
-                    <th class="text-center">Visit</th>
-                    <th class="text-center">ค่ารักษารวม</th>
+
+            <!-- Body -->
+            <div class="modal-body py-3">
+              <table class="table table-hover align-middle shadow-sm rounded-3 overflow-hidden mb-0"
+                    style="background-color: #ffffff; border-radius: 0.75rem;">
+                <thead style="background-color:#d9e8fb;">
+                  <tr class="text-center text-primary fw-semibold">
+                    <th>รหัส</th>
+                    <th>ชื่อโรงพยาบาล</th>
+                    <th>Visit</th>
+                    <th>ค่ารักษารวม (บาท)</th>
                   </tr>
                 </thead>
                 <tbody>
                   @foreach($hospitalSummary as $h)
                     <tr>
-                      <td align="right">{{ $h->hospcode }}</td>
-                      <td>{{ $h->hospname }} 
-                        <span class="text-secondary small">
-                            {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
-                        </span>
+                      <td align="right" class="text-secondary">{{ $h->hospcode }}</td>
+                      <td>
+                        <span class="fw-semibold text-dark">{{ $h->hospname }}</span><br>
+                        <small class="text-muted">
+                          {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
+                        </small>
                       </td>
-                      <td align="right">{{ number_format($h->visit_ucs_cr) }}</td>
-                      <td align="right">{{ number_format($h->inc_uccr,2) }}</td>
+                      <td align="right" class="text-primary">{{ number_format($h->visit_ucs_cr) }}</td>
+                      <td align="right" class="fw-bold text-success">{{ number_format($h->inc_uccr,2) }}</td>
                     </tr>
                   @endforeach
                 </tbody>
               </table>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+
+            <!-- Footer -->
+            <div class="modal-footer" style="background-color:#eef4fb;">
+              <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm"
+                      style="background-color:#3e7cc1; border-color:#3e7cc1;"
+                      data-bs-dismiss="modal">
+                ปิด
+              </button>
             </div>
           </div>
         </div>
-      </div>  
+      </div>
 
       {{-- UC-สมุนไพร 32 รายการ : ครั้ง | บาท -----------------------------------------------------------------------------------}}
       <div class="col-12 col-sm-6 col-xl-3">
@@ -1020,48 +1172,62 @@
           </div>
         </a>
       </div>   
-      {{-- Modal แสดงรายละเอียด รพ. --}}
+      {{-- Modal แสดงรายละเอียด รพ. (โทนน้ำเงินพาสเทลเข้ม / modal-lg) --}}
       <div class="modal fade" id="HerbDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-              <h5 class="modal-title" id="hospitalDetailLabel">
-                UC-สมุนไพร 32 รายการ
+          <div class="modal-content border-0 shadow-lg rounded-3" style="background-color:#f5f8fc;">
+
+            <!-- Header -->
+            <div class="modal-header text-white rounded-top-3"
+                style="background: linear-gradient(135deg, #2f6fb6, #4b8edc);">
+              <h5 class="modal-title fw-bold" id="hospitalDetailLabel">
+                <i class="bi bi-capsule me-2"></i> UC - สมุนไพร 32 รายการ
               </h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-              <table class="table table-bordered table-hover align-middle">
-                <thead class="table-light">
-                  <tr>
-                    <th class="text-center">รหัส</th>
-                    <th class="text-center">ชื่อโรงพยาบาล</th>
-                    <th class="text-center">Visit</th>
-                    <th class="text-center">ค่ารักษารวม</th>
+
+            <!-- Body -->
+            <div class="modal-body py-3">
+              <table class="table table-hover align-middle shadow-sm rounded-3 overflow-hidden mb-0"
+                    style="background-color: #ffffff; border-radius: 0.75rem;">
+                <thead style="background-color:#d9e8fb;">
+                  <tr class="text-center text-primary fw-semibold">
+                    <th>รหัส</th>
+                    <th>ชื่อโรงพยาบาล</th>
+                    <th>Visit</th>
+                    <th>ค่ารักษารวม (บาท)</th>
                   </tr>
                 </thead>
                 <tbody>
                   @foreach($hospitalSummary as $h)
                     <tr>
-                      <td align="right">{{ $h->hospcode }}</td>
-                      <td>{{ $h->hospname }} 
-                        <span class="text-secondary small">
-                            {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
-                        </span>
+                      <td align="right" class="text-secondary">{{ $h->hospcode }}</td>
+                      <td>
+                        <span class="fw-semibold text-dark">{{ $h->hospname }}</span><br>
+                        <small class="text-muted">
+                          {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
+                        </small>
                       </td>
-                      <td align="right">{{ number_format($h->visit_ucs_herb) }}</td>
-                      <td align="right">{{ number_format($h->inc_herb,2) }}</td>
+                      <td align="right" class="text-primary">{{ number_format($h->visit_ucs_herb) }}</td>
+                      <td align="right" class="fw-bold text-success">{{ number_format($h->inc_herb,2) }}</td>
                     </tr>
                   @endforeach
                 </tbody>
               </table>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+
+            <!-- Footer -->
+            <div class="modal-footer" style="background-color:#eef4fb;">
+              <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm"
+                      style="background-color:#3e7cc1; border-color:#3e7cc1;"
+                      data-bs-dismiss="modal">
+                ปิด
+              </button>
             </div>
           </div>
         </div>
-      </div>  
+      </div>
+
     {{------------------------------------------------------------------------------------------------------------}}
 
     </div>
