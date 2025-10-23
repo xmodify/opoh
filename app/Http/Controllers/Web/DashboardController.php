@@ -33,6 +33,13 @@ class DashboardController extends Controller
             ->value('DATE_END');
 
         $today = Carbon::today()->toDateString(); // ได้รูปแบบ YYYY-MM-DD เช่น 2025-10-07
+           if ($today > $end_date) {
+                $calc_end_date = $end_date; // ถ้าเลยปีงบแล้วใช้วันสิ้นสุดปีงบ
+            } else {
+                $calc_end_date = $today; // ถ้ายังอยู่ในปีงบ ใช้วันปัจจุบัน
+            }
+        //คำนวณจำนวนวันตั้งแต่ต้นปีงบ (1 ต.ค.) ถึงวันปัจจุบัน
+        $diff_days = Carbon::parse($start_date)->diffInDays(Carbon::parse($calc_end_date)) + 1;
 
         $total = DB::table('opd')
             ->whereBetween('vstdate', [$today, $today])
@@ -716,8 +723,10 @@ class DashboardController extends Controller
             WHEN MONTH(i.dchdate)=9 THEN CONCAT('ก.ย. ',RIGHT(YEAR(i.dchdate)+543,2))
             END AS 'month',
             SUM(i.an_total) AS an_total ,SUM(i.admdate) AS admdate,
-            ROUND((SUM(i.admdate)*100)/(h.bed_report*DAY(LAST_DAY(i.dchdate))),2) AS 'bed_occupancy',
-            ROUND(((SUM(i.admdate)*100)/(h.bed_report*DAY(LAST_DAY(i.dchdate)))*h.bed_report)/100,2) AS 'active_bed',
+            ROUND((SUM(i.admdate) * 100) / (h.bed_report * CASE WHEN YEAR(i.dchdate) = YEAR(CURDATE()) AND MONTH(i.dchdate) = MONTH(CURDATE()) 
+                THEN DAY(CURDATE()) ELSE DAY(LAST_DAY(i.dchdate))END), 2) AS bed_occupancy,
+            ROUND((SUM(i.admdate) / CASE WHEN YEAR(i.dchdate) = YEAR(CURDATE()) AND MONTH(i.dchdate) = MONTH(CURDATE()) 
+                THEN DAY(CURDATE()) ELSE DAY(LAST_DAY(i.dchdate)) END), 2) AS active_bed,             
             ROUND(SUM(i.adjrw),4) AS adjrw ,
             ROUND(SUM(i.adjrw)/SUM(i.an_total),2) AS cmi,i.inc_total,i.inc_lab_total,i.inc_drug_total
             FROM ipd i
@@ -742,8 +751,10 @@ class DashboardController extends Controller
             WHEN MONTH(i.dchdate)=9 THEN CONCAT('ก.ย. ',RIGHT(YEAR(i.dchdate)+543,2))
             END AS 'month',
             SUM(i.an_total) AS an_total ,SUM(i.admdate) AS admdate,
-            ROUND((SUM(i.admdate)*100)/(h.bed_report*DAY(LAST_DAY(i.dchdate))),2) AS 'bed_occupancy',
-            ROUND(((SUM(i.admdate)*100)/(h.bed_report*DAY(LAST_DAY(i.dchdate)))*h.bed_report)/100,2) AS 'active_bed',
+            ROUND((SUM(i.admdate) * 100) / (h.bed_report * CASE WHEN YEAR(i.dchdate) = YEAR(CURDATE()) AND MONTH(i.dchdate) = MONTH(CURDATE()) 
+                THEN DAY(CURDATE()) ELSE DAY(LAST_DAY(i.dchdate))END), 2) AS bed_occupancy,
+            ROUND((SUM(i.admdate) / CASE WHEN YEAR(i.dchdate) = YEAR(CURDATE()) AND MONTH(i.dchdate) = MONTH(CURDATE()) 
+                THEN DAY(CURDATE()) ELSE DAY(LAST_DAY(i.dchdate)) END), 2) AS active_bed,     
             ROUND(SUM(i.adjrw),4) AS adjrw ,
             ROUND(SUM(i.adjrw)/SUM(i.an_total),2) AS cmi,i.inc_total,i.inc_lab_total,i.inc_drug_total
             FROM ipd i
@@ -768,8 +779,10 @@ class DashboardController extends Controller
             WHEN MONTH(i.dchdate)=9 THEN CONCAT('ก.ย. ',RIGHT(YEAR(i.dchdate)+543,2))
             END AS 'month',
             SUM(i.an_total) AS an_total ,SUM(i.admdate) AS admdate,
-            ROUND((SUM(i.admdate)*100)/(h.bed_report*DAY(LAST_DAY(i.dchdate))),2) AS 'bed_occupancy',
-            ROUND(((SUM(i.admdate)*100)/(h.bed_report*DAY(LAST_DAY(i.dchdate)))*h.bed_report)/100,2) AS 'active_bed',
+            ROUND((SUM(i.admdate) * 100) / (h.bed_report * CASE WHEN YEAR(i.dchdate) = YEAR(CURDATE()) AND MONTH(i.dchdate) = MONTH(CURDATE()) 
+                THEN DAY(CURDATE()) ELSE DAY(LAST_DAY(i.dchdate))END), 2) AS bed_occupancy,
+            ROUND((SUM(i.admdate) / CASE WHEN YEAR(i.dchdate) = YEAR(CURDATE()) AND MONTH(i.dchdate) = MONTH(CURDATE()) 
+                THEN DAY(CURDATE()) ELSE DAY(LAST_DAY(i.dchdate)) END), 2) AS active_bed,     
             ROUND(SUM(i.adjrw),4) AS adjrw ,
             ROUND(SUM(i.adjrw)/SUM(i.an_total),2) AS cmi,i.inc_total,i.inc_lab_total,i.inc_drug_total
             FROM ipd i
@@ -794,8 +807,10 @@ class DashboardController extends Controller
             WHEN MONTH(i.dchdate)=9 THEN CONCAT('ก.ย. ',RIGHT(YEAR(i.dchdate)+543,2))
             END AS 'month',
             SUM(i.an_total) AS an_total ,SUM(i.admdate) AS admdate,
-            ROUND((SUM(i.admdate)*100)/(h.bed_report*DAY(LAST_DAY(i.dchdate))),2) AS 'bed_occupancy',
-            ROUND(((SUM(i.admdate)*100)/(h.bed_report*DAY(LAST_DAY(i.dchdate)))*h.bed_report)/100,2) AS 'active_bed',
+            ROUND((SUM(i.admdate) * 100) / (h.bed_report * CASE WHEN YEAR(i.dchdate) = YEAR(CURDATE()) AND MONTH(i.dchdate) = MONTH(CURDATE()) 
+                THEN DAY(CURDATE()) ELSE DAY(LAST_DAY(i.dchdate))END), 2) AS bed_occupancy,
+            ROUND((SUM(i.admdate) / CASE WHEN YEAR(i.dchdate) = YEAR(CURDATE()) AND MONTH(i.dchdate) = MONTH(CURDATE()) 
+                THEN DAY(CURDATE()) ELSE DAY(LAST_DAY(i.dchdate)) END), 2) AS active_bed,     
             ROUND(SUM(i.adjrw),4) AS adjrw ,
             ROUND(SUM(i.adjrw)/SUM(i.an_total),2) AS cmi,i.inc_total,i.inc_lab_total,i.inc_drug_total
             FROM ipd i
@@ -820,8 +835,10 @@ class DashboardController extends Controller
             WHEN MONTH(i.dchdate)=9 THEN CONCAT('ก.ย. ',RIGHT(YEAR(i.dchdate)+543,2))
             END AS 'month',
             SUM(i.an_total) AS an_total ,SUM(i.admdate) AS admdate,
-            ROUND((SUM(i.admdate)*100)/(h.bed_report*DAY(LAST_DAY(i.dchdate))),2) AS 'bed_occupancy',
-            ROUND(((SUM(i.admdate)*100)/(h.bed_report*DAY(LAST_DAY(i.dchdate)))*h.bed_report)/100,2) AS 'active_bed',
+            ROUND((SUM(i.admdate) * 100) / (h.bed_report * CASE WHEN YEAR(i.dchdate) = YEAR(CURDATE()) AND MONTH(i.dchdate) = MONTH(CURDATE()) 
+                THEN DAY(CURDATE()) ELSE DAY(LAST_DAY(i.dchdate))END), 2) AS bed_occupancy,
+            ROUND((SUM(i.admdate) / CASE WHEN YEAR(i.dchdate) = YEAR(CURDATE()) AND MONTH(i.dchdate) = MONTH(CURDATE()) 
+                THEN DAY(CURDATE()) ELSE DAY(LAST_DAY(i.dchdate)) END), 2) AS active_bed,     
             ROUND(SUM(i.adjrw),4) AS adjrw ,
             ROUND(SUM(i.adjrw)/SUM(i.an_total),2) AS cmi,i.inc_total,i.inc_lab_total,i.inc_drug_total
             FROM ipd i
@@ -846,8 +863,10 @@ class DashboardController extends Controller
             WHEN MONTH(i.dchdate)=9 THEN CONCAT('ก.ย. ',RIGHT(YEAR(i.dchdate)+543,2))
             END AS 'month',
             SUM(i.an_total) AS an_total ,SUM(i.admdate) AS admdate,
-            ROUND((SUM(i.admdate)*100)/(h.bed_report*DAY(LAST_DAY(i.dchdate))),2) AS 'bed_occupancy',
-            ROUND(((SUM(i.admdate)*100)/(h.bed_report*DAY(LAST_DAY(i.dchdate)))*h.bed_report)/100,2) AS 'active_bed',
+            ROUND((SUM(i.admdate) * 100) / (h.bed_report * CASE WHEN YEAR(i.dchdate) = YEAR(CURDATE()) AND MONTH(i.dchdate) = MONTH(CURDATE()) 
+                THEN DAY(CURDATE()) ELSE DAY(LAST_DAY(i.dchdate))END), 2) AS bed_occupancy,
+            ROUND((SUM(i.admdate) / CASE WHEN YEAR(i.dchdate) = YEAR(CURDATE()) AND MONTH(i.dchdate) = MONTH(CURDATE()) 
+                THEN DAY(CURDATE()) ELSE DAY(LAST_DAY(i.dchdate)) END), 2) AS active_bed,     
             ROUND(SUM(i.adjrw),4) AS adjrw ,
             ROUND(SUM(i.adjrw)/SUM(i.an_total),2) AS cmi,i.inc_total,i.inc_lab_total,i.inc_drug_total
             FROM ipd i
@@ -857,7 +876,7 @@ class DashboardController extends Controller
             GROUP BY MONTH(i.dchdate)
             ORDER BY YEAR(i.dchdate) , MONTH(i.dchdate)", [$start_date, $end_date]);
 
-        return view('dashboard', array_merge($card,compact('budget_year_select','budget_year','update_at10985','total_10985',
+        return view('dashboard', array_merge($card,compact('budget_year_select','budget_year','diff_days','update_at10985','total_10985',
             'update_at10986','total_10986','update_at10987','total_10987','update_at10988','total_10988','update_at10989','total_10989',
             'update_at10990','total_10990','update_at10703','total_10703','total_bed_qty','total_bed_empty','hospitals','hospitalSummary','total_10985_ipd',
             'total_10986_ipd','total_10987_ipd','total_10988_ipd','total_10989_ipd','total_10990_ipd')));
