@@ -155,8 +155,8 @@ class OpdController extends Controller
                 'visit_physic'        => $row['visit_physic'],
                 'visit_referout_inprov'     => $row['visit_referout_inprov'],
                 'visit_referout_outprov'    => $row['visit_referout_outprov'],
-                'visit_referin_inprov'      => $row['visit_referin_inprov'],
-                'visit_referin_outprov'     => $row['visit_referin_outprov'],
+                'visit_referin_inprov'      => $row['visit_referin_inprov'] ?? 0,
+                'visit_referin_outprov'     => $row['visit_referin_outprov'] ?? 0,
 
                 // Income (float/double)
                 'inc_total'            => $row['inc_total'],
