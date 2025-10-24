@@ -153,8 +153,10 @@ class OpdController extends Controller
                 'visit_healthmed'     => $row['visit_healthmed'],
                 'visit_dent'          => $row['visit_dent'],
                 'visit_physic'        => $row['visit_physic'],
-                'visit_referout_inprov'      => $row['visit_referout_inprov'],
-                'visit_referout_outprov'     => $row['visit_referout_outprov'],
+                'visit_referout_inprov'     => $row['visit_referout_inprov'],
+                'visit_referout_outprov'    => $row['visit_referout_outprov'],
+                'visit_referin_inprov'      => $row['visit_referin_inprov'],
+                'visit_referin_outprov'     => $row['visit_referin_outprov'],
 
                 // Income (float/double)
                 'inc_total'            => $row['inc_total'],
@@ -223,6 +225,7 @@ class OpdController extends Controller
                         'visit_stp', 'visit_pay','visit_ppfs', 'visit_ucs_cr', 'visit_ucs_herb', 
                         'visit_ucs_healthmed','visit_healthmed','visit_dent','visit_physic',
                         'visit_referout_inprov','visit_referout_outprov',
+                        'visit_referin_inprov','visit_referin_outprov',
                         // Incomes
                         'inc_total', 'inc_lab_total', 'inc_drug_total',
                         'inc_ucs_incup', 'inc_lab_ucs_incup', 'inc_drug_ucs_incup',

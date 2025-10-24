@@ -16,7 +16,7 @@ class Opd extends Model
         'visit_sss', 'visit_lgo', 'visit_fss', 'visit_stp', 'visit_pay',
         'visit_ppfs', 'visit_ucs_cr', 'visit_ucs_herb', 'visit_ucs_healthmed',
         'visit_healthmed','visit_dent','visit_physic','visit_referout_inprov',
-        'visit_referout_outprov',        
+        'visit_referout_outprov','visit_referin_inprov','visit_referin_outprov',   
 
         'inc_total', 'inc_lab_total', 'inc_drug_total',
         'inc_ucs_incup', 'inc_lab_ucs_incup', 'inc_drug_ucs_incup',
@@ -60,8 +60,10 @@ class Opd extends Model
         'visit_healthmed'     => 'int',
         'visit_dent'          => 'int',
         'visit_physic'        => 'int',
-        'visit_referout_inprov'     => 'int',
-        'visit_referout_outprov'    => 'int',  
+        'visit_referout_inprov'    => 'int',
+        'visit_referout_outprov'   => 'int',  
+        'visit_referin_inprov'     => 'int',
+        'visit_referin_outprov'    => 'int', 
 
         // Income -> float/double
         'inc_total'            => 'float',
