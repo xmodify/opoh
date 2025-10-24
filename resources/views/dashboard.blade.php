@@ -73,7 +73,6 @@
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-
               <!-- Body -->
               <div class="modal-body py-3">
                 <table class="table table-hover align-middle shadow-sm rounded-3 overflow-hidden mb-0" 
@@ -82,7 +81,7 @@
                     <tr class="text-center text-primary fw-semibold">
                       <th>รหัส</th>
                       <th>ชื่อโรงพยาบาล</th>
-                      <th>เตียง</th>
+                      <th>เตียงจริง</th>
                       <th>ใช้</th>
                       <th>ว่าง</th>
                     </tr>
@@ -107,7 +106,6 @@
                   </tbody>
                 </table>
               </div>
-
               <!-- Footer -->
               <div class="modal-footer" style="background-color:#eef4fb;">
                 <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm" 
@@ -130,18 +128,18 @@
               </div>
               <div class="d-flex align-items-end gap-4">
                 <div class="text-end">
-                  <div class="small text-secondary text-center">ในจังหวัด</div>
+                  <div class="small text-secondary text-center">Refer In</div>
                   <div class="fw-bold" style="font-size:1.75rem;">
-                    {{ $fmtInt($visit_referout_inprov ?? 0) }}
+                    {{ $fmtInt($visit_referin_inprov+$visit_referin_outprov ?? 0) }}
                   </div>
                 </div>
                 <div class="vr d-none d-sm-block"></div>
                 <div class="text-end">
-                  <div class="small text-secondary text-center">ต่างจังหวัด</div>
+                  <div class="small text-secondary text-center">Refer Out</div>
                   <div class="fw-bold text-primary" style="font-size:1.75rem;">
-                    {{ $fmtInt($visit_referout_outprov ?? 0) }}
+                    {{ $fmtInt($visit_referout_inprov+$visit_referout_outprov ?? 0) }}
                   </div>
-                </div>
+                </div>                
               </div>
             </div>
           </a>
@@ -150,7 +148,6 @@
         <div class="modal fade" id="ReferDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content border-0 shadow-lg rounded-3" style="background-color:#f5f8fc;">
-
               <!-- Header -->
               <div class="modal-header text-white rounded-top-3"
                   style="background: linear-gradient(135deg, #2f6fb6, #4b8edc);">
@@ -159,37 +156,51 @@
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-
               <!-- Body -->
               <div class="modal-body py-3">
                 <table class="table table-hover align-middle shadow-sm rounded-3 overflow-hidden mb-0"
                       style="background-color: #ffffff; border-radius: 0.75rem;">
                   <thead style="background-color:#d9e8fb;">
                     <tr class="text-center text-primary fw-semibold">
-                      <th>รหัส</th>
-                      <th>ชื่อโรงพยาบาล</th>
+                      <th rowspan="2" class="text-center">รหัส</th>
+                      <th rowspan="2" class="text-center" style="border-right: 1px solid #aac6ec;">ชื่อโรงพยาบาล</th>
+                      <th colspan="2" style="border-right: 1px solid #aac6ec;">Refer In</th>
+                      <th colspan="2">Refer Out</th>
+                    </tr>
+                    <tr class="text-center text-primary fw-semibold">
                       <th>ในจังหวัด</th>
-                      <th>ต่างจังหวัด</th>
+                      <th style="border-right: 1px solid #aac6ec;">นอกจังหวัด</th>
+                      <th>ในจังหวัด</th>
+                      <th>นอกจังหวัด</th>
                     </tr>
                   </thead>
                   <tbody>
                     @foreach($hospitalSummary as $h)
                       <tr>
                         <td align="right" class="text-secondary">{{ $h->hospcode }}</td>
-                        <td>
+                        <td style="border-right: 1px solid #aac6ec;">
                           <span class="fw-semibold text-dark">{{ $h->hospname }}</span><br>
                           <small class="text-muted">
                             {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
                           </small>
                         </td>
-                        <td align="right" class="text-primary">{{ $h->visit_referout_inprov }}</td>
-                        <td align="right" class="fw-bold text-success">{{ $h->visit_referout_outprov }}</td>
+                        <td align="right" class="text-primary">{{ number_format($h->visit_referin_inprov) }}</td>
+                        <td align="right" class="fw-bold text-success" style="border-right: 1px solid #aac6ec;">{{ number_format($h->visit_referin_outprov) }}</td>
+                        <td align="right" class="text-primary">{{ number_format($h->visit_referout_inprov) }}</td>
+                        <td align="right" class="fw-bold text-success">{{ number_format($h->visit_referout_outprov) }}</td>
                       </tr>
                     @endforeach
+                    {{-- แถวผลรวม --}}
+                    <tr style="background-color:#eef4fb;" class="fw-bold text-end">
+                      <td colspan="2" class="text-center text-dark" style="border-right: 1px solid #aac6ec;">รวมทั้งหมด</td>
+                      <td class="text-primary">{{ number_format($hospitalSummary->sum('visit_referin_inprov')) }}</td>
+                      <td class="text-success" style="border-right: 1px solid #aac6ec;">{{ number_format($hospitalSummary->sum('visit_referin_outprov')) }}</td>
+                      <td class="text-primary">{{ number_format($hospitalSummary->sum('visit_referout_inprov')) }}</td>
+                      <td class="text-success">{{ number_format($hospitalSummary->sum('visit_referout_outprov')) }}</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
-
               <!-- Footer -->
               <div class="modal-footer" style="background-color:#eef4fb;">
                 <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm"
