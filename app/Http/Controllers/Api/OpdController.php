@@ -48,8 +48,10 @@ class OpdController extends Controller
             'records.*.visit_healthmed'     => ['required', 'integer', 'min:0'],
             'records.*.visit_dent'          => ['required', 'integer', 'min:0'],
             'records.*.visit_physic'        => ['required', 'integer', 'min:0'],
-            'records.*.visit_referout_inprov'      => ['required', 'integer', 'min:0'],
-            'records.*.visit_referout_outprov'     => ['required', 'integer', 'min:0'],
+            'records.*.visit_referout_inprov'     => ['required', 'integer', 'min:0'],
+            'records.*.visit_referout_outprov'    => ['required', 'integer', 'min:0'],
+            'records.*.visit_referin_inprov'      => ['nullable', 'integer', 'min:0'],
+            'records.*.visit_referin_outprov'     => ['nullable', 'integer', 'min:0'],
 
             // รายได้ (float/double)
             'records.*.inc_total'            => ['required', 'numeric', 'min:0'],
