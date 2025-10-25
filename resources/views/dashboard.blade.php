@@ -44,9 +44,16 @@
               </div>
               <div class="d-flex align-items-end gap-4">
                 <div class="text-end">
+                  <div class="small text-secondary text-center">จำนวนเตียง</div>
+                  <div class="fw-bold text-primary" style="font-size:1.75rem;">
+                    {{ $fmtInt($total_bed_qty ?? 0) }}
+                  </div>
+                </div>
+                <div class="vr d-none d-sm-block"></div>
+                <div class="text-end">
                   <div class="small text-secondary text-center">Admit</div>
                   <div class="fw-bold text-danger" style="font-size:1.75rem;">
-                    {{ $fmtInt($total_bed_qty ?? 0) }}
+                    {{ $fmtInt($total_bed_use ?? 0) }}
                   </div>
                 </div>
                 <div class="vr d-none d-sm-block"></div>
@@ -81,9 +88,9 @@
                     <tr class="text-center text-primary fw-semibold">
                       <th>รหัส</th>
                       <th>ชื่อโรงพยาบาล</th>
-                      <th>เตียงจริง</th>
-                      <th>ใช้</th>
-                      <th>ว่าง</th>
+                      <th>จำนวนเตียง</th>
+                      <th>Admit</th>
+                      <th>เตียงว่าง</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -97,7 +104,7 @@
                           </small>
                         </td>
                         <td align="right" class="text-primary">{{ $h->bed_qty }}</td>
-                        <td align="right" class="text-warning">{{ $h->bed_use }}</td>
+                        <td align="right" class="text-danger">{{ $h->bed_use }}</td>
                         <td align="right" class="fw-bold text-success">
                           {{ $h->bed_qty - $h->bed_use }}
                         </td>
@@ -163,7 +170,7 @@
                   <thead style="background-color:#d9e8fb;">
                     <tr class="text-center text-primary fw-semibold">
                       <th rowspan="2" class="text-center">รหัส</th>
-                      <th rowspan="2" class="text-center" style="border-right: 1px solid #aac6ec;">ชื่อโรงพยาบาล</th>
+                      <th rowspan="2" class="text-center">ชื่อโรงพยาบาล</th>
                       <th colspan="2" style="border-right: 1px solid #aac6ec;">Refer In</th>
                       <th colspan="2">Refer Out</th>
                     </tr>
@@ -178,7 +185,7 @@
                     @foreach($hospitalSummary as $h)
                       <tr>
                         <td align="right" class="text-secondary">{{ $h->hospcode }}</td>
-                        <td style="border-right: 1px solid #aac6ec;">
+                        <td>
                           <span class="fw-semibold text-dark">{{ $h->hospname }}</span><br>
                           <small class="text-muted">
                             {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
@@ -192,7 +199,7 @@
                     @endforeach
                     {{-- แถวผลรวม --}}
                     <tr style="background-color:#eef4fb;" class="fw-bold text-end">
-                      <td colspan="2" class="text-center text-dark" style="border-right: 1px solid #aac6ec;">รวมทั้งหมด</td>
+                      <td colspan="2" class="text-center text-dark" >รวมทั้งหมด</td>
                       <td class="text-primary">{{ number_format($hospitalSummary->sum('visit_referin_inprov')) }}</td>
                       <td class="text-success" style="border-right: 1px solid #aac6ec;">{{ number_format($hospitalSummary->sum('visit_referin_outprov')) }}</td>
                       <td class="text-primary">{{ number_format($hospitalSummary->sum('visit_referout_inprov')) }}</td>

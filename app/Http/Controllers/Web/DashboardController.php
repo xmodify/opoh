@@ -884,7 +884,7 @@ class DashboardController extends Controller
 
         return view('dashboard', array_merge($card,compact('budget_year_select','budget_year','diff_days','update_at10985','total_10985',
             'update_at10986','total_10986','update_at10987','total_10987','update_at10988','total_10988','update_at10989','total_10989',
-            'update_at10990','total_10990','update_at10703','total_10703','total_bed_qty','total_bed_empty','hospitals','hospitalSummary','total_10985_ipd',
+            'update_at10990','total_10990','update_at10703','total_10703','total_bed_qty','total_bed_use','total_bed_empty','hospitals','hospitalSummary','total_10985_ipd',
             'total_10986_ipd','total_10987_ipd','total_10988_ipd','total_10989_ipd','total_10990_ipd')));
     }
 }
