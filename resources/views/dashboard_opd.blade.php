@@ -32,194 +32,8 @@
         $fmtMoney = fn($n) => number_format((float)($n ?? 0), 2);
       @endphp
 
-      <div class="row g-3">
+      <div class="row g-3">  
         
-        {{--  กำลังรักษาอยู่ ------------------------------------------------------------------------------------------------------------ --}}
-        <div class="col-12 col-sm-6 col-xl-3">
-          <a href="#" data-bs-toggle="modal" data-bs-target="#AdmiitDetailModal" class="text-decoration-none text-dark">
-            <div class="glass p-3 h-100">
-              <div class="d-flex align-items-center justify-content-between mb-2">
-                <h6 class="mb-0 text-danger"><strong>กำลังรักษาอยู่ </strong></h6>
-                <span> <i class="bi bi-hospital fs-5 text-danger"></i> </span>
-              </div>
-              <div class="d-flex align-items-end gap-4">
-                <div class="text-end">
-                  <div class="small text-secondary text-center">จำนวนเตียง</div>
-                  <div class="fw-bold text-primary" style="font-size:1.75rem;">
-                    {{ $fmtInt($total_bed_qty ?? 0) }}
-                  </div>
-                </div>
-                <div class="vr d-none d-sm-block"></div>
-                <div class="text-end">
-                  <div class="small text-secondary text-center">Admit</div>
-                  <div class="fw-bold text-danger" style="font-size:1.75rem;">
-                    {{ $fmtInt($total_bed_use ?? 0) }}
-                  </div>
-                </div>
-                <div class="vr d-none d-sm-block"></div>
-                <div class="text-end">
-                  <div class="small text-secondary text-center">เตียงว่าง</div>
-                  <div class="fw-bold text-success" style="font-size:1.75rem;">
-                    {{ $fmtInt($total_bed_empty ?? 0) }}
-                  </div>
-                </div>
-              </div>              
-            </div>
-          </a>    
-        </div> 
-        {{-- Modal แสดงรายละเอียด รพ. (โทนน้ำเงินพาสเทลเข้ม / กรอบเล็ก) --}}
-        <div class="modal fade" id="AdmiitDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg modal-dialog-scrollable">
-            <div class="modal-content border-0 shadow-lg rounded-3" style="background-color:#f5f8fc;">
-              
-              <!-- Header -->
-              <div class="modal-header text-white rounded-top-3" 
-                  style="background: linear-gradient(135deg, #2f6fb6, #4b8edc);">
-                <h5 class="modal-title fw-bold" id="hospitalDetailLabel">
-                  <i class="bi bi-hospital me-2"></i> ข้อมูลจำนวนเตียง
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <!-- Body -->
-              <div class="modal-body py-3">
-                <table class="table table-hover align-middle shadow-sm rounded-3 overflow-hidden mb-0" 
-                      style="background-color: #ffffff; border-radius: 0.75rem;">
-                  <thead style="background-color:#d9e8fb;">
-                    <tr class="text-center text-primary fw-semibold">
-                      <th>รหัส</th>
-                      <th>ชื่อโรงพยาบาล</th>
-                      <th>จำนวนเตียง</th>
-                      <th>Admit</th>
-                      <th>เตียงว่าง</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @foreach($hospitals as $h)
-                      <tr>
-                        <td align="right" class="text-secondary">{{ $h->hospcode }}</td>
-                        <td>
-                          <span class="fw-semibold text-dark">{{ $h->hospname }}</span><br>
-                          <small class="text-muted">
-                            {{ \Carbon\Carbon::parse($h->updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
-                          </small>
-                        </td>
-                        <td align="right" class="text-primary">{{ $h->bed_qty }}</td>
-                        <td align="right" class="text-danger">{{ $h->bed_use }}</td>
-                        <td align="right" class="fw-bold text-success">
-                          {{ $h->bed_qty - $h->bed_use }}
-                        </td>
-                      </tr>
-                    @endforeach
-                  </tbody>
-                </table>
-              </div>
-              <!-- Footer -->
-              <div class="modal-footer" style="background-color:#eef4fb;">
-                <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm" 
-                        style="background-color:#3e7cc1; border-color:#3e7cc1;" 
-                        data-bs-dismiss="modal">
-                  ปิด
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {{--  ส่งต่อ-------------------------------------------------------------------------------------------------------------- --}}
-        <div class="col-12 col-sm-6 col-xl-3">
-          <a href="#" data-bs-toggle="modal" data-bs-target="#ReferDetailModal" class="text-decoration-none text-dark">
-            <div class="glass p-3 h-100">
-              <div class="d-flex align-items-center justify-content-between mb-2">
-                <h6 class="mb-0 text-primary"><strong>การส่งต่อ Refer</strong></h6>              
-                <span> <i class="bi bi-truck fs-5 text-danger"></i> </span>
-              </div>
-              <div class="d-flex align-items-end gap-4">
-                <div class="text-end">
-                  <div class="small text-secondary text-center">Refer In</div>
-                  <div class="fw-bold" style="font-size:1.75rem;">
-                    {{ $fmtInt($visit_referin_inprov+$visit_referin_outprov ?? 0) }}
-                  </div>
-                </div>
-                <div class="vr d-none d-sm-block"></div>
-                <div class="text-end">
-                  <div class="small text-secondary text-center">Refer Out</div>
-                  <div class="fw-bold text-primary" style="font-size:1.75rem;">
-                    {{ $fmtInt($visit_referout_inprov+$visit_referout_outprov ?? 0) }}
-                  </div>
-                </div>                
-              </div>
-            </div>
-          </a>
-        </div>
-        {{-- Modal แสดงรายละเอียด รพ. (โทนน้ำเงินพาสเทลเข้ม / modal-lg) --}}
-        <div class="modal fade" id="ReferDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg modal-dialog-scrollable">
-            <div class="modal-content border-0 shadow-lg rounded-3" style="background-color:#f5f8fc;">
-              <!-- Header -->
-              <div class="modal-header text-white rounded-top-3"
-                  style="background: linear-gradient(135deg, #2f6fb6, #4b8edc);">
-                <h5 class="modal-title fw-bold" id="hospitalDetailLabel">
-                  <i class="bi bi-arrow-left-right me-2"></i> การส่งต่อ Refer
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <!-- Body -->
-              <div class="modal-body py-3">
-                <table class="table table-hover align-middle shadow-sm rounded-3 overflow-hidden mb-0"
-                      style="background-color: #ffffff; border-radius: 0.75rem;">
-                  <thead style="background-color:#d9e8fb;">
-                    <tr class="text-center text-primary fw-semibold">
-                      <th rowspan="2" class="text-center">รหัส</th>
-                      <th rowspan="2" class="text-center">ชื่อโรงพยาบาล</th>
-                      <th colspan="2" style="border-right: 1px solid #aac6ec;">Refer In</th>
-                      <th colspan="2">Refer Out</th>
-                    </tr>
-                    <tr class="text-center text-primary fw-semibold">
-                      <th>ในจังหวัด</th>
-                      <th style="border-right: 1px solid #aac6ec;">นอกจังหวัด</th>
-                      <th>ในจังหวัด</th>
-                      <th>นอกจังหวัด</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @foreach($hospitalSummary as $h)
-                      <tr>
-                        <td align="right" class="text-secondary">{{ $h->hospcode }}</td>
-                        <td>
-                          <span class="fw-semibold text-dark">{{ $h->hospname }}</span><br>
-                          <small class="text-muted">
-                            {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
-                          </small>
-                        </td>
-                        <td align="right" class="text-primary">{{ number_format($h->visit_referin_inprov) }}</td>
-                        <td align="right" class="fw-bold text-success" style="border-right: 1px solid #aac6ec;">{{ number_format($h->visit_referin_outprov) }}</td>
-                        <td align="right" class="text-primary">{{ number_format($h->visit_referout_inprov) }}</td>
-                        <td align="right" class="fw-bold text-success">{{ number_format($h->visit_referout_outprov) }}</td>
-                      </tr>
-                    @endforeach
-                    {{-- แถวผลรวม --}}
-                    <tr style="background-color:#eef4fb;" class="fw-bold text-end">
-                      <td colspan="2" class="text-center text-dark" >รวมทั้งหมด</td>
-                      <td class="text-primary">{{ number_format($hospitalSummary->sum('visit_referin_inprov')) }}</td>
-                      <td class="text-success" style="border-right: 1px solid #aac6ec;">{{ number_format($hospitalSummary->sum('visit_referin_outprov')) }}</td>
-                      <td class="text-primary">{{ number_format($hospitalSummary->sum('visit_referout_inprov')) }}</td>
-                      <td class="text-success">{{ number_format($hospitalSummary->sum('visit_referout_outprov')) }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <!-- Footer -->
-              <div class="modal-footer" style="background-color:#eef4fb;">
-                <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm"
-                        style="background-color:#3e7cc1; border-color:#3e7cc1;"
-                        data-bs-dismiss="modal">
-                  ปิด
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {{--  ผู้ป่วยนอก ----------------------------------------------------------------------------------------------- --}}
         <div class="col-12 col-sm-6 col-xl-3">
           <a href="#" data-bs-toggle="modal" data-bs-target="#VisitDetailModal" class="text-decoration-none text-dark">
@@ -375,6 +189,170 @@
                         </td>
                         <td align="right" class="text-primary">{{ number_format($h->visit_ucs) }}</td>
                         <td align="right" class="fw-bold text-success">{{ number_format($h->inc_ucs,2) }}</td>
+                      </tr>
+                    @endforeach
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Footer -->
+              <div class="modal-footer" style="background-color:#eef4fb;">
+                <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm"
+                        style="background-color:#3e7cc1; border-color:#3e7cc1;"
+                        data-bs-dismiss="modal">
+                  ปิด
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {{--  สิทธิประกันสุขภาพ UCS ใน CUP------------------------------------------------------------------------------------------------ --}}
+        <div class="col-12 col-sm-6 col-xl-3">
+          <a href="#" data-bs-toggle="modal" data-bs-target="#UCS_IncupDetailModal" class="text-decoration-none text-dark">
+            <div class="glass p-3 h-100">
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                <h6 class="mb-0 text-primary"><strong>สิทธิประกันสุขภาพ UCS ใน CUP</strong></h6>
+                <span><i class="bi bi-person-heart fs-5 text-success"></i></span>
+              </div>
+              <div class="d-flex align-items-end gap-4">
+                <div class="text-end">
+                  <div class="small text-secondary text-center">visit</div>
+                  <div class="fw-bold" style="font-size:1.5rem;">
+                    {{ $fmtInt($visit_ucs_incup ?? 0) }}
+                  </div>
+                </div>
+                <div class="vr d-none d-sm-block"></div>
+                <div class="text-end">
+                  <div class="small text-secondary text-center">บาท</div>
+                  <div class="fw-bold text-success" style="font-size:1.5rem;">
+                    {{ $fmtMoney($inc_ucs_incup ?? 0) }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+        {{-- Modal แสดงรายละเอียด รพ. (โทนน้ำเงินพาสเทลเข้ม / modal-lg) --}}
+        <div class="modal fade" id="UCS_IncupDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow-lg rounded-3" style="background-color:#f5f8fc;">
+
+              <!-- Header -->
+              <div class="modal-header text-white rounded-top-3"
+                  style="background: linear-gradient(135deg, #2f6fb6, #4b8edc);">
+                <h5 class="modal-title fw-bold" id="hospitalDetailLabel">
+                  <i class="bi bi-shield-check me-2"></i> สิทธิประกันสุขภาพ UCS ใน CUP
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+
+              <!-- Body -->
+              <div class="modal-body py-3">
+                <table class="table table-hover align-middle shadow-sm rounded-3 overflow-hidden mb-0"
+                      style="background-color: #ffffff; border-radius: 0.75rem;">
+                  <thead style="background-color:#d9e8fb;">
+                    <tr class="text-center text-primary fw-semibold">
+                      <th>รหัส</th>
+                      <th>ชื่อโรงพยาบาล</th>
+                      <th>Visit</th>
+                      <th>ค่ารักษารวม (บาท)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @foreach($hospitalSummary as $h)
+                      <tr>
+                        <td align="right" class="text-secondary">{{ $h->hospcode }}</td>
+                        <td>
+                          <span class="fw-semibold text-dark">{{ $h->hospname }}</span><br>
+                          <small class="text-muted">
+                            {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
+                          </small>
+                        </td>
+                        <td align="right" class="text-primary">{{ number_format($h->visit_ucs_incup) }}</td>
+                        <td align="right" class="fw-bold text-success">{{ number_format($h->inc_ucs_incup,2) }}</td>
+                      </tr>
+                    @endforeach
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Footer -->
+              <div class="modal-footer" style="background-color:#eef4fb;">
+                <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm"
+                        style="background-color:#3e7cc1; border-color:#3e7cc1;"
+                        data-bs-dismiss="modal">
+                  ปิด
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {{--  สิทธิประกันสุขภาพ UCS ต่างจังหวัด------------------------------------------------------------------------------------------------ --}}
+        <div class="col-12 col-sm-6 col-xl-3">
+          <a href="#" data-bs-toggle="modal" data-bs-target="#UCS_InprovDetailModal" class="text-decoration-none text-dark">
+            <div class="glass p-3 h-100">
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                <h6 class="mb-0 text-primary"><strong>สิทธิประกันสุขภาพ UCS ในจังหวัด</strong></h6>
+                <span><i class="bi bi-person-heart fs-5 text-success"></i></span>
+              </div>
+              <div class="d-flex align-items-end gap-4">
+                <div class="text-end">
+                  <div class="small text-secondary text-center">visit</div>
+                  <div class="fw-bold" style="font-size:1.5rem;">
+                    {{ $fmtInt($visit_ucs_inprov ?? 0) }}
+                  </div>
+                </div>
+                <div class="vr d-none d-sm-block"></div>
+                <div class="text-end">
+                  <div class="small text-secondary text-center">บาท</div>
+                  <div class="fw-bold text-success" style="font-size:1.5rem;">
+                    {{ $fmtMoney($inc_ucs_inprov ?? 0) }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+        {{-- Modal แสดงรายละเอียด รพ. (โทนน้ำเงินพาสเทลเข้ม / modal-lg) --}}
+        <div class="modal fade" id="UCS_InprovDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow-lg rounded-3" style="background-color:#f5f8fc;">
+
+              <!-- Header -->
+              <div class="modal-header text-white rounded-top-3"
+                  style="background: linear-gradient(135deg, #2f6fb6, #4b8edc);">
+                <h5 class="modal-title fw-bold" id="hospitalDetailLabel">
+                  <i class="bi bi-shield-check me-2"></i> สิทธิประกันสุขภาพ UCS ในจังหวัด
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+
+              <!-- Body -->
+              <div class="modal-body py-3">
+                <table class="table table-hover align-middle shadow-sm rounded-3 overflow-hidden mb-0"
+                      style="background-color: #ffffff; border-radius: 0.75rem;">
+                  <thead style="background-color:#d9e8fb;">
+                    <tr class="text-center text-primary fw-semibold">
+                      <th>รหัส</th>
+                      <th>ชื่อโรงพยาบาล</th>
+                      <th>Visit</th>
+                      <th>ค่ารักษารวม (บาท)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @foreach($hospitalSummary as $h)
+                      <tr>
+                        <td align="right" class="text-secondary">{{ $h->hospcode }}</td>
+                        <td>
+                          <span class="fw-semibold text-dark">{{ $h->hospname }}</span><br>
+                          <small class="text-muted">
+                            {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
+                          </small>
+                        </td>
+                        <td align="right" class="text-primary">{{ number_format($h->visit_ucs_inprov) }}</td>
+                        <td align="right" class="fw-bold text-success">{{ number_format($h->inc_ucs_inprov,2) }}</td>
                       </tr>
                     @endforeach
                   </tbody>
@@ -1092,7 +1070,7 @@
   {{-- เลือกปีงบประมาณ ----------------------------------------------------------------------------------------------------------}}
   <section id="summary" class="pb-2">
       <div class="container-fluid">
-        <form method="POST" action="{{ route('web.index') }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ url('web/opd') }}" enctype="multipart/form-data">
         @csrf
           <div class="row g-4 align-items-center">
             <div class="col-lg-9">          
@@ -1460,115 +1438,7 @@
                 </tbody>
               </table>
             </div>
-          </div>
-          <br> <!-- 10985 IPD -->
-          <div class="glass p-3">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <h6>[10985] ข้อมูลบริการผู้ป่วยใน IPD โรงพยาชานุมาน ปีงบประมาณ {{$budget_year}}</h6>
-              <span class="text-secondary small">Update {{$update_at10985}}</span>              
-            </div>
-            <div class="table-responsive">
-              <table id="table10985_ipd" class="table table-bordered table-striped my-3" width ="100%">
-                <thead class="table-light">
-                  <tr class="table-danger">
-                    <th class="text-center" rowspan="2" width ="4%">เดือน</th>
-                    <th class="text-center" rowspan="2">จำนวน AN</th>
-                    <th class="text-center" rowspan="2">วันนอนรวม</th> 
-                    <th class="text-center" rowspan="2">อัตราครองเตียง (%)</th>
-                    <th class="text-center" rowspan="2">Active Base (เตียง)</th>       
-                    <th class="text-center" rowspan="2">AdjRW</th>  
-                    <th class="text-center" rowspan="2">CMI</th>
-                    <th class="text-center" colspan="3">ค่ารักษาพยาบาล</th>                
-                  </tr>    
-                  <tr class="table-danger"> 
-                    <td class="text-center text-primary">ค่ารักษารวม</td>
-                    <td class="text-center text-primary">ค่า Lab</td>
-                    <td class="text-center text-primary">ค่า ยา</td>                 
-                  </tr>    
-                </thead>
-                <tbody>
-                  <?php 
-                    $sum_an_total = 0; 
-                    $sum_admdate = 0;   
-                    $sum_adjrw = 0; 
-                    $sum_inc_total = 0;  
-                    $sum_inc_lab_total = 0;
-                    $sum_inc_drug_total = 0;
-                    $bed_report = $total_10985_ipd[0]->bed_report ?? 30; // ค่าเตียงจาก hospital_config
-                  ?>  
-                  @foreach($total_10985_ipd as $row) 
-                  <tr>
-                    <td align="center"width ="4%">{{ $row->month }}</td>
-                    <td align="right">{{ number_format($row->an_total) }}</td>
-                    <td align="right">{{ number_format($row->admdate) }}</td>
-                    <td align="right">{{ number_format($row->bed_occupancy,2) }}</td>
-                    <td align="right">{{ number_format($row->active_bed,2) }}</td>
-                    <td align="right">{{ number_format($row->adjrw,5) }}</td>
-                    <td align="right">{{ number_format($row->cmi,2) }}</td>
-                    <td align="right">{{ number_format($row->inc_total,2) }}</td>
-                    <td align="right">{{ number_format($row->inc_lab_total,2) }}</td>
-                    <td align="right">{{ number_format($row->inc_drug_total,2) }}</td>
-                  </tr>
-                  <?php 
-                    $sum_an_total += $row->an_total;
-                    $sum_admdate += $row->admdate;
-                    $sum_adjrw += $row->adjrw;
-                    $sum_inc_total += $row->inc_total;
-                    $sum_inc_lab_total += $row->inc_lab_total;
-                    $sum_inc_drug_total += $row->inc_drug_total;
-                  ?>
-                  @endforeach 
-                  <?php                   
-                  // ✅ จำนวนเตียง
-                    $bed_report = 30;
-                  // ✅ อัตราครองเตียงรวม
-                    $sum_bed_occupancy = ($sum_admdate > 0 && $bed_report > 0) ? round(($sum_admdate * 100) / ($bed_report * $diff_days), 2) : 0;  
-                  // ✅ Active Bed = วันนอนรวม ÷ จำนวนวัน
-                    $sum_active_bed = ($sum_admdate > 0 && $diff_days > 0) ? round($sum_admdate / $diff_days, 2) : 0;
-                  // ✅ CMI รวม
-                    $sum_cmi = ($sum_an_total > 0) ? round($sum_adjrw / $sum_an_total, 2) : 0; 
-                  ?>   
-                  <tr>
-                    <td align="right"><strong>รวม</strong></td>
-                    <td align="right"><strong>{{number_format($sum_an_total)}}</strong></td>
-                    <td align="right"><strong>{{number_format($sum_admdate)}}</strong></td>
-                    <td align="right"><strong>{{number_format($sum_bed_occupancy,2)}}</td>     
-                    <td align="right"><strong>{{number_format($sum_active_bed,2)}}</td>   
-                    <td align="right"><strong>{{number_format($sum_adjrw,4)}}</strong></td>  
-                    <td align="right"><strong>{{number_format($sum_cmi,2)}}</strong></td> 
-                    <td align="right"><strong>{{number_format($sum_inc_total,2)}}</strong></td>
-                    <td align="right"><strong>{{number_format($sum_inc_lab_total)}}</strong></td>
-                    <td align="right"><strong>{{number_format($sum_inc_drug_total,2)}}</strong></td>
-                  </tr>   
-                </tbody>
-              </table>
-              <!-- กราฟ -->
-              <div class="row mt-4">
-                <!-- กราฟอัตราครองเตียง -->
-                <div class="col-md-6 mb-4">
-                  <div class="card shadow-sm">
-                    <div class="card-body">
-                      <h6 class="text-center text-primary mb-1">
-                        📈 อัตราครองเตียง (%)
-                      </h6>
-                      <div id="bed_occupancy_10985"></div>
-                    </div>
-                  </div>
-                </div>
-                <!-- กราฟ CMI -->
-                <div class="col-md-6 mb-4">
-                  <div class="card shadow-sm">
-                    <div class="card-body">
-                      <h6 class="text-center text-danger mb-1">
-                        📊 CMI
-                      </h6>
-                      <div id="cmi_chart_10985"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>          
+          </div>                   
         <!-- END 10985 -->
         </div>
 
@@ -1869,115 +1739,8 @@
                 </tbody>
               </table>
             </div>
-          </div>
-          <br> <!-- 10986 IPD -->
-          <div class="glass p-3">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <h6>[10986] ข้อมูลบริการผู้ป่วยใน IPD โรงพยาบาลปทุมราช ปีงบประมาณ {{$budget_year}}</h6>
-              <span class="text-secondary small">Update {{$update_at10986}}</span>              
-            </div>
-            <div class="table-responsive">
-              <table id="table10986_ipd" class="table table-bordered table-striped my-3" width ="100%">
-                <thead class="table-light">
-                  <tr class="table-danger">
-                    <th class="text-center" rowspan="2" width ="4%">เดือน</th>
-                    <th class="text-center" rowspan="2">จำนวน AN</th>
-                    <th class="text-center" rowspan="2">วันนอนรวม</th> 
-                    <th class="text-center" rowspan="2">อัตราครองเตียง (%)</th>
-                    <th class="text-center" rowspan="2">Active Base (เตียง)</th>       
-                    <th class="text-center" rowspan="2">AdjRW</th>  
-                    <th class="text-center" rowspan="2">CMI</th>
-                    <th class="text-center" colspan="3">ค่ารักษาพยาบาล</th>                
-                  </tr>    
-                  <tr class="table-danger"> 
-                    <td class="text-center text-primary">ค่ารักษารวม</td>
-                    <td class="text-center text-primary">ค่า Lab</td>
-                    <td class="text-center text-primary">ค่า ยา</td>                 
-                  </tr>    
-                </thead>
-                <tbody>
-                  <?php 
-                    $sum_an_total = 0; 
-                    $sum_admdate = 0;   
-                    $sum_adjrw = 0; 
-                    $sum_inc_total = 0;  
-                    $sum_inc_lab_total = 0;
-                    $sum_inc_drug_total = 0;
-                    $bed_report = $total_10986_ipd[0]->bed_report ?? 30; // ค่าเตียงจาก hospital_config
-                  ?>  
-                  @foreach($total_10986_ipd as $row) 
-                  <tr>
-                    <td align="center"width ="4%">{{ $row->month }}</td>
-                    <td align="right">{{ number_format($row->an_total) }}</td>
-                    <td align="right">{{ number_format($row->admdate) }}</td>
-                    <td align="right">{{ number_format($row->bed_occupancy,2) }}</td>
-                    <td align="right">{{ number_format($row->active_bed,2) }}</td>
-                    <td align="right">{{ number_format($row->adjrw,5) }}</td>
-                    <td align="right">{{ number_format($row->cmi,2) }}</td>
-                    <td align="right">{{ number_format($row->inc_total,2) }}</td>
-                    <td align="right">{{ number_format($row->inc_lab_total,2) }}</td>
-                    <td align="right">{{ number_format($row->inc_drug_total,2) }}</td>
-                  </tr>
-                  <?php 
-                    $sum_an_total += $row->an_total;
-                    $sum_admdate += $row->admdate;
-                    $sum_adjrw += $row->adjrw;
-                    $sum_inc_total += $row->inc_total;
-                    $sum_inc_lab_total += $row->inc_lab_total;
-                    $sum_inc_drug_total += $row->inc_drug_total;
-                  ?>
-                  @endforeach 
-                  <?php                   
-                  // ✅ จำนวนเตียง
-                    $bed_report = 50;
-                  // ✅ อัตราครองเตียงรวม
-                    $sum_bed_occupancy = ($sum_admdate > 0 && $bed_report > 0) ? round(($sum_admdate * 100) / ($bed_report * $diff_days), 2) : 0;  
-                  // ✅ Active Bed = วันนอนรวม ÷ จำนวนวัน
-                    $sum_active_bed = ($sum_admdate > 0 && $diff_days > 0) ? round($sum_admdate / $diff_days, 2) : 0;
-                  // ✅ CMI รวม
-                    $sum_cmi = ($sum_an_total > 0) ? round($sum_adjrw / $sum_an_total, 2) : 0; 
-                  ?>   
-                  <tr>
-                    <td align="right"><strong>รวม</strong></td>
-                    <td align="right"><strong>{{number_format($sum_an_total)}}</strong></td>
-                    <td align="right"><strong>{{number_format($sum_admdate)}}</strong></td>
-                    <td align="right"><strong>{{number_format($sum_bed_occupancy,2)}}</td>     
-                    <td align="right"><strong>{{number_format($sum_active_bed,2)}}</td>   
-                    <td align="right"><strong>{{number_format($sum_adjrw,4)}}</strong></td>  
-                    <td align="right"><strong>{{number_format($sum_cmi,2)}}</strong></td> 
-                    <td align="right"><strong>{{number_format($sum_inc_total,2)}}</strong></td>
-                    <td align="right"><strong>{{number_format($sum_inc_lab_total)}}</strong></td>
-                    <td align="right"><strong>{{number_format($sum_inc_drug_total,2)}}</strong></td>
-                  </tr>   
-                </tbody>
-              </table>
-              <!-- กราฟ -->
-              <div class="row mt-4">
-                <!-- กราฟอัตราครองเตียง -->
-                <div class="col-md-6 mb-4">
-                  <div class="card shadow-sm">
-                    <div class="card-body">
-                      <h6 class="text-center text-primary mb-1">
-                        📈 อัตราครองเตียง (%)
-                      </h6>
-                      <div id="bed_occupancy_10986"></div>
-                    </div>
-                  </div>
-                </div>
-                <!-- กราฟ CMI -->
-                <div class="col-md-6 mb-4">
-                  <div class="card shadow-sm">
-                    <div class="card-body">
-                      <h6 class="text-center text-danger mb-1">
-                        📊 CMI
-                      </h6>
-                      <div id="cmi_chart_10986"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          </div> 
+        <!-- END 10986 -->         
         </div>
 
         <!-- 10987 OPD-->
@@ -2277,115 +2040,8 @@
                 </tbody>
               </table>
             </div>
-          </div>
-          <br> <!-- 10987 IPD -->
-          <div class="glass p-3">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <h6>[10987] ข้อมูลบริการผู้ป่วยใน IPD โรงพยาบาลพนา ปีงบประมาณ {{$budget_year}}</h6>
-              <span class="text-secondary small">Update {{$update_at10987}}</span>              
-            </div>
-            <div class="table-responsive">
-              <table id="table10987_ipd" class="table table-bordered table-striped my-3" width ="100%">
-                <thead class="table-light">
-                  <tr class="table-danger">
-                    <th class="text-center" rowspan="2" width ="4%">เดือน</th>
-                    <th class="text-center" rowspan="2">จำนวน AN</th>
-                    <th class="text-center" rowspan="2">วันนอนรวม</th> 
-                    <th class="text-center" rowspan="2">อัตราครองเตียง (%)</th>
-                    <th class="text-center" rowspan="2">Active Base (เตียง)</th>        
-                    <th class="text-center" rowspan="2">AdjRW</th>  
-                    <th class="text-center" rowspan="2">CMI</th>
-                    <th class="text-center" colspan="3">ค่ารักษาพยาบาล</th>                
-                  </tr>    
-                  <tr class="table-danger"> 
-                    <td class="text-center text-primary">ค่ารักษารวม</td>
-                    <td class="text-center text-primary">ค่า Lab</td>
-                    <td class="text-center text-primary">ค่า ยา</td>                 
-                  </tr>    
-                </thead>
-                <tbody>
-                  <?php 
-                    $sum_an_total = 0; 
-                    $sum_admdate = 0;   
-                    $sum_adjrw = 0; 
-                    $sum_inc_total = 0;  
-                    $sum_inc_lab_total = 0;
-                    $sum_inc_drug_total = 0;
-                    $bed_report = $total_10987_ipd[0]->bed_report ?? 30; // ค่าเตียงจาก hospital_config
-                  ?>  
-                  @foreach($total_10987_ipd as $row) 
-                  <tr>
-                    <td align="center"width ="4%">{{ $row->month }}</td>
-                    <td align="right">{{ number_format($row->an_total) }}</td>
-                    <td align="right">{{ number_format($row->admdate) }}</td>
-                    <td align="right">{{ number_format($row->bed_occupancy,2) }}</td>
-                    <td align="right">{{ number_format($row->active_bed,2) }}</td>
-                    <td align="right">{{ number_format($row->adjrw,5) }}</td>
-                    <td align="right">{{ number_format($row->cmi,2) }}</td>
-                    <td align="right">{{ number_format($row->inc_total,2) }}</td>
-                    <td align="right">{{ number_format($row->inc_lab_total,2) }}</td>
-                    <td align="right">{{ number_format($row->inc_drug_total,2) }}</td>
-                  </tr>
-                  <?php 
-                    $sum_an_total += $row->an_total;
-                    $sum_admdate += $row->admdate;
-                    $sum_adjrw += $row->adjrw;
-                    $sum_inc_total += $row->inc_total;
-                    $sum_inc_lab_total += $row->inc_lab_total;
-                    $sum_inc_drug_total += $row->inc_drug_total;
-                  ?>
-                  @endforeach 
-                  <?php                   
-                  // ✅ จำนวนเตียง
-                    $bed_report = 30;
-                  // ✅ อัตราครองเตียงรวม
-                    $sum_bed_occupancy = ($sum_admdate > 0 && $bed_report > 0) ? round(($sum_admdate * 100) / ($bed_report * $diff_days), 2) : 0;  
-                  // ✅ Active Bed = วันนอนรวม ÷ จำนวนวัน
-                    $sum_active_bed = ($sum_admdate > 0 && $diff_days > 0) ? round($sum_admdate / $diff_days, 2) : 0;
-                  // ✅ CMI รวม
-                    $sum_cmi = ($sum_an_total > 0) ? round($sum_adjrw / $sum_an_total, 2) : 0; 
-                  ?>   
-                  <tr>
-                    <td align="right"><strong>รวม</strong></td>
-                    <td align="right"><strong>{{number_format($sum_an_total)}}</strong></td>
-                    <td align="right"><strong>{{number_format($sum_admdate)}}</strong></td>
-                    <td align="right"><strong>{{number_format($sum_bed_occupancy,2)}}</td>     
-                    <td align="right"><strong>{{number_format($sum_active_bed,2)}}</td>   
-                    <td align="right"><strong>{{number_format($sum_adjrw,4)}}</strong></td>  
-                    <td align="right"><strong>{{number_format($sum_cmi,2)}}</strong></td> 
-                    <td align="right"><strong>{{number_format($sum_inc_total,2)}}</strong></td>
-                    <td align="right"><strong>{{number_format($sum_inc_lab_total)}}</strong></td>
-                    <td align="right"><strong>{{number_format($sum_inc_drug_total,2)}}</strong></td>
-                  </tr>   
-                </tbody>
-              </table>
-              <!-- กราฟ -->
-              <div class="row mt-4">
-                <!-- กราฟอัตราครองเตียง -->
-                <div class="col-md-6 mb-4">
-                  <div class="card shadow-sm">
-                    <div class="card-body">
-                      <h6 class="text-center text-primary mb-1">
-                        📈 อัตราครองเตียง (%)
-                      </h6>
-                      <div id="bed_occupancy_10987"></div>
-                    </div>
-                  </div>
-                </div>
-                <!-- กราฟ CMI -->
-                <div class="col-md-6 mb-4">
-                  <div class="card shadow-sm">
-                    <div class="card-body">
-                      <h6 class="text-center text-danger mb-1">
-                        📊 CMI
-                      </h6>
-                      <div id="cmi_chart_10987"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          </div> 
+          <!-- END 10987 -->         
         </div>
 
         <!-- 10988 OPD -->
@@ -2686,114 +2342,7 @@
               </table>
             </div>
           </div>
-          <br> <!-- 10988 IPD -->
-          <div class="glass p-3">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <h6>[10988] ข้อมูลบริการผู้ป่วยใน IPD โรงพยาบาลเสนางคนิคม ปีงบประมาณ {{$budget_year}}</h6>
-              <span class="text-secondary small">Update {{$update_at10988}}</span>              
-            </div>
-            <div class="table-responsive">
-              <table id="table10988_ipd" class="table table-bordered table-striped my-3" width ="100%">
-                <thead class="table-light">
-                  <tr class="table-danger">
-                    <th class="text-center" rowspan="2" width ="4%">เดือน</th>
-                    <th class="text-center" rowspan="2">จำนวน AN</th>
-                    <th class="text-center" rowspan="2">วันนอนรวม</th> 
-                    <th class="text-center" rowspan="2">อัตราครองเตียง (%)</th>
-                    <th class="text-center" rowspan="2">Active Base (เตียง)</th>     
-                    <th class="text-center" rowspan="2">AdjRW</th>  
-                    <th class="text-center" rowspan="2">CMI</th>
-                    <th class="text-center" colspan="3">ค่ารักษาพยาบาล</th>                
-                  </tr>    
-                  <tr class="table-danger"> 
-                    <td class="text-center text-primary">ค่ารักษารวม</td>
-                    <td class="text-center text-primary">ค่า Lab</td>
-                    <td class="text-center text-primary">ค่า ยา</td>                 
-                  </tr>    
-                </thead>
-                <tbody>
-                  <?php 
-                    $sum_an_total = 0; 
-                    $sum_admdate = 0;   
-                    $sum_adjrw = 0; 
-                    $sum_inc_total = 0;  
-                    $sum_inc_lab_total = 0;
-                    $sum_inc_drug_total = 0;
-                    $bed_report = $total_10988_ipd[0]->bed_report ?? 30; // ค่าเตียงจาก hospital_config
-                  ?>  
-                  @foreach($total_10988_ipd as $row) 
-                  <tr>
-                    <td align="center"width ="4%">{{ $row->month }}</td>
-                    <td align="right">{{ number_format($row->an_total) }}</td>
-                    <td align="right">{{ number_format($row->admdate) }}</td>
-                    <td align="right">{{ number_format($row->bed_occupancy,2) }}</td>
-                    <td align="right">{{ number_format($row->active_bed,2) }}</td>
-                    <td align="right">{{ number_format($row->adjrw,5) }}</td>
-                    <td align="right">{{ number_format($row->cmi,2) }}</td>
-                    <td align="right">{{ number_format($row->inc_total,2) }}</td>
-                    <td align="right">{{ number_format($row->inc_lab_total,2) }}</td>
-                    <td align="right">{{ number_format($row->inc_drug_total,2) }}</td>
-                  </tr>
-                  <?php 
-                    $sum_an_total += $row->an_total;
-                    $sum_admdate += $row->admdate;
-                    $sum_adjrw += $row->adjrw;
-                    $sum_inc_total += $row->inc_total;
-                    $sum_inc_lab_total += $row->inc_lab_total;
-                    $sum_inc_drug_total += $row->inc_drug_total;
-                  ?>
-                  @endforeach 
-                  <?php                   
-                  // ✅ จำนวนเตียง
-                    $bed_report = 30;
-                  // ✅ อัตราครองเตียงรวม
-                    $sum_bed_occupancy = ($sum_admdate > 0 && $bed_report > 0) ? round(($sum_admdate * 100) / ($bed_report * $diff_days), 2) : 0;  
-                  // ✅ Active Bed = วันนอนรวม ÷ จำนวนวัน
-                    $sum_active_bed = ($sum_admdate > 0 && $diff_days > 0) ? round($sum_admdate / $diff_days, 2) : 0;
-                  // ✅ CMI รวม
-                    $sum_cmi = ($sum_an_total > 0) ? round($sum_adjrw / $sum_an_total, 2) : 0; 
-                  ?>   
-                  <tr>
-                    <td align="right"><strong>รวม</strong></td>
-                    <td align="right"><strong>{{number_format($sum_an_total)}}</strong></td>
-                    <td align="right"><strong>{{number_format($sum_admdate)}}</strong></td>
-                    <td align="right"><strong>{{number_format($sum_bed_occupancy,2)}}</td>     
-                    <td align="right"><strong>{{number_format($sum_active_bed,2)}}</td>   
-                    <td align="right"><strong>{{number_format($sum_adjrw,4)}}</strong></td>  
-                    <td align="right"><strong>{{number_format($sum_cmi,2)}}</strong></td> 
-                    <td align="right"><strong>{{number_format($sum_inc_total,2)}}</strong></td>
-                    <td align="right"><strong>{{number_format($sum_inc_lab_total)}}</strong></td>
-                    <td align="right"><strong>{{number_format($sum_inc_drug_total,2)}}</strong></td>
-                  </tr>   
-                </tbody>
-              </table>
-              <!-- กราฟ -->
-              <div class="row mt-4">
-                <!-- กราฟอัตราครองเตียง -->
-                <div class="col-md-6 mb-4">
-                  <div class="card shadow-sm">
-                    <div class="card-body">
-                      <h6 class="text-center text-primary mb-1">
-                        📈 อัตราครองเตียง (%)
-                      </h6>
-                      <div id="bed_occupancy_10988"></div>
-                    </div>
-                  </div>
-                </div>
-                <!-- กราฟ CMI -->
-                <div class="col-md-6 mb-4">
-                  <div class="card shadow-sm">
-                    <div class="card-body">
-                      <h6 class="text-center text-danger mb-1">
-                        📊 CMI
-                      </h6>
-                      <div id="cmi_chart_10988"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>        
+        <!-- END 10988 -->                
         </div>
 
         <!-- 10989 OPD -->
@@ -3093,115 +2642,8 @@
                 </tbody>
               </table>
             </div>
-          </div>
-          <br> <!-- 10989 IPD -->
-          <div class="glass p-3">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <h6>[10989] ข้อมูลบริการผู้ป่วยใน IPD โรงพยาบาลหัวตะพาน ปีงบประมาณ {{$budget_year}}</h6>
-              <span class="text-secondary small">Update {{$update_at10989}}</span>              
-            </div>
-            <div class="table-responsive">
-              <table id="table10989_ipd" class="table table-bordered table-striped my-3" width ="100%">
-                <thead class="table-light">
-                  <tr class="table-danger">
-                    <th class="text-center" rowspan="2" width ="4%">เดือน</th>
-                    <th class="text-center" rowspan="2">จำนวน AN</th>
-                    <th class="text-center" rowspan="2">วันนอนรวม</th> 
-                    <th class="text-center" rowspan="2">อัตราครองเตียง (%)</th>
-                    <th class="text-center" rowspan="2">Active Base (เตียง)</th>       
-                    <th class="text-center" rowspan="2">AdjRW</th>  
-                    <th class="text-center" rowspan="2">CMI</th>
-                    <th class="text-center" colspan="3">ค่ารักษาพยาบาล</th>                
-                  </tr>    
-                  <tr class="table-danger"> 
-                    <td class="text-center text-primary">ค่ารักษารวม</td>
-                    <td class="text-center text-primary">ค่า Lab</td>
-                    <td class="text-center text-primary">ค่า ยา</td>                 
-                  </tr>    
-                </thead>
-                <tbody>
-                  <?php 
-                    $sum_an_total = 0; 
-                    $sum_admdate = 0;   
-                    $sum_adjrw = 0; 
-                    $sum_inc_total = 0;  
-                    $sum_inc_lab_total = 0;
-                    $sum_inc_drug_total = 0;
-                    $bed_report = $total_10989_ipd[0]->bed_report ?? 30; // ค่าเตียงจาก hospital_config
-                  ?>  
-                  @foreach($total_10989_ipd as $row) 
-                  <tr>
-                    <td align="center"width ="4%">{{ $row->month }}</td>
-                    <td align="right">{{ number_format($row->an_total) }}</td>
-                    <td align="right">{{ number_format($row->admdate) }}</td>
-                    <td align="right">{{ number_format($row->bed_occupancy,2) }}</td>
-                    <td align="right">{{ number_format($row->active_bed,2) }}</td>
-                    <td align="right">{{ number_format($row->adjrw,5) }}</td>
-                    <td align="right">{{ number_format($row->cmi,2) }}</td>
-                    <td align="right">{{ number_format($row->inc_total,2) }}</td>
-                    <td align="right">{{ number_format($row->inc_lab_total,2) }}</td>
-                    <td align="right">{{ number_format($row->inc_drug_total,2) }}</td>
-                  </tr>
-                  <?php 
-                    $sum_an_total += $row->an_total;
-                    $sum_admdate += $row->admdate;
-                    $sum_adjrw += $row->adjrw;
-                    $sum_inc_total += $row->inc_total;
-                    $sum_inc_lab_total += $row->inc_lab_total;
-                    $sum_inc_drug_total += $row->inc_drug_total;
-                  ?>
-                  @endforeach 
-                  <?php                   
-                  // ✅ จำนวนเตียง
-                    $bed_report = 60;
-                  // ✅ อัตราครองเตียงรวม
-                    $sum_bed_occupancy = ($sum_admdate > 0 && $bed_report > 0) ? round(($sum_admdate * 100) / ($bed_report * $diff_days), 2) : 0;  
-                  // ✅ Active Bed = วันนอนรวม ÷ จำนวนวัน
-                    $sum_active_bed = ($sum_admdate > 0 && $diff_days > 0) ? round($sum_admdate / $diff_days, 2) : 0;
-                  // ✅ CMI รวม
-                    $sum_cmi = ($sum_an_total > 0) ? round($sum_adjrw / $sum_an_total, 2) : 0; 
-                  ?>   
-                  <tr>
-                    <td align="right"><strong>รวม</strong></td>
-                    <td align="right"><strong>{{number_format($sum_an_total)}}</strong></td>
-                    <td align="right"><strong>{{number_format($sum_admdate)}}</strong></td>
-                    <td align="right"><strong>{{number_format($sum_bed_occupancy,2)}}</td>     
-                    <td align="right"><strong>{{number_format($sum_active_bed,2)}}</td>   
-                    <td align="right"><strong>{{number_format($sum_adjrw,4)}}</strong></td>  
-                    <td align="right"><strong>{{number_format($sum_cmi,2)}}</strong></td> 
-                    <td align="right"><strong>{{number_format($sum_inc_total,2)}}</strong></td>
-                    <td align="right"><strong>{{number_format($sum_inc_lab_total)}}</strong></td>
-                    <td align="right"><strong>{{number_format($sum_inc_drug_total,2)}}</strong></td>
-                  </tr>   
-                </tbody>
-              </table>
-              <!-- กราฟ -->
-              <div class="row mt-4">
-                <!-- กราฟอัตราครองเตียง -->
-                <div class="col-md-6 mb-4">
-                  <div class="card shadow-sm">
-                    <div class="card-body">
-                      <h6 class="text-center text-primary mb-1">
-                        📈 อัตราครองเตียง (%)
-                      </h6>
-                      <div id="bed_occupancy_10989"></div>
-                    </div>
-                  </div>
-                </div>
-                <!-- กราฟ CMI -->
-                <div class="col-md-6 mb-4">
-                  <div class="card shadow-sm">
-                    <div class="card-body">
-                      <h6 class="text-center text-danger mb-1">
-                        📊 CMI
-                      </h6>
-                      <div id="cmi_chart_10989"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          </div> 
+        <!-- END 10989 -->          
         </div>
 
         <!-- 10990 OPD -->
@@ -3502,114 +2944,7 @@
               </table>
             </div>
           </div>
-          <br> <!-- 10990 IPD -->
-          <div class="glass p-3">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <h6>[10990] ข้อมูลบริการผู้ป่วยใน IPD โรงพยาบาลลืออำนาจ ปีงบประมาณ {{$budget_year}}</h6>
-              <span class="text-secondary small">Update {{$update_at10990}}</span>              
-            </div>
-            <div class="table-responsive">
-              <table id="table10990_ipd" class="table table-bordered table-striped my-3" width ="100%">
-                <thead class="table-light">
-                  <tr class="table-danger">
-                    <th class="text-center" rowspan="2" width ="4%">เดือน</th>
-                    <th class="text-center" rowspan="2">จำนวน AN</th>
-                    <th class="text-center" rowspan="2">วันนอนรวม</th> 
-                    <th class="text-center" rowspan="2">อัตราครองเตียง (%)</th>
-                    <th class="text-center" rowspan="2">Active Base (เตียง)</th>      
-                    <th class="text-center" rowspan="2">AdjRW</th>  
-                    <th class="text-center" rowspan="2">CMI</th>
-                    <th class="text-center" colspan="3">ค่ารักษาพยาบาล</th>                
-                  </tr>    
-                  <tr class="table-danger"> 
-                    <td class="text-center text-primary">ค่ารักษารวม</td>
-                    <td class="text-center text-primary">ค่า Lab</td>
-                    <td class="text-center text-primary">ค่า ยา</td>                 
-                  </tr>    
-                </thead>
-                <tbody>
-                  <?php 
-                    $sum_an_total = 0; 
-                    $sum_admdate = 0;   
-                    $sum_adjrw = 0; 
-                    $sum_inc_total = 0;  
-                    $sum_inc_lab_total = 0;
-                    $sum_inc_drug_total = 0;
-                    $bed_report = $total_10990_ipd[0]->bed_report ?? 30; // ค่าเตียงจาก hospital_config
-                  ?>  
-                  @foreach($total_10990_ipd as $row) 
-                  <tr>
-                    <td align="center"width ="4%">{{ $row->month }}</td>
-                    <td align="right">{{ number_format($row->an_total) }}</td>
-                    <td align="right">{{ number_format($row->admdate) }}</td>
-                    <td align="right">{{ number_format($row->bed_occupancy,2) }}</td>
-                    <td align="right">{{ number_format($row->active_bed,2) }}</td>
-                    <td align="right">{{ number_format($row->adjrw,5) }}</td>
-                    <td align="right">{{ number_format($row->cmi,2) }}</td>
-                    <td align="right">{{ number_format($row->inc_total,2) }}</td>
-                    <td align="right">{{ number_format($row->inc_lab_total,2) }}</td>
-                    <td align="right">{{ number_format($row->inc_drug_total,2) }}</td>
-                  </tr>
-                  <?php 
-                    $sum_an_total += $row->an_total;
-                    $sum_admdate += $row->admdate;
-                    $sum_adjrw += $row->adjrw;
-                    $sum_inc_total += $row->inc_total;
-                    $sum_inc_lab_total += $row->inc_lab_total;
-                    $sum_inc_drug_total += $row->inc_drug_total;
-                  ?>
-                  @endforeach 
-                  <?php                   
-                  // ✅ จำนวนเตียง
-                    $bed_report = 30;
-                  // ✅ อัตราครองเตียงรวม
-                    $sum_bed_occupancy = ($sum_admdate > 0 && $bed_report > 0) ? round(($sum_admdate * 100) / ($bed_report * $diff_days), 2) : 0;  
-                  // ✅ Active Bed = วันนอนรวม ÷ จำนวนวัน
-                    $sum_active_bed = ($sum_admdate > 0 && $diff_days > 0) ? round($sum_admdate / $diff_days, 2) : 0;
-                  // ✅ CMI รวม
-                    $sum_cmi = ($sum_an_total > 0) ? round($sum_adjrw / $sum_an_total, 2) : 0; 
-                  ?>   
-                  <tr>
-                    <td align="right"><strong>รวม</strong></td>
-                    <td align="right"><strong>{{number_format($sum_an_total)}}</strong></td>
-                    <td align="right"><strong>{{number_format($sum_admdate)}}</strong></td>
-                    <td align="right"><strong>{{number_format($sum_bed_occupancy,2)}}</td>     
-                    <td align="right"><strong>{{number_format($sum_active_bed,2)}}</td>   
-                    <td align="right"><strong>{{number_format($sum_adjrw,4)}}</strong></td>  
-                    <td align="right"><strong>{{number_format($sum_cmi,2)}}</strong></td> 
-                    <td align="right"><strong>{{number_format($sum_inc_total,2)}}</strong></td>
-                    <td align="right"><strong>{{number_format($sum_inc_lab_total)}}</strong></td>
-                    <td align="right"><strong>{{number_format($sum_inc_drug_total,2)}}</strong></td>
-                  </tr>   
-                </tbody>
-              </table>
-              <!-- กราฟ -->
-              <div class="row mt-4">
-                <!-- กราฟอัตราครองเตียง -->
-                <div class="col-md-6 mb-4">
-                  <div class="card shadow-sm">
-                    <div class="card-body">
-                      <h6 class="text-center text-primary mb-1">
-                        📈 อัตราครองเตียง (%)
-                      </h6>
-                      <div id="bed_occupancy_10990"></div>
-                    </div>
-                  </div>
-                </div>
-                <!-- กราฟ CMI -->
-                <div class="col-md-6 mb-4">
-                  <div class="card shadow-sm">
-                    <div class="card-body">
-                      <h6 class="text-center text-danger mb-1">
-                        📊 CMI
-                      </h6>
-                      <div id="cmi_chart_10990"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <!-- END 10990 --> 
         </div>
 
         <!-- 10703 OPD -->
@@ -3910,7 +3245,7 @@
               </table>
             </div>
           </div>
-          
+        <!-- END 10703 --> 
         </div>
 
       </div>
@@ -3932,6 +3267,7 @@
 @endsection
 
 <!-- script datatable  ---------------------------------------------------------------------------------------->
+@push('scripts')
   <script>
     $(function () {
       $('#table10985').DataTable({
@@ -4072,661 +3408,5 @@
       });
     });
   </script>
+@endpush
 
-  <script>
-    $(function () {
-      $('#table10985_ipd').DataTable({
-        dom: '<"d-flex justify-content-end mb-2"B>rt',
-        buttons: [
-          {
-            extend: 'excelHtml5',
-            text: '<i class="bi bi-file-earmark-excel"></i> ส่งออก Excel',
-            className: 'btn btn-success btn-sm',
-            title: 'ข้อมูลบริการผู้ป่วยใน IPD โรงพยาบาลชานุมาน {{ $budget_year ?? "" }}'
-          }
-        ],
-        ordering: false,
-        paging: false,
-        info: false,
-        lengthChange: false,
-        language: { search: "ค้นหา:" }
-      });
-    });
-  </script>
-  <script>
-    $(function () {
-      $('#table10986_ipd').DataTable({
-        dom: '<"d-flex justify-content-end mb-2"B>rt',
-        buttons: [
-          {
-            extend: 'excelHtml5',
-            text: '<i class="bi bi-file-earmark-excel"></i> ส่งออก Excel',
-            className: 'btn btn-success btn-sm',
-            title: 'ข้อมูลบริการผู้ป่วยใน IPD โรงพยาบาลปทุมราชวงศา {{ $budget_year ?? "" }}'
-          }
-        ],
-        ordering: false,
-        paging: false,
-        info: false,
-        lengthChange: false,
-        language: { search: "ค้นหา:" }
-      });
-    });
-  </script>
-  <script>
-    $(function () {
-      $('#table10987_ipd').DataTable({
-        dom: '<"d-flex justify-content-end mb-2"B>rt',
-        buttons: [
-          {
-            extend: 'excelHtml5',
-            text: '<i class="bi bi-file-earmark-excel"></i> ส่งออก Excel',
-            className: 'btn btn-success btn-sm',
-            title: 'ข้อมูลบริการผู้ป่วยใน IPD โรงพยาบาลพนา {{ $budget_year ?? "" }}'
-          }
-        ],
-        ordering: false,
-        paging: false,
-        info: false,
-        lengthChange: false,
-        language: { search: "ค้นหา:" }
-      });
-    });
-  </script>
-  <script>
-    $(function () {
-      $('#table10988_ipd').DataTable({
-        dom: '<"d-flex justify-content-end mb-2"B>rt',
-        buttons: [
-          {
-            extend: 'excelHtml5',
-            text: '<i class="bi bi-file-earmark-excel"></i> ส่งออก Excel',
-            className: 'btn btn-success btn-sm',
-            title: 'ข้อมูลบริการผู้ป่วยใน IPD โรงพยาบาลเสนางคนิคม {{ $budget_year ?? "" }}'
-          }
-        ],
-        ordering: false,
-        paging: false,
-        info: false,
-        lengthChange: false,
-        language: { search: "ค้นหา:" }
-      });
-    });
-  </script>
-  <script>
-    $(function () {
-      $('#table10989_ipd').DataTable({
-        dom: '<"d-flex justify-content-end mb-2"B>rt',
-        buttons: [
-          {
-            extend: 'excelHtml5',
-            text: '<i class="bi bi-file-earmark-excel"></i> ส่งออก Excel',
-            className: 'btn btn-success btn-sm',
-            title: 'ข้อมูลบริการผู้ป่วยใน IPD โรงพยาบาลหัวตะพาน {{ $budget_year ?? "" }}'
-          }
-        ],
-        ordering: false,
-        paging: false,
-        info: false,
-        lengthChange: false,
-        language: { search: "ค้นหา:" }
-      });
-    });
-  </script>
-  <script>
-    $(function () {
-      $('#table10990_ipd').DataTable({
-        dom: '<"d-flex justify-content-end mb-2"B>rt',
-        buttons: [
-          {
-            extend: 'excelHtml5',
-            text: '<i class="bi bi-file-earmark-excel"></i> ส่งออก Excel',
-            className: 'btn btn-success btn-sm',
-            title: 'ข้อมูลบริการผู้ป่วยใน IPD โรงพยาบาลลืออำนาจ {{ $budget_year ?? "" }}'
-          }
-        ],
-        ordering: false,
-        paging: false,
-        info: false,
-        lengthChange: false,
-        language: { search: "ค้นหา:" }
-      });
-    });
-  </script>
-
-<!-- script กราฟ  ---------------------------------------------------------------------------------------->
-<script src="{{ asset('assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // ✅ ดึงข้อมูลจาก PHP
-      const months = {!! json_encode(array_column($total_10985_ipd, 'month')) !!};
-      const bed_occupancy = {!! json_encode(array_column($total_10985_ipd, 'bed_occupancy')) !!};
-      const cmi = {!! json_encode(array_column($total_10985_ipd, 'cmi')) !!};
-      // 🩵 กราฟอัตราครองเตียง
-      const bedChart = new ApexCharts(document.querySelector("#bed_occupancy_10985"), {
-        series: [{
-          name: 'อัตราครองเตียง (%)',
-          data: bed_occupancy
-        }],
-        chart: {
-          height: 250,
-          type: 'area',
-          toolbar: { show: false },
-          animations: { enabled: true, easing: 'easeinout', speed: 800 }
-        },
-        colors: ['#4154f1'],
-        markers: { size: 4 },
-        fill: {
-          type: "gradient",
-          gradient: {
-            shadeIntensity: 1,
-            opacityFrom: 0.3,
-            opacityTo: 0.4,
-            stops: [0, 90, 100]
-          }
-        },
-        stroke: { curve: 'smooth', width: 2 },
-        dataLabels: {
-          enabled: true,
-          style: { fontSize: '12px', colors: ['#4154f1'] },
-          background: { enabled: true, foreColor: '#fff', borderRadius: 2 }
-        },
-        xaxis: {
-          categories: months,
-          labels: { style: { fontSize: '13px' } }
-        },
-        yaxis: {
-          title: { text: 'ร้อยละ (%)' },
-          labels: { formatter: val => val.toFixed(1) }
-        }
-      });
-      bedChart.render();
-
-
-      // ❤️ กราฟ CMI
-      const cmiChart = new ApexCharts(document.querySelector("#cmi_chart_10985"), {
-        series: [{
-          name: 'อัตราครองเตียง (%)',
-          data: cmi
-        }],
-        chart: {
-          height: 250,
-          type: 'area',
-          toolbar: { show: false },
-          animations: { enabled: true, easing: 'easeinout', speed: 800 }
-        },
-        colors: ['#ff6384'],
-        markers: { size: 4 },
-        fill: {
-          type: "gradient",
-          gradient: {
-            shadeIntensity: 1,
-            opacityFrom: 0.3,
-            opacityTo: 0.4,
-            stops: [0, 90, 100]
-          }
-        },
-        stroke: { curve: 'smooth', width: 2 },
-        dataLabels: {
-          enabled: true,
-          style: { fontSize: '12px', colors: ['#ff6384'] },
-          background: { enabled: true, foreColor: '#fff', borderRadius: 2 }
-        },
-        xaxis: {
-          categories: months,
-          labels: { style: { fontSize: '13px' } }
-        },
-        yaxis: {
-          title: { text: 'ร้อยละ (%)' },
-          labels: { formatter: val => val.toFixed(1) }
-        }
-      });
-      cmiChart.render();
-
-    });
-  </script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // ✅ ดึงข้อมูลจาก PHP
-      const months = {!! json_encode(array_column($total_10986_ipd, 'month')) !!};
-      const bed_occupancy = {!! json_encode(array_column($total_10986_ipd, 'bed_occupancy')) !!};
-      const cmi = {!! json_encode(array_column($total_10986_ipd, 'cmi')) !!};
-      // 🩵 กราฟอัตราครองเตียง
-      const bedChart = new ApexCharts(document.querySelector("#bed_occupancy_10986"), {
-        series: [{
-          name: 'อัตราครองเตียง (%)',
-          data: bed_occupancy
-        }],
-        chart: {
-          height: 250,
-          type: 'area',
-          toolbar: { show: false },
-          animations: { enabled: true, easing: 'easeinout', speed: 800 }
-        },
-        colors: ['#4154f1'],
-        markers: { size: 4 },
-        fill: {
-          type: "gradient",
-          gradient: {
-            shadeIntensity: 1,
-            opacityFrom: 0.3,
-            opacityTo: 0.4,
-            stops: [0, 90, 100]
-          }
-        },
-        stroke: { curve: 'smooth', width: 2 },
-        dataLabels: {
-          enabled: true,
-          style: { fontSize: '12px', colors: ['#4154f1'] },
-          background: { enabled: true, foreColor: '#fff', borderRadius: 2 }
-        },
-        xaxis: {
-          categories: months,
-          labels: { style: { fontSize: '13px' } }
-        },
-        yaxis: {
-          title: { text: 'ร้อยละ (%)' },
-          labels: { formatter: val => val.toFixed(1) }
-        }
-      });
-      bedChart.render();
-
-
-      // ❤️ กราฟ CMI
-      const cmiChart = new ApexCharts(document.querySelector("#cmi_chart_10986"), {
-        series: [{
-          name: 'อัตราครองเตียง (%)',
-          data: cmi
-        }],
-        chart: {
-          height: 250,
-          type: 'area',
-          toolbar: { show: false },
-          animations: { enabled: true, easing: 'easeinout', speed: 800 }
-        },
-        colors: ['#ff6384'],
-        markers: { size: 4 },
-        fill: {
-          type: "gradient",
-          gradient: {
-            shadeIntensity: 1,
-            opacityFrom: 0.3,
-            opacityTo: 0.4,
-            stops: [0, 90, 100]
-          }
-        },
-        stroke: { curve: 'smooth', width: 2 },
-        dataLabels: {
-          enabled: true,
-          style: { fontSize: '12px', colors: ['#ff6384'] },
-          background: { enabled: true, foreColor: '#fff', borderRadius: 2 }
-        },
-        xaxis: {
-          categories: months,
-          labels: { style: { fontSize: '13px' } }
-        },
-        yaxis: {
-          title: { text: 'ร้อยละ (%)' },
-          labels: { formatter: val => val.toFixed(1) }
-        }
-      });
-      cmiChart.render();
-
-    });
-  </script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // ✅ ดึงข้อมูลจาก PHP
-      const months = {!! json_encode(array_column($total_10987_ipd, 'month')) !!};
-      const bed_occupancy = {!! json_encode(array_column($total_10987_ipd, 'bed_occupancy')) !!};
-      const cmi = {!! json_encode(array_column($total_10987_ipd, 'cmi')) !!};
-      // 🩵 กราฟอัตราครองเตียง
-      const bedChart = new ApexCharts(document.querySelector("#bed_occupancy_10987"), {
-        series: [{
-          name: 'อัตราครองเตียง (%)',
-          data: bed_occupancy
-        }],
-        chart: {
-          height: 250,
-          type: 'area',
-          toolbar: { show: false },
-          animations: { enabled: true, easing: 'easeinout', speed: 800 }
-        },
-        colors: ['#4154f1'],
-        markers: { size: 4 },
-        fill: {
-          type: "gradient",
-          gradient: {
-            shadeIntensity: 1,
-            opacityFrom: 0.3,
-            opacityTo: 0.4,
-            stops: [0, 90, 100]
-          }
-        },
-        stroke: { curve: 'smooth', width: 2 },
-        dataLabels: {
-          enabled: true,
-          style: { fontSize: '12px', colors: ['#4154f1'] },
-          background: { enabled: true, foreColor: '#fff', borderRadius: 2 }
-        },
-        xaxis: {
-          categories: months,
-          labels: { style: { fontSize: '13px' } }
-        },
-        yaxis: {
-          title: { text: 'ร้อยละ (%)' },
-          labels: { formatter: val => val.toFixed(1) }
-        }
-      });
-      bedChart.render();
-
-
-      // ❤️ กราฟ CMI
-      const cmiChart = new ApexCharts(document.querySelector("#cmi_chart_10987"), {
-        series: [{
-          name: 'อัตราครองเตียง (%)',
-          data: cmi
-        }],
-        chart: {
-          height: 250,
-          type: 'area',
-          toolbar: { show: false },
-          animations: { enabled: true, easing: 'easeinout', speed: 800 }
-        },
-        colors: ['#ff6384'],
-        markers: { size: 4 },
-        fill: {
-          type: "gradient",
-          gradient: {
-            shadeIntensity: 1,
-            opacityFrom: 0.3,
-            opacityTo: 0.4,
-            stops: [0, 90, 100]
-          }
-        },
-        stroke: { curve: 'smooth', width: 2 },
-        dataLabels: {
-          enabled: true,
-          style: { fontSize: '12px', colors: ['#ff6384'] },
-          background: { enabled: true, foreColor: '#fff', borderRadius: 2 }
-        },
-        xaxis: {
-          categories: months,
-          labels: { style: { fontSize: '13px' } }
-        },
-        yaxis: {
-          title: { text: 'ร้อยละ (%)' },
-          labels: { formatter: val => val.toFixed(1) }
-        }
-      });
-      cmiChart.render();
-
-    });
-  </script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // ✅ ดึงข้อมูลจาก PHP
-      const months = {!! json_encode(array_column($total_10988_ipd, 'month')) !!};
-      const bed_occupancy = {!! json_encode(array_column($total_10988_ipd, 'bed_occupancy')) !!};
-      const cmi = {!! json_encode(array_column($total_10988_ipd, 'cmi')) !!};
-      // 🩵 กราฟอัตราครองเตียง
-      const bedChart = new ApexCharts(document.querySelector("#bed_occupancy_10988"), {
-        series: [{
-          name: 'อัตราครองเตียง (%)',
-          data: bed_occupancy
-        }],
-        chart: {
-          height: 250,
-          type: 'area',
-          toolbar: { show: false },
-          animations: { enabled: true, easing: 'easeinout', speed: 800 }
-        },
-        colors: ['#4154f1'],
-        markers: { size: 4 },
-        fill: {
-          type: "gradient",
-          gradient: {
-            shadeIntensity: 1,
-            opacityFrom: 0.3,
-            opacityTo: 0.4,
-            stops: [0, 90, 100]
-          }
-        },
-        stroke: { curve: 'smooth', width: 2 },
-        dataLabels: {
-          enabled: true,
-          style: { fontSize: '12px', colors: ['#4154f1'] },
-          background: { enabled: true, foreColor: '#fff', borderRadius: 2 }
-        },
-        xaxis: {
-          categories: months,
-          labels: { style: { fontSize: '13px' } }
-        },
-        yaxis: {
-          title: { text: 'ร้อยละ (%)' },
-          labels: { formatter: val => val.toFixed(1) }
-        }
-      });
-      bedChart.render();
-
-
-      // ❤️ กราฟ CMI
-      const cmiChart = new ApexCharts(document.querySelector("#cmi_chart_10988"), {
-        series: [{
-          name: 'อัตราครองเตียง (%)',
-          data: cmi
-        }],
-        chart: {
-          height: 250,
-          type: 'area',
-          toolbar: { show: false },
-          animations: { enabled: true, easing: 'easeinout', speed: 800 }
-        },
-        colors: ['#ff6384'],
-        markers: { size: 4 },
-        fill: {
-          type: "gradient",
-          gradient: {
-            shadeIntensity: 1,
-            opacityFrom: 0.3,
-            opacityTo: 0.4,
-            stops: [0, 90, 100]
-          }
-        },
-        stroke: { curve: 'smooth', width: 2 },
-        dataLabels: {
-          enabled: true,
-          style: { fontSize: '12px', colors: ['#ff6384'] },
-          background: { enabled: true, foreColor: '#fff', borderRadius: 2 }
-        },
-        xaxis: {
-          categories: months,
-          labels: { style: { fontSize: '13px' } }
-        },
-        yaxis: {
-          title: { text: 'ร้อยละ (%)' },
-          labels: { formatter: val => val.toFixed(1) }
-        }
-      });
-      cmiChart.render();
-
-    });
-  </script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // ✅ ดึงข้อมูลจาก PHP
-      const months = {!! json_encode(array_column($total_10989_ipd, 'month')) !!};
-      const bed_occupancy = {!! json_encode(array_column($total_10989_ipd, 'bed_occupancy')) !!};
-      const cmi = {!! json_encode(array_column($total_10989_ipd, 'cmi')) !!};
-      // 🩵 กราฟอัตราครองเตียง
-      const bedChart = new ApexCharts(document.querySelector("#bed_occupancy_10989"), {
-        series: [{
-          name: 'อัตราครองเตียง (%)',
-          data: bed_occupancy
-        }],
-        chart: {
-          height: 250,
-          type: 'area',
-          toolbar: { show: false },
-          animations: { enabled: true, easing: 'easeinout', speed: 800 }
-        },
-        colors: ['#4154f1'],
-        markers: { size: 4 },
-        fill: {
-          type: "gradient",
-          gradient: {
-            shadeIntensity: 1,
-            opacityFrom: 0.3,
-            opacityTo: 0.4,
-            stops: [0, 90, 100]
-          }
-        },
-        stroke: { curve: 'smooth', width: 2 },
-        dataLabels: {
-          enabled: true,
-          style: { fontSize: '12px', colors: ['#4154f1'] },
-          background: { enabled: true, foreColor: '#fff', borderRadius: 2 }
-        },
-        xaxis: {
-          categories: months,
-          labels: { style: { fontSize: '13px' } }
-        },
-        yaxis: {
-          title: { text: 'ร้อยละ (%)' },
-          labels: { formatter: val => val.toFixed(1) }
-        }
-      });
-      bedChart.render();
-
-
-      // ❤️ กราฟ CMI
-      const cmiChart = new ApexCharts(document.querySelector("#cmi_chart_10989"), {
-        series: [{
-          name: 'อัตราครองเตียง (%)',
-          data: cmi
-        }],
-        chart: {
-          height: 250,
-          type: 'area',
-          toolbar: { show: false },
-          animations: { enabled: true, easing: 'easeinout', speed: 800 }
-        },
-        colors: ['#ff6384'],
-        markers: { size: 4 },
-        fill: {
-          type: "gradient",
-          gradient: {
-            shadeIntensity: 1,
-            opacityFrom: 0.3,
-            opacityTo: 0.4,
-            stops: [0, 90, 100]
-          }
-        },
-        stroke: { curve: 'smooth', width: 2 },
-        dataLabels: {
-          enabled: true,
-          style: { fontSize: '12px', colors: ['#ff6384'] },
-          background: { enabled: true, foreColor: '#fff', borderRadius: 2 }
-        },
-        xaxis: {
-          categories: months,
-          labels: { style: { fontSize: '13px' } }
-        },
-        yaxis: {
-          title: { text: 'ร้อยละ (%)' },
-          labels: { formatter: val => val.toFixed(1) }
-        }
-      });
-      cmiChart.render();
-
-    });
-  </script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // ✅ ดึงข้อมูลจาก PHP
-      const months = {!! json_encode(array_column($total_10990_ipd, 'month')) !!};
-      const bed_occupancy = {!! json_encode(array_column($total_10990_ipd, 'bed_occupancy')) !!};
-      const cmi = {!! json_encode(array_column($total_10990_ipd, 'cmi')) !!};
-      // 🩵 กราฟอัตราครองเตียง
-      const bedChart = new ApexCharts(document.querySelector("#bed_occupancy_10990"), {
-        series: [{
-          name: 'อัตราครองเตียง (%)',
-          data: bed_occupancy
-        }],
-        chart: {
-          height: 250,
-          type: 'area',
-          toolbar: { show: false },
-          animations: { enabled: true, easing: 'easeinout', speed: 800 }
-        },
-        colors: ['#4154f1'],
-        markers: { size: 4 },
-        fill: {
-          type: "gradient",
-          gradient: {
-            shadeIntensity: 1,
-            opacityFrom: 0.3,
-            opacityTo: 0.4,
-            stops: [0, 90, 100]
-          }
-        },
-        stroke: { curve: 'smooth', width: 2 },
-        dataLabels: {
-          enabled: true,
-          style: { fontSize: '12px', colors: ['#4154f1'] },
-          background: { enabled: true, foreColor: '#fff', borderRadius: 2 }
-        },
-        xaxis: {
-          categories: months,
-          labels: { style: { fontSize: '13px' } }
-        },
-        yaxis: {
-          title: { text: 'ร้อยละ (%)' },
-          labels: { formatter: val => val.toFixed(1) }
-        }
-      });
-      bedChart.render();
-
-
-      // ❤️ กราฟ CMI
-      const cmiChart = new ApexCharts(document.querySelector("#cmi_chart_10990"), {
-        series: [{
-          name: 'อัตราครองเตียง (%)',
-          data: cmi
-        }],
-        chart: {
-          height: 250,
-          type: 'area',
-          toolbar: { show: false },
-          animations: { enabled: true, easing: 'easeinout', speed: 800 }
-        },
-        colors: ['#ff6384'],
-        markers: { size: 4 },
-        fill: {
-          type: "gradient",
-          gradient: {
-            shadeIntensity: 1,
-            opacityFrom: 0.3,
-            opacityTo: 0.4,
-            stops: [0, 90, 100]
-          }
-        },
-        stroke: { curve: 'smooth', width: 2 },
-        dataLabels: {
-          enabled: true,
-          style: { fontSize: '12px', colors: ['#ff6384'] },
-          background: { enabled: true, foreColor: '#fff', borderRadius: 2 }
-        },
-        xaxis: {
-          categories: months,
-          labels: { style: { fontSize: '13px' } }
-        },
-        yaxis: {
-          title: { text: 'ร้อยละ (%)' },
-          labels: { formatter: val => val.toFixed(1) }
-        }
-      });
-      cmiChart.render();
-
-    });
-  </script>
