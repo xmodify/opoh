@@ -306,4 +306,44 @@ class DashboardController extends Controller
             'total_bed_qty','total_bed_use','total_bed_empty','hospitals','hospitalSummary','total_10985_ipd',
             'total_10986_ipd','total_10987_ipd','total_10988_ipd','total_10989_ipd','total_10990_ipd','total_10703_ipd')));
     }
+//###############################################################################################################################
+    public function bed_dep($hospcode)
+    {
+        $beds = DB::table('ipd_bed_dep as d')
+            ->leftJoin('ipd_bed_type as t', 'd.bed_code', '=', 't.bed_code')
+            ->where('d.hospcode', $hospcode)
+            ->select(
+                'd.bed_code',
+                't.bed_name',
+                't.unit',
+                'd.bed_qty',
+                'd.bed_use',
+                DB::raw('
+                    CASE 
+                        WHEN d.bed_qty > 0 
+                        THEN ROUND((d.bed_use / d.bed_qty) * 100, 2) 
+                        ELSE 0 
+                    END as bed_rate
+                ')
+            )
+            ->orderBy('t.bed_name')
+            ->get();
+
+        // รวมผล
+        $sum_bed_qty = $beds->sum('bed_qty');
+        $sum_bed_use = $beds->sum('bed_use');
+        $sum_bed_empty = $sum_bed_qty - $sum_bed_use;
+        $sum_rate = $sum_bed_qty > 0 ? round(($sum_bed_use / $sum_bed_qty) * 100, 2) : 0;
+
+        return response()->json([
+            'beds' => $beds,
+            'summary' => [
+                'total' => $sum_bed_qty,
+                'used'  => $sum_bed_use,
+                'empty' => $sum_bed_empty,
+                'rate'  => $sum_rate
+            ]
+        ]);
+    }
+    
 }

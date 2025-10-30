@@ -54,7 +54,7 @@
   <nav class="navbar navbar-expand-lg bg-white bg-opacity-75 border-bottom sticky-top glass" style="border-radius:0">
       <div class="container-fluid">
           <a class="navbar-brand d-flex align-items-center text-primary brand-title fw-bold" href="{{ url('web/') }}">
-              <i class="bi bi-house-door text-green me-2"></i> IPD
+              <i class="fa-solid fa-bed-pulse text-green fs-5 me-2"></i> IPD
           </a>
 
           <a class="navbar-brand d-flex align-items-center text-primary brand-title fw-bold" href="{{ url('web/opd') }}">

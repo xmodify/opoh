@@ -13,7 +13,8 @@ Route::get('/', function () {
 
 // หน้า web หลัก
 Route::match(['get','post'],'web', [DashboardController::class, 'index'])->name('web.index');
-Route::match(['get','post'],'web/opd', [DashboardOPDController::class, 'index'])->name('web.index');
+Route::get('web/bed_dep/{hospcode}', [DashboardController::class, 'bed_dep']);
+Route::match(['get','post'],'web/opd', [DashboardOPDController::class, 'index']);
 
 // Login (สำหรับ Modal login)
 Route::post('/login', [LoginController::class, 'login'])->name('login');
