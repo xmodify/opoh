@@ -682,7 +682,7 @@
             <div class="table-responsive">
               <table id="table10986_ipd" class="table table-bordered table-striped my-3" width ="100%">
                 <thead class="table-light">
-                  <tr class="table-danger">
+                  <tr class="table-primary">
                     <th class="text-center" rowspan="2" width ="4%">เดือน</th>
                     <th class="text-center" rowspan="2">จำนวน AN</th>
                     <th class="text-center" rowspan="2">วันนอนรวม</th> 
@@ -692,7 +692,7 @@
                     <th class="text-center" rowspan="2">CMI</th>
                     <th class="text-center" colspan="3">ค่ารักษาพยาบาล</th>                
                   </tr>    
-                  <tr class="table-danger"> 
+                  <tr class="table-primary"> 
                     <td class="text-center text-primary">ค่ารักษารวม</td>
                     <td class="text-center text-primary">ค่า Lab</td>
                     <td class="text-center text-primary">ค่า ยา</td>                 
@@ -795,7 +795,7 @@
             <div class="table-responsive">
               <table id="table10987_ipd" class="table table-bordered table-striped my-3" width ="100%">
                 <thead class="table-light">
-                  <tr class="table-danger">
+                  <tr class="table-primary">
                     <th class="text-center" rowspan="2" width ="4%">เดือน</th>
                     <th class="text-center" rowspan="2">จำนวน AN</th>
                     <th class="text-center" rowspan="2">วันนอนรวม</th> 
@@ -805,7 +805,7 @@
                     <th class="text-center" rowspan="2">CMI</th>
                     <th class="text-center" colspan="3">ค่ารักษาพยาบาล</th>                
                   </tr>    
-                  <tr class="table-danger"> 
+                  <tr class="table-primary"> 
                     <td class="text-center text-primary">ค่ารักษารวม</td>
                     <td class="text-center text-primary">ค่า Lab</td>
                     <td class="text-center text-primary">ค่า ยา</td>                 
@@ -908,7 +908,7 @@
             <div class="table-responsive">
               <table id="table10988_ipd" class="table table-bordered table-striped my-3" width ="100%">
                 <thead class="table-light">
-                  <tr class="table-danger">
+                  <tr class="table-primary">
                     <th class="text-center" rowspan="2" width ="4%">เดือน</th>
                     <th class="text-center" rowspan="2">จำนวน AN</th>
                     <th class="text-center" rowspan="2">วันนอนรวม</th> 
@@ -918,7 +918,7 @@
                     <th class="text-center" rowspan="2">CMI</th>
                     <th class="text-center" colspan="3">ค่ารักษาพยาบาล</th>                
                   </tr>    
-                  <tr class="table-danger"> 
+                  <tr class="table-primary"> 
                     <td class="text-center text-primary">ค่ารักษารวม</td>
                     <td class="text-center text-primary">ค่า Lab</td>
                     <td class="text-center text-primary">ค่า ยา</td>                 
@@ -1021,7 +1021,7 @@
             <div class="table-responsive">
               <table id="table10989_ipd" class="table table-bordered table-striped my-3" width ="100%">
                 <thead class="table-light">
-                  <tr class="table-danger">
+                  <tr class="table-primary">
                     <th class="text-center" rowspan="2" width ="4%">เดือน</th>
                     <th class="text-center" rowspan="2">จำนวน AN</th>
                     <th class="text-center" rowspan="2">วันนอนรวม</th> 
@@ -1031,7 +1031,7 @@
                     <th class="text-center" rowspan="2">CMI</th>
                     <th class="text-center" colspan="3">ค่ารักษาพยาบาล</th>                
                   </tr>    
-                  <tr class="table-danger"> 
+                  <tr class="table-primary"> 
                     <td class="text-center text-primary">ค่ารักษารวม</td>
                     <td class="text-center text-primary">ค่า Lab</td>
                     <td class="text-center text-primary">ค่า ยา</td>                 
@@ -1134,7 +1134,7 @@
             <div class="table-responsive">
               <table id="table10990_ipd" class="table table-bordered table-striped my-3" width ="100%">
                 <thead class="table-light">
-                  <tr class="table-danger">
+                  <tr class="table-primary">
                     <th class="text-center" rowspan="2" width ="4%">เดือน</th>
                     <th class="text-center" rowspan="2">จำนวน AN</th>
                     <th class="text-center" rowspan="2">วันนอนรวม</th> 
@@ -1144,7 +1144,7 @@
                     <th class="text-center" rowspan="2">CMI</th>
                     <th class="text-center" colspan="3">ค่ารักษาพยาบาล</th>                
                   </tr>    
-                  <tr class="table-danger"> 
+                  <tr class="table-primary"> 
                     <td class="text-center text-primary">ค่ารักษารวม</td>
                     <td class="text-center text-primary">ค่า Lab</td>
                     <td class="text-center text-primary">ค่า ยา</td>                 
@@ -1247,7 +1247,7 @@
             <div class="table-responsive">
               <table id="table10703_ipd" class="table table-bordered table-striped my-3" width ="100%">
                 <thead class="table-light">
-                  <tr class="table-danger">
+                  <tr class="table-primary">
                     <th class="text-center" rowspan="2" width ="4%">เดือน</th>
                     <th class="text-center" rowspan="2">จำนวน AN</th>
                     <th class="text-center" rowspan="2">วันนอนรวม</th> 
@@ -1257,7 +1257,7 @@
                     <th class="text-center" rowspan="2">CMI</th>
                     <th class="text-center" colspan="3">ค่ารักษาพยาบาล</th>                
                   </tr>    
-                  <tr class="table-danger"> 
+                  <tr class="table-primary"> 
                     <td class="text-center text-primary">ค่ารักษารวม</td>
                     <td class="text-center text-primary">ค่า Lab</td>
                     <td class="text-center text-primary">ค่า ยา</td>                 
