@@ -43,6 +43,7 @@
     .brand-title,h1,h2,h3,h4,.nav-link,.table thead th{color:var(--blue);}
     .glass{background:var(--glass-bg);border:1px solid var(--glass-bd);backdrop-filter:blur(10px);border-radius:var(--radius);box-shadow:var(--shadow);}
     .text-green{color:var(--green)!important;}
+    
   </style>
 
   @stack('styles')

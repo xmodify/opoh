@@ -2,6 +2,44 @@
 
 @section('title', 'Dashboard | AOPOD')
 
+<style>
+  .card-hospital {
+  border: none;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease-in-out;
+  }
+  .card-hospital:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  /* 🌹 สีแดงพาสเทล (Admit) */
+  .card-hospital.admit {
+    background: linear-gradient(135deg, #f8bbd0, #ffffff);
+  }
+
+  /* 💙 สีฟ้าพาสเทล (Refer Out) */
+  .card-hospital.referout {
+    background: linear-gradient(135deg, #b3e5fc, #eff6ff);
+  }
+
+  /* 💚 สีเขียวพาสเทล (Refer In) */
+  .card-hospital.referin {
+    background: linear-gradient(135deg, #d0f8ce, #f0fdff);
+  }
+
+  /* 💜 สีม่วงพาสเทล (Refer Back) */
+  .card-hospital.referback {
+    background: linear-gradient(135deg, #d1c4e9, #faf5ff);
+  }
+
+  /* เพิ่มสีม่วงสำหรับข้อความ */
+  .text-purple {
+    color: #8b5cf6 !important;
+  }
+
+</style>
+
 @section('content')
 
   <!-- HERO -->
@@ -34,13 +72,13 @@
 
       <div class="row g-3">
         
-        {{--  กำลังรักษาอยู่ ------------------------------------------------------------------------------------------------------------ --}}
+        <!-- กำลังรักษาอยู่ (แดงพาสเทล) --------------------------------------------------------------------------------------------->
         <div class="col-12 col-sm-6 col-xl-3">
           <a href="#" data-bs-toggle="modal" data-bs-target="#AdmiitDetailModal" class="text-decoration-none text-dark">
-            <div class="glass p-3 h-100">
+            <div class="card-hospital admit p-3 h-100 rounded-4 shadow-sm">
               <div class="d-flex align-items-center justify-content-between mb-2">
-                <h6 class="mb-0 text-danger"><strong>กำลังรักษาอยู่ </strong></h6>
-                <span> <i class="bi bi-hospital fs-5 text-danger"></i> </span>
+                <h6 class="mb-0 text-danger"><strong>กำลังรักษาอยู่</strong></h6>
+                <i class="bi bi-hospital fs-5 text-danger"></i>
               </div>
               <div class="d-flex align-items-end gap-4">
                 <div class="text-end">
@@ -66,7 +104,7 @@
               </div>              
             </div>
           </a>    
-        </div> 
+        </div>
         {{-- Modal แสดงรายละเอียด รพ. (โทนน้ำเงินพาสเทลเข้ม / กรอบเล็ก) --}}
         <div class="modal fade" id="AdmiitDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg modal-dialog-scrollable">
@@ -160,13 +198,13 @@
           </div>
         </div>
 
-        {{-- การส่งต่อ Refer Out-------------------------------------------------------------------------------------------------------------- --}}
+        <!-- Refer Out (ฟ้าพาสเทล) ------------------------------------------------------------------------------------------>
         <div class="col-12 col-sm-6 col-xl-3">
           <a href="#" data-bs-toggle="modal" data-bs-target="#ReferOutDetailModal" class="text-decoration-none text-dark">
-            <div class="glass p-3 h-100">
+            <div class="card-hospital referout p-3 h-100 rounded-4 shadow-sm">
               <div class="d-flex align-items-center justify-content-between mb-2">
                 <h6 class="mb-0 text-primary"><strong>การส่งต่อ Refer Out</strong></h6>              
-                <span> <i class="bi bi-truck fs-5 text-danger"></i> </span>
+                <i class="bi bi-truck fs-5 text-primary"></i>
               </div>
               <div class="d-flex align-items-end gap-4">
                 <div class="text-end">
@@ -262,13 +300,13 @@
           </div>
         </div>        
 
-        {{-- การส่งต่อ Refer In-------------------------------------------------------------------------------------------------------------- --}}
+        <!-- Refer In (เขียวพาสเทล) --------------------------------------------------------------------------------------->
         <div class="col-12 col-sm-6 col-xl-3">
           <a href="#" data-bs-toggle="modal" data-bs-target="#ReferInDetailModal" class="text-decoration-none text-dark">
-            <div class="glass p-3 h-100">
+            <div class="card-hospital referin p-3 h-100 rounded-4 shadow-sm">
               <div class="d-flex align-items-center justify-content-between mb-2">
-                <h6 class="mb-0 text-primary"><strong>การส่งต่อ Refer In</strong></h6>              
-                <span> <i class="bi bi-truck fs-5 text-danger"></i> </span>
+                <h6 class="mb-0 text-success"><strong>การส่งต่อ Refer In</strong></h6>              
+                <i class="bi bi-truck fs-5 text-success"></i>
               </div>
               <div class="d-flex align-items-end gap-4">
                 <div class="text-end">
@@ -280,7 +318,7 @@
                 <div class="vr d-none d-sm-block"></div>
                 <div class="text-end">
                   <div class="small text-secondary text-center">ต่างจังหวัด</div>
-                  <div class="fw-bold text-primary" style="font-size:1.75rem;">
+                  <div class="fw-bold text-success" style="font-size:1.75rem;">
                     {{ $fmtInt($visit_referin_outprov ?? 0) }}
                   </div>
                 </div>                
@@ -350,13 +388,13 @@
           </div>
         </div>      
 
-        {{-- การส่งต่อ Refer Back-------------------------------------------------------------------------------------------------------------- --}}
+        <!-- Refer Back (ม่วงพาสเทล) --------------------------------------------------------------------------------------------->
         <div class="col-12 col-sm-6 col-xl-3">
           <a href="#" data-bs-toggle="modal" data-bs-target="#ReferBackDetailModal" class="text-decoration-none text-dark">
-            <div class="glass p-3 h-100">
+            <div class="card-hospital referback p-3 h-100 rounded-4 shadow-sm">
               <div class="d-flex align-items-center justify-content-between mb-2">
-                <h6 class="mb-0 text-primary"><strong>การส่งต่อ Refer Back</strong></h6>              
-                <span> <i class="bi bi-truck fs-5 text-danger"></i> </span>
+                <h6 class="mb-0 text-purple"><strong>การส่งต่อ Refer Back</strong></h6>              
+                <i class="bi bi-truck fs-5 text-purple"></i>
               </div>
               <div class="d-flex align-items-end gap-4">
                 <div class="text-end">
@@ -368,7 +406,7 @@
                 <div class="vr d-none d-sm-block"></div>
                 <div class="text-end">
                   <div class="small text-secondary text-center">ต่างจังหวัด</div>
-                  <div class="fw-bold text-primary" style="font-size:1.75rem;">
+                  <div class="fw-bold text-purple" style="font-size:1.75rem;">
                     {{ $fmtInt($visit_referback_outprov ?? 0) }}
                   </div>
                 </div>                
