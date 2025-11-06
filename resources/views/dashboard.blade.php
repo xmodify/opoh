@@ -492,7 +492,7 @@
                         </td>
                         <!-- OPD -->
                         <td align="right" class="text-primary">{{ number_format($h->visit_referin_inprov) }}</td>
-                        <td align="right" class="text-success" style="border-right:1px solid #aac6ec;">
+                        <td align="right" class="text-success">
                           {{ number_format($h->visit_referin_outprov) }}
                         </td>
                         <!-- IPD -->
