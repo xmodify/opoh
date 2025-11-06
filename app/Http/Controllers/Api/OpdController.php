@@ -54,6 +54,8 @@ class OpdController extends Controller
             'records.*.visit_referout_outprov_ipd'  => ['nullable', 'integer', 'min:0'],
             'records.*.visit_referin_inprov'        => ['nullable', 'integer', 'min:0'],
             'records.*.visit_referin_outprov'       => ['nullable', 'integer', 'min:0'],
+            'records.*.visit_referin_inprov_ipd'    => ['nullable', 'integer', 'min:0'],
+            'records.*.visit_referin_outprov_ipd'   => ['nullable', 'integer', 'min:0'],
             'records.*.visit_referback_inprov'      => ['nullable', 'integer', 'min:0'],
             'records.*.visit_referback_outprov'     => ['nullable', 'integer', 'min:0'],
 

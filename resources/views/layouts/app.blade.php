@@ -65,12 +65,12 @@
               <i class="bi bi-box-seam text-green me-2"></i> Inventory
           </a>
 
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topnav">
+          {{-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topnav">
               <span class="navbar-toggler-icon"></span>
-          </button>
+          </button> --}}
 
           <div class="collapse navbar-collapse" id="topnav">
-              <ul class="navbar-nav ms-auto">
+              {{-- <ul class="navbar-nav ms-auto">
                   @auth
                       <li class="nav-item dropdown">
                           <a class="nav-link dropdown-toggle text-primary" href="#" id="userDropdown" role="button"
@@ -89,7 +89,7 @@
                              data-bs-target="#loginModal"><strong>Login</strong></a>
                       </li>
                   @endauth
-              </ul>
+              </ul> --}}
           </div>
       </div>
   </nav>
