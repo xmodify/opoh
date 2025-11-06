@@ -50,6 +50,8 @@ class DashboardController extends Controller
                 COALESCE(SUM(visit_referout_outprov_ipd),0)     AS visit_referout_outprov_ipd,
                 COALESCE(SUM(visit_referin_inprov),0)           AS visit_referin_inprov,
                 COALESCE(SUM(visit_referin_outprov),0)          AS visit_referin_outprov,
+                COALESCE(SUM(visit_referin_inprov_ipd),0)       AS visit_referin_inprov_ipd,
+                COALESCE(SUM(visit_referin_outprov_ipd),0)      AS visit_referin_outprov_ipd,
                 COALESCE(SUM(visit_referback_inprov),0)         AS visit_referback_inprov,
                 COALESCE(SUM(visit_referback_outprov),0)        AS visit_referback_outprov           
             ")->first();
@@ -62,6 +64,8 @@ class DashboardController extends Controller
             'visit_referout_outprov_ipd'  => (int)$total->visit_referout_outprov_ipd, 
             'visit_referin_inprov'        => (int)$total->visit_referin_inprov, 
             'visit_referin_outprov'       => (int)$total->visit_referin_outprov, 
+            'visit_referin_inprov_ipd'    => (int)$total->visit_referin_inprov_ipd, 
+            'visit_referin_outprov_ipd'   => (int)$total->visit_referin_outprov_ipd, 
             'visit_referback_inprov'      => (int)$total->visit_referback_inprov, 
             'visit_referback_outprov'     => (int)$total->visit_referback_outprov,             
         ];
@@ -74,11 +78,13 @@ class DashboardController extends Controller
                 'hospital_config.hospname',
                 DB::raw('MAX(opd.updated_at) AS last_updated_at'),                
                 DB::raw('COALESCE(SUM(visit_referout_inprov),0) AS visit_referout_inprov'),
-                DB::raw('COALESCE(SUM(visit_referout_inprov_ipd),0) AS visit_referout_inprov_ipd'),
                 DB::raw('COALESCE(SUM(visit_referout_outprov),0) AS visit_referout_outprov'),
+                DB::raw('COALESCE(SUM(visit_referout_inprov_ipd),0) AS visit_referout_inprov_ipd'),                
                 DB::raw('COALESCE(SUM(visit_referout_outprov_ipd),0) AS visit_referout_outprov_ipd'),
                 DB::raw('COALESCE(SUM(visit_referin_inprov),0) AS visit_referin_inprov'),
                 DB::raw('COALESCE(SUM(visit_referin_outprov),0) AS visit_referin_outprov'),
+                DB::raw('COALESCE(SUM(visit_referin_inprov_ipd),0) AS visit_referin_inprov_ipd'),
+                DB::raw('COALESCE(SUM(visit_referin_outprov_ipd),0) AS visit_referin_outprov_ipd'),
                 DB::raw('COALESCE(SUM(visit_referback_inprov),0) AS visit_referback_inprov'),
                 DB::raw('COALESCE(SUM(visit_referback_outprov),0) AS visit_referback_outprov'),              
             )
