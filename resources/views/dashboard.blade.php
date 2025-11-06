@@ -504,7 +504,7 @@
                     <tr style="background-color:#eef4fb;" class="fw-bold text-end">
                       <td colspan="2" class="text-center text-dark">รวมทั้งหมด</td>
                       <td class="text-primary">{{ number_format($hospitalSummary->sum('visit_referin_inprov')) }}</td>
-                      <td class="text-success" style="border-right:1px solid #aac6ec;">
+                      <td class="text-success">
                         {{ number_format($hospitalSummary->sum('visit_referin_outprov')) }}
                       </td>
                       <td class="text-primary">{{ number_format($hospitalSummary->sum('visit_referin_inprov_ipd')) }}</td>
