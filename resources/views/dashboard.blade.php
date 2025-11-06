@@ -434,16 +434,16 @@
               </div>
               <div class="d-flex align-items-end gap-4">
                 <div class="text-end">
-                  <div class="small text-secondary text-center">ในจังหวัด</div>
+                  <div class="small text-secondary text-center">OPD</div>
                   <div class="fw-bold" style="font-size:1.75rem;">
-                    {{ $fmtInt($visit_referin_inprov ?? 0) }}
+                    {{ $fmtInt($visit_referin_inprov+$visit_referin_outprov ?? 0) }}
                   </div>
                 </div>
                 <div class="vr d-none d-sm-block"></div>
                 <div class="text-end">
-                  <div class="small text-secondary text-center">ต่างจังหวัด</div>
+                  <div class="small text-secondary text-center">IPD</div>
                   <div class="fw-bold text-primary" style="font-size:1.75rem;">
-                    {{ $fmtInt($visit_referin_outprov ?? 0) }}
+                    {{ $fmtInt($visit_referin_inprov_ipd+$visit_referin_outprov_ipd ?? 0) }}
                   </div>
                 </div>                
               </div>
@@ -462,15 +462,20 @@
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-
               <!-- Body -->
               <div class="modal-body py-3">
                 <table class="table table-hover align-middle shadow-sm rounded-3 overflow-hidden mb-0"
                       style="background-color: #ffffff; border-radius: 0.75rem;">
                   <thead style="background-color:#d9e8fb;">
                     <tr class="text-center text-primary fw-semibold">
-                      <th class="text-center">รหัส</th>
-                      <th class="text-center">ชื่อโรงพยาบาล</th>
+                      <th rowspan="2" class="align-middle">รหัส</th>
+                      <th rowspan="2" class="align-middle">ชื่อโรงพยาบาล</th>
+                      <th colspan="2" style="border-right:1px solid #aac6ec;">OPD</th>
+                      <th colspan="2">IPD</th>
+                    </tr>
+                    <tr class="text-center text-primary fw-semibold">
+                      <th>ในจังหวัด</th>
+                      <th style="border-right:1px solid #aac6ec;">ต่างจังหวัด</th>
                       <th>ในจังหวัด</th>
                       <th>ต่างจังหวัด</th>
                     </tr>
@@ -485,21 +490,29 @@
                             {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
                           </small>
                         </td>
+                        <!-- OPD -->
                         <td align="right" class="text-primary">{{ number_format($h->visit_referin_inprov) }}</td>
-                        <td align="right" class="fw-bold text-success">{{ number_format($h->visit_referin_outprov) }}</td>
+                        <td align="right" class="text-success" style="border-right:1px solid #aac6ec;">
+                          {{ number_format($h->visit_referin_outprov) }}
+                        </td>
+                        <!-- IPD -->
+                        <td align="right" class="text-primary">{{ number_format($h->visit_referin_inprov_ipd) }}</td>
+                        <td align="right" class="fw-bold text-success">{{ number_format($h->visit_referin_outprov_ipd) }}</td>
                       </tr>
                     @endforeach
-
                     {{-- แถวผลรวม --}}
                     <tr style="background-color:#eef4fb;" class="fw-bold text-end">
                       <td colspan="2" class="text-center text-dark">รวมทั้งหมด</td>
                       <td class="text-primary">{{ number_format($hospitalSummary->sum('visit_referin_inprov')) }}</td>
-                      <td class="text-success">{{ number_format($hospitalSummary->sum('visit_referin_outprov')) }}</td>
+                      <td class="text-success" style="border-right:1px solid #aac6ec;">
+                        {{ number_format($hospitalSummary->sum('visit_referin_outprov')) }}
+                      </td>
+                      <td class="text-primary">{{ number_format($hospitalSummary->sum('visit_referin_inprov_ipd')) }}</td>
+                      <td class="text-success">{{ number_format($hospitalSummary->sum('visit_referin_outprov_ipd')) }}</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-
               <!-- Footer -->
               <div class="modal-footer" style="background-color:#eef4fb;">
                 <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm"
@@ -510,7 +523,7 @@
               </div>
             </div>
           </div>
-        </div>      
+        </div>     
 
         <!-- Refer Back  --------------------------------------------------------------------------------------------->
         <div class="col-12 col-sm-6 col-xl-3">
