@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 // ใช้ Carbon ของ Laravel เพื่อความยืดหยุ่น (แทน date('Y-m-d'))
 use Carbon\Carbon;
 
-class DashboardOPDController extends Controller
+class DashboardClaimController extends Controller
 {
     public function index(Request $request)
     {
@@ -47,13 +47,21 @@ class DashboardOPDController extends Controller
                 COALESCE(SUM(visit_total),0)        AS visit_total,
                 COALESCE(SUM(visit_total_op),0)     AS visit_total_op,
                 COALESCE(SUM(visit_total_pp),0)     AS visit_total_pp,
-                COALESCE(SUM(visit_endpoint),0)     AS visit_endpoint,                
+                COALESCE(SUM(visit_endpoint),0)     AS visit_endpoint,
+                COALESCE(SUM(visit_ucs_cr),0)       AS visit_ucs_cr,
+                COALESCE(SUM(inc_uccr),0)           AS inc_uccr,
+                COALESCE(SUM(visit_ucs_herb),0)     AS visit_ucs_herb,
+                COALESCE(SUM(inc_herb),0)           AS inc_herb,
+                COALESCE(SUM(visit_ppfs),0)         AS visit_ppfs,
+                COALESCE(SUM(inc_ppfs),0)           AS inc_ppfs,
                 COALESCE(SUM(visit_ucs_incup),0)+COALESCE(SUM(visit_ucs_inprov),0)+COALESCE(SUM(visit_ucs_outprov),0)   AS visit_ucs,
                 COALESCE(SUM(inc_ucs_incup),0)+COALESCE(SUM(inc_ucs_inprov),0)+COALESCE(SUM(inc_ucs_outprov),0)         AS inc_ucs,
                 COALESCE(SUM(visit_ucs_incup),0)    AS visit_ucs_incup,
                 COALESCE(SUM(inc_ucs_incup),0)      AS inc_ucs_incup,
                 COALESCE(SUM(visit_ucs_inprov),0)   AS visit_ucs_inprov,
                 COALESCE(SUM(inc_ucs_inprov),0)     AS inc_ucs_inprov,
+                COALESCE(SUM(visit_ucs_outprov),0)  AS visit_ucs_outprov,
+                COALESCE(SUM(inc_ucs_outprov),0)    AS inc_ucs_outprov,
                 COALESCE(SUM(visit_ofc),0)          AS visit_ofc,
                 COALESCE(SUM(inc_ofc),0)            AS inc_ofc,
                 COALESCE(SUM(visit_lgo),0)          AS visit_lgo,
@@ -69,13 +77,21 @@ class DashboardOPDController extends Controller
             'visit_total'       => (int)$total->visit_total,
             'visit_total_op'    => (int)$total->visit_total_op,
             'visit_total_pp'    => (int)$total->visit_total_pp,           
-            'visit_endpoint'    => (int)$total->visit_endpoint,            
+            'visit_endpoint'    => (int)$total->visit_endpoint,
+            'visit_ucs_cr'      => (int)$total->visit_ucs_cr,
+            'inc_uccr'          => (float)$total->inc_uccr,
+            'visit_ucs_herb'    => (int)$total->visit_ucs_herb,
+            'inc_herb'          => (float)$total->inc_herb,  
+            'visit_ppfs'        => (int)$total->visit_ppfs,         
+            'inc_ppfs'          => (float)$total->inc_ppfs,
             'visit_ucs'         => (int)$total->visit_ucs,
             'inc_ucs'           => (float)$total->inc_ucs,
             'visit_ucs_incup'  => (int)$total->visit_ucs_incup,
             'inc_ucs_incup'    => (float)$total->inc_ucs_incup,
             'visit_ucs_inprov'  => (int)$total->visit_ucs_inprov,
             'inc_ucs_inprov'    => (float)$total->inc_ucs_inprov,
+            'visit_ucs_outprov' => (int)$total->visit_ucs_outprov,
+            'inc_ucs_outprov'   => (float)$total->inc_ucs_outprov,
             'visit_ofc'         => (int)$total->visit_ofc,
             'inc_ofc'           => (float)$total->inc_ofc,
             'visit_lgo'         => (int)$total->visit_lgo,
@@ -96,13 +112,21 @@ class DashboardOPDController extends Controller
                 DB::raw('COALESCE(SUM(visit_total),0) AS visit_total'),
                 DB::raw('COALESCE(SUM(visit_total_op),0) AS visit_total_op'),
                 DB::raw('COALESCE(SUM(visit_total_pp),0) AS visit_total_pp'),
-                DB::raw('COALESCE(SUM(visit_endpoint),0) AS visit_endpoint'),              
+                DB::raw('COALESCE(SUM(visit_endpoint),0) AS visit_endpoint'),
+                DB::raw('COALESCE(SUM(visit_ucs_cr),0) AS visit_ucs_cr'),
+                DB::raw('COALESCE(SUM(inc_uccr),0) AS inc_uccr'),
+                DB::raw('COALESCE(SUM(visit_ucs_herb),0) AS visit_ucs_herb'),
+                DB::raw('COALESCE(SUM(inc_herb),0) AS inc_herb'),
+                DB::raw('COALESCE(SUM(visit_ppfs),0) AS visit_ppfs'),
+                DB::raw('COALESCE(SUM(inc_ppfs),0) AS inc_ppfs'),
                 DB::raw('COALESCE(SUM(visit_ucs_incup),0)+COALESCE(SUM(visit_ucs_inprov),0)+COALESCE(SUM(visit_ucs_outprov),0) AS visit_ucs'),
                 DB::raw('COALESCE(SUM(inc_ucs_incup),0)+COALESCE(SUM(inc_ucs_inprov),0)+COALESCE(SUM(inc_ucs_outprov),0) AS inc_ucs'),
                 DB::raw('COALESCE(SUM(visit_ucs_incup),0) AS visit_ucs_incup'),
                 DB::raw('COALESCE(SUM(inc_ucs_incup),0) AS inc_ucs_incup'),
                 DB::raw('COALESCE(SUM(visit_ucs_inprov),0) AS visit_ucs_inprov'),
                 DB::raw('COALESCE(SUM(inc_ucs_inprov),0) AS inc_ucs_inprov'),
+                DB::raw('COALESCE(SUM(visit_ucs_outprov),0) AS visit_ucs_outprov'),
+                DB::raw('COALESCE(SUM(inc_ucs_outprov),0) AS inc_ucs_outprov'),
                 DB::raw('COALESCE(SUM(visit_ofc),0) AS visit_ofc'),
                 DB::raw('COALESCE(SUM(inc_ofc),0) AS inc_ofc'),
                 DB::raw('COALESCE(SUM(visit_lgo),0) AS visit_lgo'),
@@ -679,7 +703,7 @@ class DashboardOPDController extends Controller
             GROUP BY YEAR(vstdate), MONTH(vstdate)
             ORDER BY YEAR(vstdate), MONTH(vstdate) ", [$start_date, $end_date]);
 
-        return view('dashboard_opd', array_merge($card,compact('budget_year_select','budget_year','diff_days','update_at10985','total_10985',
+        return view('dashboard_claim', array_merge($card,compact('budget_year_select','budget_year','diff_days','update_at10985','total_10985',
             'update_at10986','total_10986','update_at10987','total_10987','update_at10988','total_10988','update_at10989','total_10989',
             'update_at10990','total_10990','update_at10703','total_10703','hospitalSummary')));
     }

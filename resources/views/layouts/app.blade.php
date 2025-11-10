@@ -54,15 +54,19 @@
   <nav class="navbar navbar-expand-lg bg-white bg-opacity-75 border-bottom sticky-top glass" style="border-radius:0">
       <div class="container-fluid">
           <a class="navbar-brand d-flex align-items-center text-primary brand-title fw-bold" href="{{ url('web/') }}">
-              <i class="fa-solid fa-bed-pulse text-green fs-5 me-2"></i> IPD
+              <i class="fa-solid fa-bed-pulse text-danger fs-5 me-2"></i> IPD
           </a>
 
           <a class="navbar-brand d-flex align-items-center text-primary brand-title fw-bold" href="{{ url('web/opd') }}">
               <i class="bi bi-person-vcard text-green me-2"></i> OPD
           </a>
 
+          <a class="navbar-brand d-flex align-items-center text-primary brand-title fw-bold" href="{{ url('web/claim') }}">
+              <i class="bi bi-coin fs-5 text-warning me-2"></i></i> Claim
+          </a>
+
           <a class="navbar-brand d-flex align-items-center text-primary brand-title fw-bold ms-3"  href="http://1.179.175.230:89" target="_blank">
-              <i class="bi bi-box-seam text-green me-2"></i> Inventory
+              <i class="bi bi-box-seam text-info me-2"></i> Inventory
           </a>
 
           {{-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topnav">
