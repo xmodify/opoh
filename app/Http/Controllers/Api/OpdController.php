@@ -166,7 +166,7 @@ class OpdController extends Controller
                 'visit_ppfs'          => $row['visit_ppfs'] ?? 0,
                 'visit_ppfs_claim'    => $row['visit_ppfs_claim'] ?? 0,
                 'visit_ucs_cr'        => $row['visit_ucs_cr'] ?? 0,
-                'visit_ucs_claim'     => $row['visit_ucs_cr_claim'] ?? 0,
+                'visit_ucs_cr_claim'  => $row['visit_ucs_cr_claim'] ?? 0,
                 'visit_ucs_herb'        => $row['visit_ucs_herb'] ?? 0,
                 'visit_ucs_herb_claim'  => $row['visit_ucs_herb_claim'] ?? 0,
                 'visit_ucs_healthmed' => $row['visit_ucs_healthmed'] ?? 0,
