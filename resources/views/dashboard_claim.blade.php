@@ -369,7 +369,7 @@
   {{-- เลือกปีงบประมาณ ----------------------------------------------------------------------------------------------------------}}
   <section id="summary" class="pb-2">
       <div class="container-fluid">
-        <form method="POST" action="{{ url('web/opd') }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ url('web/claim') }}" enctype="multipart/form-data">
         @csrf
           <div class="row g-4 align-items-center">
             <div class="col-lg-9">          
