@@ -44,62 +44,41 @@ class DashboardClaimController extends Controller
         $total = DB::table('opd')
             ->whereBetween('vstdate', [$today, $today])
             ->selectRaw("
-                COALESCE(SUM(visit_total),0)        AS visit_total,
-                COALESCE(SUM(visit_total_op),0)     AS visit_total_op,
-                COALESCE(SUM(visit_total_pp),0)     AS visit_total_pp,
-                COALESCE(SUM(visit_endpoint),0)     AS visit_endpoint,
-                COALESCE(SUM(visit_ucs_cr),0)       AS visit_ucs_cr,
-                COALESCE(SUM(inc_uccr),0)           AS inc_uccr,
-                COALESCE(SUM(visit_ucs_herb),0)     AS visit_ucs_herb,
-                COALESCE(SUM(inc_herb),0)           AS inc_herb,
-                COALESCE(SUM(visit_ppfs),0)         AS visit_ppfs,
-                COALESCE(SUM(inc_ppfs),0)           AS inc_ppfs,
-                COALESCE(SUM(visit_ucs_incup),0)+COALESCE(SUM(visit_ucs_inprov),0)+COALESCE(SUM(visit_ucs_outprov),0)   AS visit_ucs,
-                COALESCE(SUM(inc_ucs_incup),0)+COALESCE(SUM(inc_ucs_inprov),0)+COALESCE(SUM(inc_ucs_outprov),0)         AS inc_ucs,
-                COALESCE(SUM(visit_ucs_incup),0)    AS visit_ucs_incup,
-                COALESCE(SUM(inc_ucs_incup),0)      AS inc_ucs_incup,
-                COALESCE(SUM(visit_ucs_inprov),0)   AS visit_ucs_inprov,
-                COALESCE(SUM(inc_ucs_inprov),0)     AS inc_ucs_inprov,
-                COALESCE(SUM(visit_ucs_outprov),0)  AS visit_ucs_outprov,
-                COALESCE(SUM(inc_ucs_outprov),0)    AS inc_ucs_outprov,
-                COALESCE(SUM(visit_ofc),0)          AS visit_ofc,
-                COALESCE(SUM(inc_ofc),0)            AS inc_ofc,
-                COALESCE(SUM(visit_lgo),0)          AS visit_lgo,
-                COALESCE(SUM(inc_lgo),0)            AS inc_lgo,
-                COALESCE(SUM(visit_sss),0)          AS visit_sss,
-                COALESCE(SUM(inc_sss),0)            AS inc_sss,
-                COALESCE(SUM(visit_pay),0)          AS visit_pay,
-                COALESCE(SUM(inc_pay),0)            AS inc_pay
+                COALESCE(SUM(visit_ppfs),0)             AS visit_ppfs,
+                COALESCE(SUM(inc_ppfs),0)               AS inc_ppfs,   
+                COALESCE(SUM(visit_ppfs_claim),0)       AS visit_ppfs_claim,
+                COALESCE(SUM(inc_ppfs_claim),0)         AS inc_ppfs_claim,   
+                COALESCE(SUM(inc_ppfs_receive),0)       AS inc_ppfs_receive,              
+                COALESCE(SUM(visit_ucs_cr),0)           AS visit_ucs_cr,
+                COALESCE(SUM(inc_uccr),0)               AS inc_uccr,
+                COALESCE(SUM(visit_ucs_cr_claim),0)     AS visit_ucs_cr_claim,
+                COALESCE(SUM(inc_uccr_claim),0)         AS inc_uccr_claim,
+                COALESCE(SUM(inc_uccr_receive),0)       AS inc_uccr_receive,
+                COALESCE(SUM(visit_ucs_herb),0)         AS visit_ucs_herb,
+                COALESCE(SUM(inc_herb),0)               AS inc_herb,
+                COALESCE(SUM(visit_ucs_herb_claim),0)   AS visit_ucs_herb_claim,
+                COALESCE(SUM(inc_herb_claim),0)         AS inc_herb_claim,
+                COALESCE(SUM(inc_herb_receive),0)       AS inc_herb_receive
+               
             ")->first();
 
         // ส่งเป็น array ใช้ง่าย ๆ ใน Blade
         $card = [
-            'visit_total'       => (int)$total->visit_total,
-            'visit_total_op'    => (int)$total->visit_total_op,
-            'visit_total_pp'    => (int)$total->visit_total_pp,           
-            'visit_endpoint'    => (int)$total->visit_endpoint,
-            'visit_ucs_cr'      => (int)$total->visit_ucs_cr,
-            'inc_uccr'          => (float)$total->inc_uccr,
-            'visit_ucs_herb'    => (int)$total->visit_ucs_herb,
-            'inc_herb'          => (float)$total->inc_herb,  
-            'visit_ppfs'        => (int)$total->visit_ppfs,         
-            'inc_ppfs'          => (float)$total->inc_ppfs,
-            'visit_ucs'         => (int)$total->visit_ucs,
-            'inc_ucs'           => (float)$total->inc_ucs,
-            'visit_ucs_incup'  => (int)$total->visit_ucs_incup,
-            'inc_ucs_incup'    => (float)$total->inc_ucs_incup,
-            'visit_ucs_inprov'  => (int)$total->visit_ucs_inprov,
-            'inc_ucs_inprov'    => (float)$total->inc_ucs_inprov,
-            'visit_ucs_outprov' => (int)$total->visit_ucs_outprov,
-            'inc_ucs_outprov'   => (float)$total->inc_ucs_outprov,
-            'visit_ofc'         => (int)$total->visit_ofc,
-            'inc_ofc'           => (float)$total->inc_ofc,
-            'visit_lgo'         => (int)$total->visit_lgo,
-            'inc_lgo'           => (float)$total->inc_lgo,
-            'visit_sss'         => (int)$total->visit_sss,
-            'inc_sss'           => (float)$total->inc_sss,
-            'visit_pay'         => (int)$total->visit_pay,
-            'inc_pay'           => (float)$total->inc_pay,
+            'visit_ppfs'            => (int)$total->visit_ppfs,
+            'inc_ppfs'              => (int)$total->inc_ppfs,
+            'visit_ppfs_claim'      => (int)$total->visit_ppfs_claim,           
+            'inc_ppfs_claim'        => (int)$total->inc_ppfs_claim,
+            'inc_ppfs_receive'      => (int)$total->inc_ppfs_receive,
+            'visit_ucs_cr'          => (float)$total->visit_ucs_cr,
+            'inc_uccr'              => (int)$total->inc_uccr,
+            'visit_ucs_cr_claim'    => (float)$total->visit_ucs_cr_claim,  
+            'inc_uccr_claim'        => (int)$total->inc_uccr_claim,         
+            'inc_uccr_receive'      => (float)$total->inc_uccr_receive,
+            'visit_ucs_herb'        => (int)$total->visit_ucs_herb,
+            'inc_herb'              => (float)$total->inc_herb,
+            'visit_ucs_herb_claim'  => (int)$total->visit_ucs_herb_claim,
+            'inc_herb_claim'        => (float)$total->inc_herb_claim,
+            'inc_herb_receive'      => (int)$total->inc_herb_receive,           
         ];
 
         $hospitalSummary = DB::table('opd')
@@ -109,32 +88,21 @@ class DashboardClaimController extends Controller
                 'opd.hospcode',
                 'hospital_config.hospname',
                 DB::raw('MAX(opd.updated_at) AS last_updated_at'),
-                DB::raw('COALESCE(SUM(visit_total),0) AS visit_total'),
-                DB::raw('COALESCE(SUM(visit_total_op),0) AS visit_total_op'),
-                DB::raw('COALESCE(SUM(visit_total_pp),0) AS visit_total_pp'),
-                DB::raw('COALESCE(SUM(visit_endpoint),0) AS visit_endpoint'),
-                DB::raw('COALESCE(SUM(visit_ucs_cr),0) AS visit_ucs_cr'),
-                DB::raw('COALESCE(SUM(inc_uccr),0) AS inc_uccr'),
-                DB::raw('COALESCE(SUM(visit_ucs_herb),0) AS visit_ucs_herb'),
-                DB::raw('COALESCE(SUM(inc_herb),0) AS inc_herb'),
                 DB::raw('COALESCE(SUM(visit_ppfs),0) AS visit_ppfs'),
                 DB::raw('COALESCE(SUM(inc_ppfs),0) AS inc_ppfs'),
-                DB::raw('COALESCE(SUM(visit_ucs_incup),0)+COALESCE(SUM(visit_ucs_inprov),0)+COALESCE(SUM(visit_ucs_outprov),0) AS visit_ucs'),
-                DB::raw('COALESCE(SUM(inc_ucs_incup),0)+COALESCE(SUM(inc_ucs_inprov),0)+COALESCE(SUM(inc_ucs_outprov),0) AS inc_ucs'),
-                DB::raw('COALESCE(SUM(visit_ucs_incup),0) AS visit_ucs_incup'),
-                DB::raw('COALESCE(SUM(inc_ucs_incup),0) AS inc_ucs_incup'),
-                DB::raw('COALESCE(SUM(visit_ucs_inprov),0) AS visit_ucs_inprov'),
-                DB::raw('COALESCE(SUM(inc_ucs_inprov),0) AS inc_ucs_inprov'),
-                DB::raw('COALESCE(SUM(visit_ucs_outprov),0) AS visit_ucs_outprov'),
-                DB::raw('COALESCE(SUM(inc_ucs_outprov),0) AS inc_ucs_outprov'),
-                DB::raw('COALESCE(SUM(visit_ofc),0) AS visit_ofc'),
-                DB::raw('COALESCE(SUM(inc_ofc),0) AS inc_ofc'),
-                DB::raw('COALESCE(SUM(visit_lgo),0) AS visit_lgo'),
-                DB::raw('COALESCE(SUM(inc_lgo),0) AS inc_lgo'),
-                DB::raw('COALESCE(SUM(visit_sss),0) AS visit_sss'),
-                DB::raw('COALESCE(SUM(inc_sss),0) AS inc_sss'),
-                 DB::raw('COALESCE(SUM(visit_pay),0) AS visit_pay'),
-                DB::raw('COALESCE(SUM(inc_pay),0) AS inc_pay')
+                DB::raw('COALESCE(SUM(visit_ppfs_claim),0) AS visit_ppfs_claim'),
+                DB::raw('COALESCE(SUM(inc_ppfs_claim),0) AS inc_ppfs_claim'),
+                DB::raw('COALESCE(SUM(inc_ppfs_receive),0) AS inc_ppfs_receive'),
+                DB::raw('COALESCE(SUM(visit_ucs_cr),0) AS visit_ucs_cr'),
+                DB::raw('COALESCE(SUM(inc_uccr),0) AS inc_uccr'),
+                DB::raw('COALESCE(SUM(visit_ucs_cr_claim),0) AS visit_ucs_cr_claim'),
+                DB::raw('COALESCE(SUM(inc_uccr_claim),0) AS inc_uccr_claim'),
+                DB::raw('COALESCE(SUM(inc_uccr_receive),0) AS inc_uccr_receive'),
+                DB::raw('COALESCE(SUM(visit_ucs_herb),0) AS visit_ucs_herb'),
+                DB::raw('COALESCE(SUM(inc_herb),0) AS inc_herb'),
+                DB::raw('COALESCE(SUM(visit_ucs_herb_claim),0) AS visit_ucs_herb_claim'),
+                DB::raw('COALESCE(SUM(inc_herb_claim),0) AS inc_herb_claim'),
+                DB::raw('COALESCE(SUM(inc_herb_receive),0) AS inc_herb_receive'),
             )
             ->groupBy('opd.hospcode', 'hospital_config.hospname')
             ->orderBy('opd.hospcode')
@@ -148,563 +116,74 @@ class DashboardClaimController extends Controller
         $update_at10990 = DB::table('opd')->where('hospcode', '10990')->max('updated_at');
         $update_at10703 = DB::table('opd')->where('hospcode', '10703')->max('updated_at');
 
-// OPD------------------------------------------------------------------------------------------------------------------
+// Claim------------------------------------------------------------------------------------------------------------------
 
-        $total_10985 = DB::select("
-            SELECT MIN(CASE
-            WHEN MONTH(vstdate)=10 THEN CONCAT('ต.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=11 THEN CONCAT('พ.ย. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=12 THEN CONCAT('ธ.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=1  THEN CONCAT('ม.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=2  THEN CONCAT('ก.พ. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=3  THEN CONCAT('มี.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=4  THEN CONCAT('เม.ย. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=5  THEN CONCAT('พ.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=6  THEN CONCAT('มิ.ย. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=7  THEN CONCAT('ก.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=8  THEN CONCAT('ส.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=9  THEN CONCAT('ก.ย. ', RIGHT(YEAR(vstdate)+543, 2))
-            END) AS month, 
-            SUM(hn_total)            AS hn_total,
-            SUM(visit_total)         AS visit_total,
-            SUM(visit_total_op)      AS visit_total_op,
-            SUM(visit_total_pp)      AS visit_total_pp,
-            SUM(visit_ucs_incup)     AS visit_ucs_incup,
-            SUM(visit_ucs_inprov)    AS visit_ucs_inprov,
-            SUM(visit_ucs_outprov)   AS visit_ucs_outprov,
-            SUM(visit_ofc)           AS visit_ofc,
-            SUM(visit_bkk)           AS visit_bkk,
-            SUM(visit_bmt)           AS visit_bmt,
-            SUM(visit_sss)           AS visit_sss,
-            SUM(visit_lgo)           AS visit_lgo,
-            SUM(visit_fss)           AS visit_fss,
-            SUM(visit_stp)           AS visit_stp,
-            SUM(visit_pay)           AS visit_pay,
-            SUM(visit_ppfs)          AS visit_ppfs,
-            SUM(visit_ucs_cr)        AS visit_ucs_cr,
-            SUM(visit_ucs_herb)      AS visit_ucs_herb,
-            SUM(visit_ucs_healthmed) AS visit_ucs_healthmed,
-            SUM(inc_total)            AS inc_total,
-            SUM(inc_lab_total)        AS inc_lab_total,
-            SUM(inc_drug_total)       AS inc_drug_total,
-            SUM(inc_ucs_incup)        AS inc_ucs_incup,
-            SUM(inc_lab_ucs_incup)    AS inc_lab_ucs_incup,
-            SUM(inc_drug_ucs_incup)   AS inc_drug_ucs_incup,
-            SUM(inc_ucs_inprov)       AS inc_ucs_inprov,
-            SUM(inc_lab_ucs_inprov)   AS inc_lab_ucs_inprov,
-            SUM(inc_drug_ucs_inprov)  AS inc_drug_ucs_inprov,
-            SUM(inc_ucs_outprov)      AS inc_ucs_outprov,
-            SUM(inc_lab_ucs_outprov)  AS inc_lab_ucs_outprov,
-            SUM(inc_drug_ucs_outprov) AS inc_drug_ucs_outprov,
-            SUM(inc_ofc)              AS inc_ofc,
-            SUM(inc_lab_ofc)          AS inc_lab_ofc,
-            SUM(inc_drug_ofc)         AS inc_drug_ofc,
-            SUM(inc_bkk)              AS inc_bkk,
-            SUM(inc_lab_bkk)          AS inc_lab_bkk,
-            SUM(inc_drug_bkk)         AS inc_drug_bkk,
-            SUM(inc_bmt)              AS inc_bmt,
-            SUM(inc_lab_bmt)          AS inc_lab_bmt,
-            SUM(inc_drug_bmt)         AS inc_drug_bmt,
-            SUM(inc_sss)              AS inc_sss,
-            SUM(inc_lab_sss)          AS inc_lab_sss,
-            SUM(inc_drug_sss)         AS inc_drug_sss,
-            SUM(inc_lgo)              AS inc_lgo,
-            SUM(inc_lab_lgo)          AS inc_lab_lgo,
-            SUM(inc_drug_lgo)         AS inc_drug_lgo,
-            SUM(inc_fss)              AS inc_fss,
-            SUM(inc_lab_fss)          AS inc_lab_fss,
-            SUM(inc_drug_fss)         AS inc_drug_fss,
-            SUM(inc_stp)              AS inc_stp,
-            SUM(inc_lab_stp)          AS inc_lab_stp,
-            SUM(inc_drug_stp)         AS inc_drug_stp,
-            SUM(inc_pay)              AS inc_pay,
-            SUM(inc_lab_pay)          AS inc_lab_pay,
-            SUM(inc_drug_pay)         AS inc_drug_pay,
-            SUM(inc_ppfs)             AS inc_ppfs,
-            SUM(inc_uccr)             AS inc_uccr,
-            SUM(inc_herb)             AS inc_herb
-            FROM opd
-            WHERE vstdate BETWEEN ? AND ?
-            AND hospcode = 10985
-            GROUP BY YEAR(vstdate), MONTH(vstdate)
-            ORDER BY YEAR(vstdate), MONTH(vstdate) ", [$start_date, $end_date]);
+        // === Helper Function สำหรับดึงข้อมูลตาม hospcode ===
+        function getHospitalSummary($hospcode, $start_date, $end_date)
+        {
+            return collect(DB::select("
+                SELECT MIN(CASE
+                    WHEN MONTH(vstdate)=10 THEN CONCAT('ต.ค. ', RIGHT(YEAR(vstdate)+543, 2))
+                    WHEN MONTH(vstdate)=11 THEN CONCAT('พ.ย. ', RIGHT(YEAR(vstdate)+543, 2))
+                    WHEN MONTH(vstdate)=12 THEN CONCAT('ธ.ค. ', RIGHT(YEAR(vstdate)+543, 2))
+                    WHEN MONTH(vstdate)=1  THEN CONCAT('ม.ค. ', RIGHT(YEAR(vstdate)+543, 2))
+                    WHEN MONTH(vstdate)=2  THEN CONCAT('ก.พ. ', RIGHT(YEAR(vstdate)+543, 2))
+                    WHEN MONTH(vstdate)=3  THEN CONCAT('มี.ค. ', RIGHT(YEAR(vstdate)+543, 2))
+                    WHEN MONTH(vstdate)=4  THEN CONCAT('เม.ย. ', RIGHT(YEAR(vstdate)+543, 2))
+                    WHEN MONTH(vstdate)=5  THEN CONCAT('พ.ค. ', RIGHT(YEAR(vstdate)+543, 2))
+                    WHEN MONTH(vstdate)=6  THEN CONCAT('มิ.ย. ', RIGHT(YEAR(vstdate)+543, 2))
+                    WHEN MONTH(vstdate)=7  THEN CONCAT('ก.ค. ', RIGHT(YEAR(vstdate)+543, 2))
+                    WHEN MONTH(vstdate)=8  THEN CONCAT('ส.ค. ', RIGHT(YEAR(vstdate)+543, 2))
+                    WHEN MONTH(vstdate)=9  THEN CONCAT('ก.ย. ', RIGHT(YEAR(vstdate)+543, 2))
+                END) AS month, 
+                SUM(visit_ppfs)             AS visit_ppfs,
+                SUM(inc_ppfs)               AS inc_ppfs,
+                SUM(visit_ppfs_claim)       AS visit_ppfs_claim,
+                SUM(inc_ppfs_claim)         AS inc_ppfs_claim,
+                SUM(inc_ppfs_receive)       AS inc_ppfs_receive,
+                SUM(visit_ucs_cr)           AS visit_ucs_cr,
+                SUM(inc_uccr)               AS inc_uccr,
+                SUM(visit_ucs_cr_claim)     AS visit_ucs_cr_claim,
+                SUM(inc_uccr_claim)         AS inc_uccr_claim,
+                SUM(inc_uccr_receive)       AS inc_uccr_receive,
+                SUM(visit_ucs_herb)         AS visit_ucs_herb,
+                SUM(inc_herb)               AS inc_herb,
+                SUM(visit_ucs_herb_claim)   AS visit_ucs_herb_claim,
+                SUM(inc_herb_claim)         AS inc_herb_claim,
+                SUM(inc_herb_receive)       AS inc_herb_receive          
+                FROM opd
+                WHERE vstdate BETWEEN ? AND ?
+                AND hospcode = ?
+                GROUP BY YEAR(vstdate), MONTH(vstdate)
+                ORDER BY YEAR(vstdate), MONTH(vstdate)
+            ", [$start_date, $end_date, $hospcode]));
+        }
 
-        $total_10986 = DB::select("
-            SELECT MIN(CASE
-            WHEN MONTH(vstdate)=10 THEN CONCAT('ต.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=11 THEN CONCAT('พ.ย. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=12 THEN CONCAT('ธ.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=1  THEN CONCAT('ม.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=2  THEN CONCAT('ก.พ. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=3  THEN CONCAT('มี.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=4  THEN CONCAT('เม.ย. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=5  THEN CONCAT('พ.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=6  THEN CONCAT('มิ.ย. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=7  THEN CONCAT('ก.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=8  THEN CONCAT('ส.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=9  THEN CONCAT('ก.ย. ', RIGHT(YEAR(vstdate)+543, 2))
-            END) AS month, 
-            SUM(hn_total)            AS hn_total,
-            SUM(visit_total)         AS visit_total,
-            SUM(visit_total_op)      AS visit_total_op,
-            SUM(visit_total_pp)      AS visit_total_pp,
-            SUM(visit_ucs_incup)     AS visit_ucs_incup,
-            SUM(visit_ucs_inprov)    AS visit_ucs_inprov,
-            SUM(visit_ucs_outprov)   AS visit_ucs_outprov,
-            SUM(visit_ofc)           AS visit_ofc,
-            SUM(visit_bkk)           AS visit_bkk,
-            SUM(visit_bmt)           AS visit_bmt,
-            SUM(visit_sss)           AS visit_sss,
-            SUM(visit_lgo)           AS visit_lgo,
-            SUM(visit_fss)           AS visit_fss,
-            SUM(visit_stp)           AS visit_stp,
-            SUM(visit_pay)           AS visit_pay,
-            SUM(visit_ppfs)          AS visit_ppfs,
-            SUM(visit_ucs_cr)        AS visit_ucs_cr,
-            SUM(visit_ucs_herb)      AS visit_ucs_herb,
-            SUM(visit_ucs_healthmed) AS visit_ucs_healthmed,
-            SUM(inc_total)            AS inc_total,
-            SUM(inc_lab_total)        AS inc_lab_total,
-            SUM(inc_drug_total)       AS inc_drug_total,
-            SUM(inc_ucs_incup)        AS inc_ucs_incup,
-            SUM(inc_lab_ucs_incup)    AS inc_lab_ucs_incup,
-            SUM(inc_drug_ucs_incup)   AS inc_drug_ucs_incup,
-            SUM(inc_ucs_inprov)       AS inc_ucs_inprov,
-            SUM(inc_lab_ucs_inprov)   AS inc_lab_ucs_inprov,
-            SUM(inc_drug_ucs_inprov)  AS inc_drug_ucs_inprov,
-            SUM(inc_ucs_outprov)      AS inc_ucs_outprov,
-            SUM(inc_lab_ucs_outprov)  AS inc_lab_ucs_outprov,
-            SUM(inc_drug_ucs_outprov) AS inc_drug_ucs_outprov,
-            SUM(inc_ofc)              AS inc_ofc,
-            SUM(inc_lab_ofc)          AS inc_lab_ofc,
-            SUM(inc_drug_ofc)         AS inc_drug_ofc,
-            SUM(inc_bkk)              AS inc_bkk,
-            SUM(inc_lab_bkk)          AS inc_lab_bkk,
-            SUM(inc_drug_bkk)         AS inc_drug_bkk,
-            SUM(inc_bmt)              AS inc_bmt,
-            SUM(inc_lab_bmt)          AS inc_lab_bmt,
-            SUM(inc_drug_bmt)         AS inc_drug_bmt,
-            SUM(inc_sss)              AS inc_sss,
-            SUM(inc_lab_sss)          AS inc_lab_sss,
-            SUM(inc_drug_sss)         AS inc_drug_sss,
-            SUM(inc_lgo)              AS inc_lgo,
-            SUM(inc_lab_lgo)          AS inc_lab_lgo,
-            SUM(inc_drug_lgo)         AS inc_drug_lgo,
-            SUM(inc_fss)              AS inc_fss,
-            SUM(inc_lab_fss)          AS inc_lab_fss,
-            SUM(inc_drug_fss)         AS inc_drug_fss,
-            SUM(inc_stp)              AS inc_stp,
-            SUM(inc_lab_stp)          AS inc_lab_stp,
-            SUM(inc_drug_stp)         AS inc_drug_stp,
-            SUM(inc_pay)              AS inc_pay,
-            SUM(inc_lab_pay)          AS inc_lab_pay,
-            SUM(inc_drug_pay)         AS inc_drug_pay,
-            SUM(inc_ppfs)             AS inc_ppfs,
-            SUM(inc_uccr)             AS inc_uccr,
-            SUM(inc_herb)             AS inc_herb
-            FROM opd
-            WHERE vstdate BETWEEN ? AND ?
-            AND hospcode = 10986
-            GROUP BY YEAR(vstdate), MONTH(vstdate)
-            ORDER BY YEAR(vstdate), MONTH(vstdate) ", [$start_date, $end_date]);
+        // === เรียกใช้ ===
+        $total_10985 = getHospitalSummary(10985, $start_date, $end_date);
+        $total_10986 = getHospitalSummary(10986, $start_date, $end_date);
+        $total_10987 = getHospitalSummary(10987, $start_date, $end_date);
+        $total_10988 = getHospitalSummary(10988, $start_date, $end_date);
+        $total_10989 = getHospitalSummary(10989, $start_date, $end_date);
+        $total_10990 = getHospitalSummary(10990, $start_date, $end_date);
+        $total_10703 = getHospitalSummary(10703, $start_date, $end_date);
 
-        $total_10987 = DB::select("
-            SELECT MIN(CASE
-            WHEN MONTH(vstdate)=10 THEN CONCAT('ต.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=11 THEN CONCAT('พ.ย. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=12 THEN CONCAT('ธ.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=1  THEN CONCAT('ม.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=2  THEN CONCAT('ก.พ. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=3  THEN CONCAT('มี.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=4  THEN CONCAT('เม.ย. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=5  THEN CONCAT('พ.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=6  THEN CONCAT('มิ.ย. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=7  THEN CONCAT('ก.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=8  THEN CONCAT('ส.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=9  THEN CONCAT('ก.ย. ', RIGHT(YEAR(vstdate)+543, 2))
-            END) AS month, 
-            SUM(hn_total)            AS hn_total,
-            SUM(visit_total)         AS visit_total,
-            SUM(visit_total_op)      AS visit_total_op,
-            SUM(visit_total_pp)      AS visit_total_pp,
-            SUM(visit_ucs_incup)     AS visit_ucs_incup,
-            SUM(visit_ucs_inprov)    AS visit_ucs_inprov,
-            SUM(visit_ucs_outprov)   AS visit_ucs_outprov,
-            SUM(visit_ofc)           AS visit_ofc,
-            SUM(visit_bkk)           AS visit_bkk,
-            SUM(visit_bmt)           AS visit_bmt,
-            SUM(visit_sss)           AS visit_sss,
-            SUM(visit_lgo)           AS visit_lgo,
-            SUM(visit_fss)           AS visit_fss,
-            SUM(visit_stp)           AS visit_stp,
-            SUM(visit_pay)           AS visit_pay,
-            SUM(visit_ppfs)          AS visit_ppfs,
-            SUM(visit_ucs_cr)        AS visit_ucs_cr,
-            SUM(visit_ucs_herb)      AS visit_ucs_herb,
-            SUM(visit_ucs_healthmed) AS visit_ucs_healthmed,
-            SUM(inc_total)            AS inc_total,
-            SUM(inc_lab_total)        AS inc_lab_total,
-            SUM(inc_drug_total)       AS inc_drug_total,
-            SUM(inc_ucs_incup)        AS inc_ucs_incup,
-            SUM(inc_lab_ucs_incup)    AS inc_lab_ucs_incup,
-            SUM(inc_drug_ucs_incup)   AS inc_drug_ucs_incup,
-            SUM(inc_ucs_inprov)       AS inc_ucs_inprov,
-            SUM(inc_lab_ucs_inprov)   AS inc_lab_ucs_inprov,
-            SUM(inc_drug_ucs_inprov)  AS inc_drug_ucs_inprov,
-            SUM(inc_ucs_outprov)      AS inc_ucs_outprov,
-            SUM(inc_lab_ucs_outprov)  AS inc_lab_ucs_outprov,
-            SUM(inc_drug_ucs_outprov) AS inc_drug_ucs_outprov,
-            SUM(inc_ofc)              AS inc_ofc,
-            SUM(inc_lab_ofc)          AS inc_lab_ofc,
-            SUM(inc_drug_ofc)         AS inc_drug_ofc,
-            SUM(inc_bkk)              AS inc_bkk,
-            SUM(inc_lab_bkk)          AS inc_lab_bkk,
-            SUM(inc_drug_bkk)         AS inc_drug_bkk,
-            SUM(inc_bmt)              AS inc_bmt,
-            SUM(inc_lab_bmt)          AS inc_lab_bmt,
-            SUM(inc_drug_bmt)         AS inc_drug_bmt,
-            SUM(inc_sss)              AS inc_sss,
-            SUM(inc_lab_sss)          AS inc_lab_sss,
-            SUM(inc_drug_sss)         AS inc_drug_sss,
-            SUM(inc_lgo)              AS inc_lgo,
-            SUM(inc_lab_lgo)          AS inc_lab_lgo,
-            SUM(inc_drug_lgo)         AS inc_drug_lgo,
-            SUM(inc_fss)              AS inc_fss,
-            SUM(inc_lab_fss)          AS inc_lab_fss,
-            SUM(inc_drug_fss)         AS inc_drug_fss,
-            SUM(inc_stp)              AS inc_stp,
-            SUM(inc_lab_stp)          AS inc_lab_stp,
-            SUM(inc_drug_stp)         AS inc_drug_stp,
-            SUM(inc_pay)              AS inc_pay,
-            SUM(inc_lab_pay)          AS inc_lab_pay,
-            SUM(inc_drug_pay)         AS inc_drug_pay,
-            SUM(inc_ppfs)             AS inc_ppfs,
-            SUM(inc_uccr)             AS inc_uccr,
-            SUM(inc_herb)             AS inc_herb
-            FROM opd
-            WHERE vstdate BETWEEN ? AND ?
-            AND hospcode = 10987
-            GROUP BY YEAR(vstdate), MONTH(vstdate)
-            ORDER BY YEAR(vstdate), MONTH(vstdate) ", [$start_date, $end_date]);
-
-        $total_10988 = DB::select("
-            SELECT MIN(CASE
-            WHEN MONTH(vstdate)=10 THEN CONCAT('ต.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=11 THEN CONCAT('พ.ย. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=12 THEN CONCAT('ธ.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=1  THEN CONCAT('ม.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=2  THEN CONCAT('ก.พ. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=3  THEN CONCAT('มี.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=4  THEN CONCAT('เม.ย. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=5  THEN CONCAT('พ.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=6  THEN CONCAT('มิ.ย. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=7  THEN CONCAT('ก.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=8  THEN CONCAT('ส.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=9  THEN CONCAT('ก.ย. ', RIGHT(YEAR(vstdate)+543, 2))
-            END) AS month, 
-            SUM(hn_total)            AS hn_total,
-            SUM(visit_total)         AS visit_total,
-            SUM(visit_total_op)      AS visit_total_op,
-            SUM(visit_total_pp)      AS visit_total_pp,
-            SUM(visit_ucs_incup)     AS visit_ucs_incup,
-            SUM(visit_ucs_inprov)    AS visit_ucs_inprov,
-            SUM(visit_ucs_outprov)   AS visit_ucs_outprov,
-            SUM(visit_ofc)           AS visit_ofc,
-            SUM(visit_bkk)           AS visit_bkk,
-            SUM(visit_bmt)           AS visit_bmt,
-            SUM(visit_sss)           AS visit_sss,
-            SUM(visit_lgo)           AS visit_lgo,
-            SUM(visit_fss)           AS visit_fss,
-            SUM(visit_stp)           AS visit_stp,
-            SUM(visit_pay)           AS visit_pay,
-            SUM(visit_ppfs)          AS visit_ppfs,
-            SUM(visit_ucs_cr)        AS visit_ucs_cr,
-            SUM(visit_ucs_herb)      AS visit_ucs_herb,
-            SUM(visit_ucs_healthmed) AS visit_ucs_healthmed,
-            SUM(inc_total)            AS inc_total,
-            SUM(inc_lab_total)        AS inc_lab_total,
-            SUM(inc_drug_total)       AS inc_drug_total,
-            SUM(inc_ucs_incup)        AS inc_ucs_incup,
-            SUM(inc_lab_ucs_incup)    AS inc_lab_ucs_incup,
-            SUM(inc_drug_ucs_incup)   AS inc_drug_ucs_incup,
-            SUM(inc_ucs_inprov)       AS inc_ucs_inprov,
-            SUM(inc_lab_ucs_inprov)   AS inc_lab_ucs_inprov,
-            SUM(inc_drug_ucs_inprov)  AS inc_drug_ucs_inprov,
-            SUM(inc_ucs_outprov)      AS inc_ucs_outprov,
-            SUM(inc_lab_ucs_outprov)  AS inc_lab_ucs_outprov,
-            SUM(inc_drug_ucs_outprov) AS inc_drug_ucs_outprov,
-            SUM(inc_ofc)              AS inc_ofc,
-            SUM(inc_lab_ofc)          AS inc_lab_ofc,
-            SUM(inc_drug_ofc)         AS inc_drug_ofc,
-            SUM(inc_bkk)              AS inc_bkk,
-            SUM(inc_lab_bkk)          AS inc_lab_bkk,
-            SUM(inc_drug_bkk)         AS inc_drug_bkk,
-            SUM(inc_bmt)              AS inc_bmt,
-            SUM(inc_lab_bmt)          AS inc_lab_bmt,
-            SUM(inc_drug_bmt)         AS inc_drug_bmt,
-            SUM(inc_sss)              AS inc_sss,
-            SUM(inc_lab_sss)          AS inc_lab_sss,
-            SUM(inc_drug_sss)         AS inc_drug_sss,
-            SUM(inc_lgo)              AS inc_lgo,
-            SUM(inc_lab_lgo)          AS inc_lab_lgo,
-            SUM(inc_drug_lgo)         AS inc_drug_lgo,
-            SUM(inc_fss)              AS inc_fss,
-            SUM(inc_lab_fss)          AS inc_lab_fss,
-            SUM(inc_drug_fss)         AS inc_drug_fss,
-            SUM(inc_stp)              AS inc_stp,
-            SUM(inc_lab_stp)          AS inc_lab_stp,
-            SUM(inc_drug_stp)         AS inc_drug_stp,
-            SUM(inc_pay)              AS inc_pay,
-            SUM(inc_lab_pay)          AS inc_lab_pay,
-            SUM(inc_drug_pay)         AS inc_drug_pay,
-            SUM(inc_ppfs)             AS inc_ppfs,
-            SUM(inc_uccr)             AS inc_uccr,
-            SUM(inc_herb)             AS inc_herb
-            FROM opd
-            WHERE vstdate BETWEEN ? AND ?
-            AND hospcode = 10988
-            GROUP BY YEAR(vstdate), MONTH(vstdate)
-            ORDER BY YEAR(vstdate), MONTH(vstdate) ", [$start_date, $end_date]);
-
-        $total_10989 = DB::select("
-            SELECT MIN(CASE
-            WHEN MONTH(vstdate)=10 THEN CONCAT('ต.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=11 THEN CONCAT('พ.ย. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=12 THEN CONCAT('ธ.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=1  THEN CONCAT('ม.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=2  THEN CONCAT('ก.พ. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=3  THEN CONCAT('มี.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=4  THEN CONCAT('เม.ย. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=5  THEN CONCAT('พ.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=6  THEN CONCAT('มิ.ย. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=7  THEN CONCAT('ก.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=8  THEN CONCAT('ส.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=9  THEN CONCAT('ก.ย. ', RIGHT(YEAR(vstdate)+543, 2))
-            END) AS month, 
-            SUM(hn_total)            AS hn_total,
-            SUM(visit_total)         AS visit_total,
-            SUM(visit_total_op)      AS visit_total_op,
-            SUM(visit_total_pp)      AS visit_total_pp,
-            SUM(visit_ucs_incup)     AS visit_ucs_incup,
-            SUM(visit_ucs_inprov)    AS visit_ucs_inprov,
-            SUM(visit_ucs_outprov)   AS visit_ucs_outprov,
-            SUM(visit_ofc)           AS visit_ofc,
-            SUM(visit_bkk)           AS visit_bkk,
-            SUM(visit_bmt)           AS visit_bmt,
-            SUM(visit_sss)           AS visit_sss,
-            SUM(visit_lgo)           AS visit_lgo,
-            SUM(visit_fss)           AS visit_fss,
-            SUM(visit_stp)           AS visit_stp,
-            SUM(visit_pay)           AS visit_pay,
-            SUM(visit_ppfs)          AS visit_ppfs,
-            SUM(visit_ucs_cr)        AS visit_ucs_cr,
-            SUM(visit_ucs_herb)      AS visit_ucs_herb,
-            SUM(visit_ucs_healthmed) AS visit_ucs_healthmed,
-            SUM(inc_total)            AS inc_total,
-            SUM(inc_lab_total)        AS inc_lab_total,
-            SUM(inc_drug_total)       AS inc_drug_total,
-            SUM(inc_ucs_incup)        AS inc_ucs_incup,
-            SUM(inc_lab_ucs_incup)    AS inc_lab_ucs_incup,
-            SUM(inc_drug_ucs_incup)   AS inc_drug_ucs_incup,
-            SUM(inc_ucs_inprov)       AS inc_ucs_inprov,
-            SUM(inc_lab_ucs_inprov)   AS inc_lab_ucs_inprov,
-            SUM(inc_drug_ucs_inprov)  AS inc_drug_ucs_inprov,
-            SUM(inc_ucs_outprov)      AS inc_ucs_outprov,
-            SUM(inc_lab_ucs_outprov)  AS inc_lab_ucs_outprov,
-            SUM(inc_drug_ucs_outprov) AS inc_drug_ucs_outprov,
-            SUM(inc_ofc)              AS inc_ofc,
-            SUM(inc_lab_ofc)          AS inc_lab_ofc,
-            SUM(inc_drug_ofc)         AS inc_drug_ofc,
-            SUM(inc_bkk)              AS inc_bkk,
-            SUM(inc_lab_bkk)          AS inc_lab_bkk,
-            SUM(inc_drug_bkk)         AS inc_drug_bkk,
-            SUM(inc_bmt)              AS inc_bmt,
-            SUM(inc_lab_bmt)          AS inc_lab_bmt,
-            SUM(inc_drug_bmt)         AS inc_drug_bmt,
-            SUM(inc_sss)              AS inc_sss,
-            SUM(inc_lab_sss)          AS inc_lab_sss,
-            SUM(inc_drug_sss)         AS inc_drug_sss,
-            SUM(inc_lgo)              AS inc_lgo,
-            SUM(inc_lab_lgo)          AS inc_lab_lgo,
-            SUM(inc_drug_lgo)         AS inc_drug_lgo,
-            SUM(inc_fss)              AS inc_fss,
-            SUM(inc_lab_fss)          AS inc_lab_fss,
-            SUM(inc_drug_fss)         AS inc_drug_fss,
-            SUM(inc_stp)              AS inc_stp,
-            SUM(inc_lab_stp)          AS inc_lab_stp,
-            SUM(inc_drug_stp)         AS inc_drug_stp,
-            SUM(inc_pay)              AS inc_pay,
-            SUM(inc_lab_pay)          AS inc_lab_pay,
-            SUM(inc_drug_pay)         AS inc_drug_pay,
-            SUM(inc_ppfs)             AS inc_ppfs,
-            SUM(inc_uccr)             AS inc_uccr,
-            SUM(inc_herb)             AS inc_herb
-            FROM opd
-            WHERE vstdate BETWEEN ? AND ?
-            AND hospcode = 10989
-            GROUP BY YEAR(vstdate), MONTH(vstdate)
-            ORDER BY YEAR(vstdate), MONTH(vstdate) ", [$start_date, $end_date]);
-
-        $total_10990 = DB::select("
-            SELECT MIN(CASE
-            WHEN MONTH(vstdate)=10 THEN CONCAT('ต.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=11 THEN CONCAT('พ.ย. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=12 THEN CONCAT('ธ.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=1  THEN CONCAT('ม.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=2  THEN CONCAT('ก.พ. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=3  THEN CONCAT('มี.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=4  THEN CONCAT('เม.ย. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=5  THEN CONCAT('พ.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=6  THEN CONCAT('มิ.ย. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=7  THEN CONCAT('ก.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=8  THEN CONCAT('ส.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=9  THEN CONCAT('ก.ย. ', RIGHT(YEAR(vstdate)+543, 2))
-            END) AS month, 
-            SUM(hn_total)            AS hn_total,
-            SUM(visit_total)         AS visit_total,
-            SUM(visit_total_op)      AS visit_total_op,
-            SUM(visit_total_pp)      AS visit_total_pp,
-            SUM(visit_ucs_incup)     AS visit_ucs_incup,
-            SUM(visit_ucs_inprov)    AS visit_ucs_inprov,
-            SUM(visit_ucs_outprov)   AS visit_ucs_outprov,
-            SUM(visit_ofc)           AS visit_ofc,
-            SUM(visit_bkk)           AS visit_bkk,
-            SUM(visit_bmt)           AS visit_bmt,
-            SUM(visit_sss)           AS visit_sss,
-            SUM(visit_lgo)           AS visit_lgo,
-            SUM(visit_fss)           AS visit_fss,
-            SUM(visit_stp)           AS visit_stp,
-            SUM(visit_pay)           AS visit_pay,
-            SUM(visit_ppfs)          AS visit_ppfs,
-            SUM(visit_ucs_cr)        AS visit_ucs_cr,
-            SUM(visit_ucs_herb)      AS visit_ucs_herb,
-            SUM(visit_ucs_healthmed) AS visit_ucs_healthmed,
-            SUM(inc_total)            AS inc_total,
-            SUM(inc_lab_total)        AS inc_lab_total,
-            SUM(inc_drug_total)       AS inc_drug_total,
-            SUM(inc_ucs_incup)        AS inc_ucs_incup,
-            SUM(inc_lab_ucs_incup)    AS inc_lab_ucs_incup,
-            SUM(inc_drug_ucs_incup)   AS inc_drug_ucs_incup,
-            SUM(inc_ucs_inprov)       AS inc_ucs_inprov,
-            SUM(inc_lab_ucs_inprov)   AS inc_lab_ucs_inprov,
-            SUM(inc_drug_ucs_inprov)  AS inc_drug_ucs_inprov,
-            SUM(inc_ucs_outprov)      AS inc_ucs_outprov,
-            SUM(inc_lab_ucs_outprov)  AS inc_lab_ucs_outprov,
-            SUM(inc_drug_ucs_outprov) AS inc_drug_ucs_outprov,
-            SUM(inc_ofc)              AS inc_ofc,
-            SUM(inc_lab_ofc)          AS inc_lab_ofc,
-            SUM(inc_drug_ofc)         AS inc_drug_ofc,
-            SUM(inc_bkk)              AS inc_bkk,
-            SUM(inc_lab_bkk)          AS inc_lab_bkk,
-            SUM(inc_drug_bkk)         AS inc_drug_bkk,
-            SUM(inc_bmt)              AS inc_bmt,
-            SUM(inc_lab_bmt)          AS inc_lab_bmt,
-            SUM(inc_drug_bmt)         AS inc_drug_bmt,
-            SUM(inc_sss)              AS inc_sss,
-            SUM(inc_lab_sss)          AS inc_lab_sss,
-            SUM(inc_drug_sss)         AS inc_drug_sss,
-            SUM(inc_lgo)              AS inc_lgo,
-            SUM(inc_lab_lgo)          AS inc_lab_lgo,
-            SUM(inc_drug_lgo)         AS inc_drug_lgo,
-            SUM(inc_fss)              AS inc_fss,
-            SUM(inc_lab_fss)          AS inc_lab_fss,
-            SUM(inc_drug_fss)         AS inc_drug_fss,
-            SUM(inc_stp)              AS inc_stp,
-            SUM(inc_lab_stp)          AS inc_lab_stp,
-            SUM(inc_drug_stp)         AS inc_drug_stp,
-            SUM(inc_pay)              AS inc_pay,
-            SUM(inc_lab_pay)          AS inc_lab_pay,
-            SUM(inc_drug_pay)         AS inc_drug_pay,
-            SUM(inc_ppfs)             AS inc_ppfs,
-            SUM(inc_uccr)             AS inc_uccr,
-            SUM(inc_herb)             AS inc_herb
-            FROM opd
-            WHERE vstdate BETWEEN ? AND ?
-            AND hospcode = 10990
-            GROUP BY YEAR(vstdate), MONTH(vstdate)
-            ORDER BY YEAR(vstdate), MONTH(vstdate) ", [$start_date, $end_date]);
-
-        $total_10703 = DB::select("
-            SELECT MIN(CASE
-            WHEN MONTH(vstdate)=10 THEN CONCAT('ต.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=11 THEN CONCAT('พ.ย. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=12 THEN CONCAT('ธ.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=1  THEN CONCAT('ม.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=2  THEN CONCAT('ก.พ. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=3  THEN CONCAT('มี.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=4  THEN CONCAT('เม.ย. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=5  THEN CONCAT('พ.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=6  THEN CONCAT('มิ.ย. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=7  THEN CONCAT('ก.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=8  THEN CONCAT('ส.ค. ', RIGHT(YEAR(vstdate)+543, 2))
-            WHEN MONTH(vstdate)=9  THEN CONCAT('ก.ย. ', RIGHT(YEAR(vstdate)+543, 2))
-            END) AS month, 
-            SUM(hn_total)            AS hn_total,
-            SUM(visit_total)         AS visit_total,
-            SUM(visit_total_op)      AS visit_total_op,
-            SUM(visit_total_pp)      AS visit_total_pp,
-            SUM(visit_ucs_incup)     AS visit_ucs_incup,
-            SUM(visit_ucs_inprov)    AS visit_ucs_inprov,
-            SUM(visit_ucs_outprov)   AS visit_ucs_outprov,
-            SUM(visit_ofc)           AS visit_ofc,
-            SUM(visit_bkk)           AS visit_bkk,
-            SUM(visit_bmt)           AS visit_bmt,
-            SUM(visit_sss)           AS visit_sss,
-            SUM(visit_lgo)           AS visit_lgo,
-            SUM(visit_fss)           AS visit_fss,
-            SUM(visit_stp)           AS visit_stp,
-            SUM(visit_pay)           AS visit_pay,
-            SUM(visit_ppfs)          AS visit_ppfs,
-            SUM(visit_ucs_cr)        AS visit_ucs_cr,
-            SUM(visit_ucs_herb)      AS visit_ucs_herb,
-            SUM(visit_ucs_healthmed) AS visit_ucs_healthmed,
-            SUM(inc_total)            AS inc_total,
-            SUM(inc_lab_total)        AS inc_lab_total,
-            SUM(inc_drug_total)       AS inc_drug_total,
-            SUM(inc_ucs_incup)        AS inc_ucs_incup,
-            SUM(inc_lab_ucs_incup)    AS inc_lab_ucs_incup,
-            SUM(inc_drug_ucs_incup)   AS inc_drug_ucs_incup,
-            SUM(inc_ucs_inprov)       AS inc_ucs_inprov,
-            SUM(inc_lab_ucs_inprov)   AS inc_lab_ucs_inprov,
-            SUM(inc_drug_ucs_inprov)  AS inc_drug_ucs_inprov,
-            SUM(inc_ucs_outprov)      AS inc_ucs_outprov,
-            SUM(inc_lab_ucs_outprov)  AS inc_lab_ucs_outprov,
-            SUM(inc_drug_ucs_outprov) AS inc_drug_ucs_outprov,
-            SUM(inc_ofc)              AS inc_ofc,
-            SUM(inc_lab_ofc)          AS inc_lab_ofc,
-            SUM(inc_drug_ofc)         AS inc_drug_ofc,
-            SUM(inc_bkk)              AS inc_bkk,
-            SUM(inc_lab_bkk)          AS inc_lab_bkk,
-            SUM(inc_drug_bkk)         AS inc_drug_bkk,
-            SUM(inc_bmt)              AS inc_bmt,
-            SUM(inc_lab_bmt)          AS inc_lab_bmt,
-            SUM(inc_drug_bmt)         AS inc_drug_bmt,
-            SUM(inc_sss)              AS inc_sss,
-            SUM(inc_lab_sss)          AS inc_lab_sss,
-            SUM(inc_drug_sss)         AS inc_drug_sss,
-            SUM(inc_lgo)              AS inc_lgo,
-            SUM(inc_lab_lgo)          AS inc_lab_lgo,
-            SUM(inc_drug_lgo)         AS inc_drug_lgo,
-            SUM(inc_fss)              AS inc_fss,
-            SUM(inc_lab_fss)          AS inc_lab_fss,
-            SUM(inc_drug_fss)         AS inc_drug_fss,
-            SUM(inc_stp)              AS inc_stp,
-            SUM(inc_lab_stp)          AS inc_lab_stp,
-            SUM(inc_drug_stp)         AS inc_drug_stp,
-            SUM(inc_pay)              AS inc_pay,
-            SUM(inc_lab_pay)          AS inc_lab_pay,
-            SUM(inc_drug_pay)         AS inc_drug_pay,
-            SUM(inc_ppfs)             AS inc_ppfs,
-            SUM(inc_uccr)             AS inc_uccr,
-            SUM(inc_herb)             AS inc_herb
-            FROM opd
-            WHERE vstdate BETWEEN ? AND ?
-            AND hospcode = 10703
-            GROUP BY YEAR(vstdate), MONTH(vstdate)
-            ORDER BY YEAR(vstdate), MONTH(vstdate) ", [$start_date, $end_date]);
-
-        return view('dashboard_claim', array_merge($card,compact('budget_year_select','budget_year','diff_days','update_at10985','total_10985',
-            'update_at10986','total_10986','update_at10987','total_10987','update_at10988','total_10988','update_at10989','total_10989',
-            'update_at10990','total_10990','update_at10703','total_10703','hospitalSummary')));
+        // === ส่งไปหน้า View ===
+        return view('dashboard_claim', array_merge(
+            $card,
+            compact(
+                'budget_year_select',
+                'budget_year',
+                'diff_days',
+                'update_at10985', 'total_10985',
+                'update_at10986', 'total_10986',
+                'update_at10987', 'total_10987',
+                'update_at10988', 'total_10988',
+                'update_at10989', 'total_10989',
+                'update_at10990', 'total_10990',
+                'update_at10703', 'total_10703',
+                'hospitalSummary'
+            )
+        ));
     }
 }

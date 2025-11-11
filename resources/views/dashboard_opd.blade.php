@@ -1,5 +1,30 @@
 @extends('layouts.app')
 
+<style>
+  .card-opd {
+    border: none;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease-in-out;
+    border-radius: 1rem;
+  }
+
+  .card-opd:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+   /*  OPD (ฟ้าเทอร์ควอยซ์พาสเทล) */
+  .card-opd.card {
+    background: linear-gradient(135deg, #b8f1f9, #e8f7f9);
+  }
+  .text-card {
+    color: #b8f1f9 !important;
+  }
+  tr.table-opd td,
+  tr.table-opd th {
+    background: linear-gradient(135deg, #ceebfa, #e8f6fc) !important;   
+  }
+</style>
+
 @section('title', 'Dashboard | AOPOD')
 
 @section('content')
@@ -37,7 +62,7 @@
         {{--  ผู้ป่วยนอก ----------------------------------------------------------------------------------------------- --}}
         <div class="col-12 col-sm-6 col-xl-3">
           <a href="#" data-bs-toggle="modal" data-bs-target="#VisitDetailModal" class="text-decoration-none text-dark">
-            <div class="glass p-3 h-100">
+            <div class="card-opd card glass p-3 h-100">
               <div class="d-flex align-items-center justify-content-between mb-2">
                 <h6 class="mb-0 text-primary"><strong>ผู้ป่วยนอก OPD</strong></h6>
                 <span><i class="bi bi-person-heart fs-5 text-primary"></i> </span>
@@ -128,7 +153,7 @@
         {{--  สิทธิประกันสุขภาพ UCS------------------------------------------------------------------------------------------------ --}}
         <div class="col-12 col-sm-6 col-xl-3">
           <a href="#" data-bs-toggle="modal" data-bs-target="#UCSDetailModal" class="text-decoration-none text-dark">
-            <div class="glass p-3 h-100">
+            <div class="card-opd card glass p-3 h-100">
               <div class="d-flex align-items-center justify-content-between mb-2">
                 <h6 class="mb-0 text-primary"><strong>สิทธิประกันสุขภาพ UCS</strong></h6>
                 <span><i class="bi bi-person-heart fs-5 text-success"></i></span>
@@ -210,7 +235,7 @@
         {{--  สิทธิประกันสุขภาพ UCS ใน CUP------------------------------------------------------------------------------------------------ --}}
         <div class="col-12 col-sm-6 col-xl-3">
           <a href="#" data-bs-toggle="modal" data-bs-target="#UCS_IncupDetailModal" class="text-decoration-none text-dark">
-            <div class="glass p-3 h-100">
+            <div class=" card-opd card glass p-3 h-100">
               <div class="d-flex align-items-center justify-content-between mb-2">
                 <h6 class="mb-0 text-primary"><strong>สิทธิประกันสุขภาพ UCS ใน CUP</strong></h6>
                 <span><i class="bi bi-person-heart fs-5 text-success"></i></span>
@@ -292,7 +317,7 @@
         {{--  สิทธิประกันสุขภาพ UCS ต่างจังหวัด------------------------------------------------------------------------------------------------ --}}
         <div class="col-12 col-sm-6 col-xl-3">
           <a href="#" data-bs-toggle="modal" data-bs-target="#UCS_InprovDetailModal" class="text-decoration-none text-dark">
-            <div class="glass p-3 h-100">
+            <div class="card-opd card glass p-3 h-100">
               <div class="d-flex align-items-center justify-content-between mb-2">
                 <h6 class="mb-0 text-primary"><strong>สิทธิประกันสุขภาพ UCS ในจังหวัด</strong></h6>
                 <span><i class="bi bi-person-heart fs-5 text-success"></i></span>
@@ -389,7 +414,7 @@
         {{--  สิทธิกรมบัญชีกลาง OFC -------------------------------------------------------------------------------}}
         <div class="col-12 col-sm-6 col-xl-3">
           <a href="#" data-bs-toggle="modal" data-bs-target="#OFCDetailModal" class="text-decoration-none text-dark">
-            <div class="glass p-3 h-100">
+            <div class="card-opd card glass p-3 h-100">
               <div class="d-flex align-items-center justify-content-between mb-2">
                 <h6 class="mb-0 text-primary"><strong>สิทธิกรมบัญชีกลาง OFC</strong></h6>
                 <span><i class="bi bi-people fs-5 text-info"></i> </span>
@@ -471,7 +496,7 @@
         {{--  สิทธิ อปท. LGO -------------------------------------------------------------------------------}}
         <div class="col-12 col-sm-6 col-xl-3">
           <a href="#" data-bs-toggle="modal" data-bs-target="#LGODetailModal" class="text-decoration-none text-dark">
-            <div class="glass p-3 h-100">
+            <div class="card-opd card glass p-3 h-100">
               <div class="d-flex align-items-center justify-content-between mb-2">
                 <h6 class="mb-0 text-primary"><strong>สิทธิ อปท. LGO</strong></h6>
                 <span><i class="bi bi-people fs-5 text-success"></i> </span>
@@ -553,7 +578,7 @@
         {{--  สิทธิประกันสังคม SSS -------------------------------------------------------------------------------}}
         <div class="col-12 col-sm-6 col-xl-3">
           <a href="#" data-bs-toggle="modal" data-bs-target="#SSSDetailModal" class="text-decoration-none text-dark">
-            <div class="glass p-3 h-100">
+            <div class="card-opd card glass p-3 h-100">
               <div class="d-flex align-items-center justify-content-between mb-2">
                 <h6 class="mb-0 text-primary"><strong>สิทธิประกันสังคม SSS</strong></h6>
                 <span><i class="bi bi-people fs-5 text-warning"></i> </span>
@@ -635,7 +660,7 @@
         {{--  ชำระเงิน/พรบ. -------------------------------------------------------------------------------}}
         <div class="col-12 col-sm-6 col-xl-3">
           <a href="#" data-bs-toggle="modal" data-bs-target="#PayDetailModal" class="text-decoration-none text-dark">
-            <div class="glass p-3 h-100">
+            <div class="card-opd card glass p-3 h-100">
               <div class="d-flex align-items-center justify-content-between mb-2">
                 <h6 class="mb-0 text-primary"><strong>สิทธิชำระเงิน/พรบ.</strong></h6>
                 <span><i class="bi bi-people fs-5 text-primary"></i> </span>
@@ -807,7 +832,7 @@
             <div class="table-responsive">
               <table id="table10985" class="table table-bordered table-striped my-3" width ="100%">
                 <thead class="table-light">
-                  <tr class="table-primary">
+                  <tr class="table-opd">
                     <th class="text-center" rowspan="2" width ="4%">เดือน</th>
                     <th class="text-center" colspan="7">ทั้งหมด</th>
                     <th class="text-center" colspan="4">UCS ใน CUP</th> 
@@ -822,7 +847,7 @@
                     <th class="text-center" colspan="4">STP Stateless</th>
                     <th class="text-center" colspan="4">ชำระเงิน/พรบ.</th>                 
                   </tr>    
-                  <tr class="table-primary">            
+                  <tr class="table-opd">            
                     <td class="text-center text-primary">HN Total</td>
                     <td class="text-center text-primary">Visit Total</td>
                     <td class="text-center text-primary">Visit OP</td>
@@ -1108,7 +1133,7 @@
             <div class="table-responsive">
               <table id="table10986" class="table table-bordered table-striped my-3" width ="100%">
                 <thead class="table-light">
-                  <tr class="table-primary">
+                  <tr class="table-opd">
                     <th class="text-center" rowspan="2" width ="4%">เดือน</th>
                     <th class="text-center" colspan="7">ทั้งหมด</th>
                     <th class="text-center" colspan="4">UCS ใน CUP</th> 
@@ -1123,7 +1148,7 @@
                     <th class="text-center" colspan="4">STP Stateless</th>
                     <th class="text-center" colspan="4">ชำระเงิน/พรบ.</th>                 
                   </tr>    
-                  <tr class="table-primary">            
+                  <tr class="table-opd">            
                     <td class="text-center text-primary">HN Total</td>
                     <td class="text-center text-primary">Visit Total</td>
                     <td class="text-center text-primary">Visit OP</td>
@@ -1409,7 +1434,7 @@
             <div class="table-responsive">
               <table id="table10987" class="table table-bordered table-striped my-3" width ="100%">
                 <thead class="table-light">
-                  <tr class="table-primary">
+                  <tr class="table-opd">
                     <th class="text-center" rowspan="2" width ="4%">เดือน</th>
                     <th class="text-center" colspan="7">ทั้งหมด</th>
                     <th class="text-center" colspan="4">UCS ใน CUP</th> 
@@ -1424,7 +1449,7 @@
                     <th class="text-center" colspan="4">STP Stateless</th>
                     <th class="text-center" colspan="4">ชำระเงิน/พรบ.</th>                 
                   </tr>    
-                  <tr class="table-primary">            
+                  <tr class="table-opd">            
                     <td class="text-center text-primary">HN Total</td>
                     <td class="text-center text-primary">Visit Total</td>
                     <td class="text-center text-primary">Visit OP</td>
@@ -1710,7 +1735,7 @@
             <div class="table-responsive">
               <table id="table10988" class="table table-bordered table-striped my-3" width ="100%">
                 <thead class="table-light">
-                  <tr class="table-primary">
+                  <tr class="table-opd">
                     <th class="text-center" rowspan="2" width ="4%">เดือน</th>
                     <th class="text-center" colspan="7">ทั้งหมด</th>
                     <th class="text-center" colspan="4">UCS ใน CUP</th> 
@@ -1725,7 +1750,7 @@
                     <th class="text-center" colspan="4">STP Stateless</th>
                     <th class="text-center" colspan="4">ชำระเงิน/พรบ.</th>                 
                   </tr>    
-                  <tr class="table-primary">            
+                  <tr class="table-opd">            
                     <td class="text-center text-primary">HN Total</td>
                     <td class="text-center text-primary">Visit Total</td>
                     <td class="text-center text-primary">Visit OP</td>
@@ -2011,7 +2036,7 @@
             <div class="table-responsive">
               <table id="table10989" class="table table-bordered table-striped my-3" width ="100%">
                 <thead class="table-light">
-                  <tr class="table-primary">
+                  <tr class="table-opd">
                     <th class="text-center" rowspan="2" width ="4%">เดือน</th>
                     <th class="text-center" colspan="7">ทั้งหมด</th>
                     <th class="text-center" colspan="4">UCS ใน CUP</th> 
@@ -2026,7 +2051,7 @@
                     <th class="text-center" colspan="4">STP Stateless</th>
                     <th class="text-center" colspan="4">ชำระเงิน/พรบ.</th>                 
                   </tr>    
-                  <tr class="table-primary">            
+                  <tr class="table-opd">            
                     <td class="text-center text-primary">HN Total</td>
                     <td class="text-center text-primary">Visit Total</td>
                     <td class="text-center text-primary">Visit OP</td>
@@ -2312,7 +2337,7 @@
             <div class="table-responsive">
               <table id="table10990" class="table table-bordered table-striped my-3" width ="100%">
                 <thead class="table-light">
-                  <tr class="table-primary">
+                  <tr class="table-opd">
                     <th class="text-center" rowspan="2" width ="4%">เดือน</th>
                     <th class="text-center" colspan="7">ทั้งหมด</th>
                     <th class="text-center" colspan="4">UCS ใน CUP</th> 
@@ -2327,7 +2352,7 @@
                     <th class="text-center" colspan="4">STP Stateless</th>
                     <th class="text-center" colspan="4">ชำระเงิน/พรบ.</th>                 
                   </tr>    
-                  <tr class="table-primary">            
+                  <tr class="table-opd">            
                     <td class="text-center text-primary">HN Total</td>
                     <td class="text-center text-primary">Visit Total</td>
                     <td class="text-center text-primary">Visit OP</td>
@@ -2613,7 +2638,7 @@
             <div class="table-responsive">
               <table id="table10703" class="table table-bordered table-striped my-3" width ="100%">
                 <thead class="table-light">
-                  <tr class="table-primary">
+                  <tr class="table-opd">
                     <th class="text-center" rowspan="2" width ="4%">เดือน</th>
                     <th class="text-center" colspan="7">ทั้งหมด</th>
                     <th class="text-center" colspan="4">UCS ใน CUP</th> 
@@ -2628,7 +2653,7 @@
                     <th class="text-center" colspan="4">STP Stateless</th>
                     <th class="text-center" colspan="4">ชำระเงิน/พรบ.</th>                 
                   </tr>    
-                  <tr class="table-primary">            
+                  <tr class="table-opd">            
                     <td class="text-center text-primary">HN Total</td>
                     <td class="text-center text-primary">Visit Total</td>
                     <td class="text-center text-primary">Visit OP</td>
