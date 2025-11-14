@@ -43,6 +43,11 @@
     background: linear-gradient(135deg, #fce7ee, #fcf2f6) !important;   
   }
 
+  tr.table-refer td,
+  tr.table-refer th {
+    background: linear-gradient(135deg, #c6ecfd, #def5ff) !important;   
+  }
+
 </style>
 
 @section('content')
@@ -74,7 +79,6 @@
         $fmtInt   = fn($n) => number_format((int)($n ?? 0));
         $fmtMoney = fn($n) => number_format((float)($n ?? 0), 2);
       @endphp
-
       <div class="row g-3">
         
         <!-- กำลังรักษาอยู่ (แดงพาสเทล) --------------------------------------------------------------------------------------------->
@@ -142,7 +146,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      @foreach($hospitals as $h)
+                      @foreach($ipd_bed_dep as $h)
                         @php
                           $bed_occupancy = $h->bed_qty > 0 ? ($h->bed_use / $h->bed_qty) * 100 : 0;
                           if ($bed_occupancy < 60) {
@@ -180,8 +184,8 @@
 
                       {{-- รวม --}}
                       @php
-                        $sum_bed_qty = $hospitals->sum('bed_qty');
-                        $sum_bed_use = $hospitals->sum('bed_use');
+                        $sum_bed_qty = $ipd_bed_dep->sum('bed_qty');
+                        $sum_bed_use = $ipd_bed_dep->sum('bed_use');
                         $total_occupancy = $sum_bed_qty > 0 ? ($sum_bed_use / $sum_bed_qty) * 100 : 0;
                       @endphp
                       <tr style="background-color:#eef4fb;" class="fw-bold text-end">
@@ -622,8 +626,71 @@
       </div>
     </div>  
   </section>  
-  
-<br>
+
+  <!-- ข้อมูลเตียง ---------------------------------------------------------------------------------------- -->
+  <section id="bed" class="pb-2">
+      <div class="container-fluid">
+          <div class="row g-3">
+              @foreach($bedData as $hospcode => $data)
+              <div class="col-12 col-sm-6 col-xl-3" >
+                  <div  class="card p-3 h-100 rounded-3 shadow-sm"
+                        style="background: linear-gradient(145deg, #e0f7fa, #ffffff); border:1px solid #b3e5fc;">
+
+                      <!-- หัวข้อ Card -->
+                      <h6 class="mb-3 fw-bold text-primary d-flex justify-content-between align-items-center">
+                          <span>ข้อมูลเตียง{{ $data['hospname'] }}</span>
+                          <i class="fa-solid fa-bed-pulse text-danger fs-5"></i>
+                      </h6>
+                      <!-- Header -->
+                      <div class="row mb-1">
+                          <div class="col-4 small text-secondary">แผนก</div>
+                          <div class="col-2 small text-secondary text-center">จำนวนเตียง</div>
+                          <div class="col-2 small text-secondary text-center">Admit</div>
+                          <div class="col-2 small text-secondary text-center">เตียงว่าง</div>
+                          <div class="col-2 small text-secondary text-center">อัตราครองเตียง</div>
+                      </div>
+                      <hr class="my-1">
+                      <!-- รายการเตียงแต่ละแผนก -->
+                      @foreach($data['beds'] as $b)
+                          @php 
+                              $empty = $b->bed_qty - $b->bed_use;
+                          @endphp
+                          <div class="row mb-1 small align-items-center">
+                              <div class="col-4 fw-bold" >
+                                  {{ $b->bed_name }}
+                              </div>
+                              <div class="col-2 text-center fw-bold">
+                                  {{ $b->bed_qty }}
+                              </div>
+                              <div class="col-2 text-center fw-bold text-danger">
+                                  {{ $b->bed_use }}
+                              </div>
+                              <div class="col-2 text-center fw-bold text-success">
+                                  {{ $empty }}
+                              </div>
+                              <!-- อัตราครองเตียงพร้อมสี (เขียว / ส้ม / แดง) -->
+                              <div class="col-2 text-center fw-bold"
+                                  @if($b->bed_rate >= 80)
+                                      style="color:#d32f2f;"      {{-- แดงเข้ม --}}
+                                  @elseif($b->bed_rate >= 60)
+                                      style="color:#ffc107;"      {{-- เหลือง --}}
+                                  @else
+                                      style="color:#1976d2;"      {{-- น้ำเงิน --}}
+                                  @endif
+                              >
+                                  {{ $b->bed_rate }}%
+                              </div>
+                          </div>
+                      @endforeach
+                  </div>
+              </div>
+              @endforeach
+          </div>
+      </div>
+  </section>
+
+
+
 <hr>
 
   {{-- เลือกปีงบประมาณ ----------------------------------------------------------------------------------------------------------}}
@@ -705,7 +772,7 @@
           <!-- IPD -->
           <div class="glass p-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
-              <h6>[10985] ข้อมูลบริการผู้ป่วยใน IPD โรงพยาชานุมาน ปีงบประมาณ {{$budget_year}}</h6>
+              <h6>[10985] ข้อมูลบริการผู้ป่วยใน IPD โรงพยาบาลชานุมาน ปีงบประมาณ {{$budget_year}}</h6>
               <span class="text-secondary small">Update {{$update_at10985}}</span>              
             </div>
             <div class="table-responsive">
@@ -735,9 +802,9 @@
                     $sum_inc_total = 0;  
                     $sum_inc_lab_total = 0;
                     $sum_inc_drug_total = 0;
-                    $bed_report = $total_10985_ipd[0]->bed_report ?? 30; // ค่าเตียงจาก hospital_config
+                    $bed_report = $ipd_10985[0]->bed_report ?? 30; // ค่าเตียงจาก hospital_config
                   ?>  
-                  @foreach($total_10985_ipd as $row) 
+                  @foreach($ipd_10985 as $row) 
                   <tr>
                     <td align="center"width ="4%">{{ $row->month }}</td>
                     <td align="right">{{ number_format($row->an_total) }}</td>
@@ -809,7 +876,73 @@
                 </div>
               </div>
             </div>
-          </div>          
+          </div>   
+          <br>
+          <!-- Refer -->
+          <div class="glass p-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h6>[10985] ข้อมูลการส่งต่อ Refer โรงพยาบาลชานุมาน ปีงบประมาณ {{$budget_year}}</h6>
+              <span class="text-secondary small">Update {{$update_at10985}}</span>
+            </div>
+            <div class="table-responsive">
+              <table id="table10985_refer" class="table table-bordered table-striped my-3" width="100%">
+                <thead class="table-light">
+                  <tr class="table-refer">
+                      <th class="text-center" rowspan="2" width="8%">เดือน</th>
+                      <th class="text-center" colspan="4">Refer Out</th>
+                      <th class="text-center" colspan="4">Refer In</th>
+                      <th class="text-center" colspan="2">Refer Back</th>
+                  </tr>
+                  <tr class="table-refer">
+                      <th class="text-center">OPD ในจังหวัด</th>
+                      <th class="text-center">OPD ต่างจังหวัด</th>
+                      <th class="text-center">IPD ในจังหวัด</th>
+                      <th class="text-center">IPD ต่างจังหวัด</th>
+                      <th class="text-center">OPD ในจังหวัด</th>
+                      <th class="text-center">OPD ต่างจังหวัด</th>
+                      <th class="text-center">IPD ในจังหวัด</th>
+                      <th class="text-center">IPD ต่างจังหวัด</th>
+                      <th class="text-center">ในจังหวัด</th>
+                      <th class="text-center">ต่างจังหวัด</th>
+                  </tr>
+                </thead>
+                <tbody>
+                @foreach($refer_10985 as $row)
+                  <tr>
+                    <td class="text-center">{{ $row->month }}</td>
+                    <!-- Refer Out -->
+                    <td class="text-end">{{ number_format($row->visit_referout_inprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referout_outprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referout_inprov_ipd) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referout_outprov_ipd) }}</td>
+                    <!-- Refer In -->
+                    <td class="text-end">{{ number_format($row->visit_referin_inprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referin_outprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referin_inprov_ipd) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referin_outprov_ipd) }}</td>
+                    <!-- Refer Back -->
+                    <td class="text-end">{{ number_format($row->visit_referback_inprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referback_outprov) }}</td>
+                  </tr>
+                @endforeach
+                  <!-- รวม -->
+                  <tr class="table-secondary fw-bold">
+                    <td class="text-end">รวม</td>
+                    <td class="text-end">{{ number_format($refer_10985->sum('visit_referout_inprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10985->sum('visit_referout_outprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10985->sum('visit_referout_inprov_ipd')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10985->sum('visit_referout_outprov_ipd')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10985->sum('visit_referin_inprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10985->sum('visit_referin_outprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10985->sum('visit_referin_inprov_ipd')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10985->sum('visit_referin_outprov_ipd')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10985->sum('visit_referback_inprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10985->sum('visit_referback_outprov')) }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>    
         <!-- END 10985 -->
         </div>
 
@@ -818,7 +951,7 @@
           <!-- IPD -->
           <div class="glass p-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
-              <h6>[10986] ข้อมูลบริการผู้ป่วยใน IPD โรงพยาบาลปทุมราช ปีงบประมาณ {{$budget_year}}</h6>
+              <h6>[10986] ข้อมูลบริการผู้ป่วยใน IPD โรงพยาบาลปทุมราชวงศา ปีงบประมาณ {{$budget_year}}</h6>
               <span class="text-secondary small">Update {{$update_at10986}}</span>              
             </div>
             <div class="table-responsive">
@@ -848,9 +981,9 @@
                     $sum_inc_total = 0;  
                     $sum_inc_lab_total = 0;
                     $sum_inc_drug_total = 0;
-                    $bed_report = $total_10986_ipd[0]->bed_report ?? 30; // ค่าเตียงจาก hospital_config
+                    $bed_report = $ipd_10986[0]->bed_report ?? 30; // ค่าเตียงจาก hospital_config
                   ?>  
-                  @foreach($total_10986_ipd as $row) 
+                  @foreach($ipd_10986 as $row) 
                   <tr>
                     <td align="center"width ="4%">{{ $row->month }}</td>
                     <td align="right">{{ number_format($row->an_total) }}</td>
@@ -923,6 +1056,72 @@
               </div>
             </div>
           </div>
+          <br>
+          <!-- Refer -->
+          <div class="glass p-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h6>[10986] ข้อมูลการส่งต่อ Refer โรงพยาบาลปทุมราชวงศา ปีงบประมาณ {{$budget_year}}</h6>
+              <span class="text-secondary small">Update {{$update_at10985}}</span>
+            </div>
+            <div class="table-responsive">
+              <table id="table10986_refer" class="table table-bordered table-striped my-3" width="100%">
+                <thead class="table-light">
+                  <tr class="table-refer">
+                      <th class="text-center" rowspan="2" width="8%">เดือน</th>
+                      <th class="text-center" colspan="4">Refer Out</th>
+                      <th class="text-center" colspan="4">Refer In</th>
+                      <th class="text-center" colspan="2">Refer Back</th>
+                  </tr>
+                  <tr class="table-refer">
+                      <th class="text-center">OPD ในจังหวัด</th>
+                      <th class="text-center">OPD ต่างจังหวัด</th>
+                      <th class="text-center">IPD ในจังหวัด</th>
+                      <th class="text-center">IPD ต่างจังหวัด</th>
+                      <th class="text-center">OPD ในจังหวัด</th>
+                      <th class="text-center">OPD ต่างจังหวัด</th>
+                      <th class="text-center">IPD ในจังหวัด</th>
+                      <th class="text-center">IPD ต่างจังหวัด</th>
+                      <th class="text-center">ในจังหวัด</th>
+                      <th class="text-center">ต่างจังหวัด</th>
+                  </tr>
+                </thead>
+                <tbody>
+                @foreach($refer_10986 as $row)
+                  <tr>
+                    <td class="text-center">{{ $row->month }}</td>
+                    <!-- Refer Out -->
+                    <td class="text-end">{{ number_format($row->visit_referout_inprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referout_outprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referout_inprov_ipd) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referout_outprov_ipd) }}</td>
+                    <!-- Refer In -->
+                    <td class="text-end">{{ number_format($row->visit_referin_inprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referin_outprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referin_inprov_ipd) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referin_outprov_ipd) }}</td>
+                    <!-- Refer Back -->
+                    <td class="text-end">{{ number_format($row->visit_referback_inprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referback_outprov) }}</td>
+                  </tr>
+                @endforeach
+                  <!-- รวม -->
+                  <tr class="table-secondary fw-bold">
+                    <td class="text-end">รวม</td>
+                    <td class="text-end">{{ number_format($refer_10986->sum('visit_referout_inprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10986->sum('visit_referout_outprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10986->sum('visit_referout_inprov_ipd')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10986->sum('visit_referout_outprov_ipd')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10986->sum('visit_referin_inprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10986->sum('visit_referin_outprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10986->sum('visit_referin_inprov_ipd')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10986->sum('visit_referin_outprov_ipd')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10986->sum('visit_referback_inprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10986->sum('visit_referback_outprov')) }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>   
         <!-- END 10986-->
         </div>
 
@@ -961,9 +1160,9 @@
                     $sum_inc_total = 0;  
                     $sum_inc_lab_total = 0;
                     $sum_inc_drug_total = 0;
-                    $bed_report = $total_10987_ipd[0]->bed_report ?? 30; // ค่าเตียงจาก hospital_config
+                    $bed_report = $ipd_10987[0]->bed_report ?? 30; // ค่าเตียงจาก hospital_config
                   ?>  
-                  @foreach($total_10987_ipd as $row) 
+                  @foreach($ipd_10987 as $row) 
                   <tr>
                     <td align="center"width ="4%">{{ $row->month }}</td>
                     <td align="right">{{ number_format($row->an_total) }}</td>
@@ -1036,6 +1235,72 @@
               </div>
             </div>
           </div>
+          <br>
+          <!-- Refer -->
+          <div class="glass p-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h6>[10987] ข้อมูลการส่งต่อ Refer โรงพยาบาลพนา ปีงบประมาณ {{$budget_year}}</h6>
+              <span class="text-secondary small">Update {{$update_at10985}}</span>
+            </div>
+            <div class="table-responsive">
+              <table id="table10987_refer" class="table table-bordered table-striped my-3" width="100%">
+                <thead class="table-light">
+                  <tr class="table-refer text-center">
+                      <th class="text-center" rowspan="2" width="8%">เดือน</th>
+                      <th class="text-center" colspan="4">Refer Out</th>
+                      <th class="text-center" colspan="4">Refer In</th>
+                      <th class="text-center" colspan="2">Refer Back</th>
+                  </tr>
+                  <tr class="table-refer text-center">
+                      <th class="text-center">OPD ในจังหวัด</th>
+                      <th class="text-center">OPD ต่างจังหวัด</th>
+                      <th class="text-center">IPD ในจังหวัด</th>
+                      <th class="text-center">IPD ต่างจังหวัด</th>
+                      <th class="text-center">OPD ในจังหวัด</th>
+                      <th class="text-center">OPD ต่างจังหวัด</th>
+                      <th class="text-center">IPD ในจังหวัด</th>
+                      <th class="text-center">IPD ต่างจังหวัด</th>
+                      <th class="text-center">ในจังหวัด</th>
+                      <th class="text-center">ต่างจังหวัด</th>
+                  </tr>
+                </thead>
+                <tbody>
+                @foreach($refer_10987 as $row)
+                  <tr>
+                    <td class="text-center">{{ $row->month }}</td>
+                    <!-- Refer Out -->
+                    <td class="text-end">{{ number_format($row->visit_referout_inprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referout_outprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referout_inprov_ipd) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referout_outprov_ipd) }}</td>
+                    <!-- Refer In -->
+                    <td class="text-end">{{ number_format($row->visit_referin_inprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referin_outprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referin_inprov_ipd) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referin_outprov_ipd) }}</td>
+                    <!-- Refer Back -->
+                    <td class="text-end">{{ number_format($row->visit_referback_inprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referback_outprov) }}</td>
+                  </tr>
+                @endforeach
+                  <!-- รวม -->
+                  <tr class="table-secondary fw-bold">
+                    <td class="text-end">รวม</td>
+                    <td class="text-end">{{ number_format($refer_10987->sum('visit_referout_inprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10987->sum('visit_referout_outprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10987->sum('visit_referout_inprov_ipd')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10987->sum('visit_referout_outprov_ipd')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10987->sum('visit_referin_inprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10987->sum('visit_referin_outprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10987->sum('visit_referin_inprov_ipd')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10987->sum('visit_referin_outprov_ipd')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10987->sum('visit_referback_inprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10987->sum('visit_referback_outprov')) }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>   
         <!-- END 10987 -->
         </div>
 
@@ -1074,9 +1339,9 @@
                     $sum_inc_total = 0;  
                     $sum_inc_lab_total = 0;
                     $sum_inc_drug_total = 0;
-                    $bed_report = $total_10988_ipd[0]->bed_report ?? 30; // ค่าเตียงจาก hospital_config
+                    $bed_report = $ipd_10988[0]->bed_report ?? 30; // ค่าเตียงจาก hospital_config
                   ?>  
-                  @foreach($total_10988_ipd as $row) 
+                  @foreach($ipd_10988 as $row) 
                   <tr>
                     <td align="center"width ="4%">{{ $row->month }}</td>
                     <td align="right">{{ number_format($row->an_total) }}</td>
@@ -1149,6 +1414,72 @@
               </div>
             </div>
           </div> 
+          <br>
+          <!-- Refer -->
+          <div class="glass p-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h6>[10988] ข้อมูลการส่งต่อ Refer โรงพยาบาลเสนางคนิคม ปีงบประมาณ {{$budget_year}}</h6>
+              <span class="text-secondary small">Update {{$update_at10985}}</span>
+            </div>
+            <div class="table-responsive">
+              <table id="table10988_refer" class="table table-bordered table-striped my-3" width="100%">
+                <thead class="table-light">
+                  <tr class="table-refer text-center">
+                      <th class="text-center" rowspan="2" width="8%">เดือน</th>
+                      <th class="text-center" colspan="4">Refer Out</th>
+                      <th class="text-center" colspan="4">Refer In</th>
+                      <th class="text-center" colspan="2">Refer Back</th>
+                  </tr>
+                  <tr class="table-refer text-center">
+                      <th class="text-center">OPD ในจังหวัด</th>
+                      <th class="text-center">OPD ต่างจังหวัด</th>
+                      <th class="text-center">IPD ในจังหวัด</th>
+                      <th class="text-center">IPD ต่างจังหวัด</th>
+                      <th class="text-center">OPD ในจังหวัด</th>
+                      <th class="text-center">OPD ต่างจังหวัด</th>
+                      <th class="text-center">IPD ในจังหวัด</th>
+                      <th class="text-center">IPD ต่างจังหวัด</th>
+                      <th class="text-center">ในจังหวัด</th>
+                      <th class="text-center">ต่างจังหวัด</th>
+                  </tr>
+                </thead>
+                <tbody>
+                @foreach($refer_10988 as $row)
+                  <tr>
+                    <td class="text-center">{{ $row->month }}</td>
+                    <!-- Refer Out -->
+                    <td class="text-end">{{ number_format($row->visit_referout_inprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referout_outprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referout_inprov_ipd) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referout_outprov_ipd) }}</td>
+                    <!-- Refer In -->
+                    <td class="text-end">{{ number_format($row->visit_referin_inprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referin_outprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referin_inprov_ipd) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referin_outprov_ipd) }}</td>
+                    <!-- Refer Back -->
+                    <td class="text-end">{{ number_format($row->visit_referback_inprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referback_outprov) }}</td>
+                  </tr>
+                @endforeach
+                  <!-- รวม -->
+                  <tr class="table-secondary fw-bold">
+                    <td class="text-end">รวม</td>
+                    <td class="text-end">{{ number_format($refer_10988->sum('visit_referout_inprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10988->sum('visit_referout_outprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10988->sum('visit_referout_inprov_ipd')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10988->sum('visit_referout_outprov_ipd')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10988->sum('visit_referin_inprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10988->sum('visit_referin_outprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10988->sum('visit_referin_inprov_ipd')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10988->sum('visit_referin_outprov_ipd')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10988->sum('visit_referback_inprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10988->sum('visit_referback_outprov')) }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>   
         <!-- END 10988 -->       
         </div>
 
@@ -1187,9 +1518,9 @@
                     $sum_inc_total = 0;  
                     $sum_inc_lab_total = 0;
                     $sum_inc_drug_total = 0;
-                    $bed_report = $total_10989_ipd[0]->bed_report ?? 30; // ค่าเตียงจาก hospital_config
+                    $bed_report = $ipd_10989[0]->bed_report ?? 30; // ค่าเตียงจาก hospital_config
                   ?>  
-                  @foreach($total_10989_ipd as $row) 
+                  @foreach($ipd_10989 as $row) 
                   <tr>
                     <td align="center"width ="4%">{{ $row->month }}</td>
                     <td align="right">{{ number_format($row->an_total) }}</td>
@@ -1262,6 +1593,72 @@
               </div>
             </div>
           </div>
+          <br>
+          <!-- Refer -->
+          <div class="glass p-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h6>[10989] ข้อมูลการส่งต่อ Refer โรงพยาบาลหัวตะพาน ปีงบประมาณ {{$budget_year}}</h6>
+              <span class="text-secondary small">Update {{$update_at10985}}</span>
+            </div>
+            <div class="table-responsive">
+              <table id="table10989_refer" class="table table-bordered table-striped my-3" width="100%">
+                <thead class="table-light">
+                  <tr class="table-refer">
+                      <th class="text-center" rowspan="2" width="8%">เดือน</th>
+                      <th class="text-center" colspan="4">Refer Out</th>
+                      <th class="text-center" colspan="4">Refer In</th>
+                      <th class="text-center" colspan="2">Refer Back</th>
+                  </tr>
+                  <tr class="table-refer">
+                      <th class="text-center">OPD ในจังหวัด</th>
+                      <th class="text-center">OPD ต่างจังหวัด</th>
+                      <th class="text-center">IPD ในจังหวัด</th>
+                      <th class="text-center">IPD ต่างจังหวัด</th>
+                      <th class="text-center">OPD ในจังหวัด</th>
+                      <th class="text-center">OPD ต่างจังหวัด</th>
+                      <th class="text-center">IPD ในจังหวัด</th>
+                      <th class="text-center">IPD ต่างจังหวัด</th>
+                      <th class="text-center">ในจังหวัด</th>
+                      <th class="text-center">ต่างจังหวัด</th>
+                  </tr>
+                </thead>
+                <tbody>
+                @foreach($refer_10989 as $row)
+                  <tr>
+                    <td class="text-center">{{ $row->month }}</td>
+                    <!-- Refer Out -->
+                    <td class="text-end">{{ number_format($row->visit_referout_inprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referout_outprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referout_inprov_ipd) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referout_outprov_ipd) }}</td>
+                    <!-- Refer In -->
+                    <td class="text-end">{{ number_format($row->visit_referin_inprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referin_outprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referin_inprov_ipd) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referin_outprov_ipd) }}</td>
+                    <!-- Refer Back -->
+                    <td class="text-end">{{ number_format($row->visit_referback_inprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referback_outprov) }}</td>
+                  </tr>
+                @endforeach
+                  <!-- รวม -->
+                  <tr class="table-secondary fw-bold">
+                    <td class="text-end">รวม</td>
+                    <td class="text-end">{{ number_format($refer_10989->sum('visit_referout_inprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10989->sum('visit_referout_outprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10989->sum('visit_referout_inprov_ipd')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10989->sum('visit_referout_outprov_ipd')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10989->sum('visit_referin_inprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10989->sum('visit_referin_outprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10989->sum('visit_referin_inprov_ipd')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10989->sum('visit_referin_outprov_ipd')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10989->sum('visit_referback_inprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10989->sum('visit_referback_outprov')) }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>   
         <!-- END 10989 --> 
         </div>
 
@@ -1300,9 +1697,9 @@
                     $sum_inc_total = 0;  
                     $sum_inc_lab_total = 0;
                     $sum_inc_drug_total = 0;
-                    $bed_report = $total_10990_ipd[0]->bed_report ?? 30; // ค่าเตียงจาก hospital_config
+                    $bed_report = $ipd_10990[0]->bed_report ?? 30; // ค่าเตียงจาก hospital_config
                   ?>  
-                  @foreach($total_10990_ipd as $row) 
+                  @foreach($ipd_10990 as $row) 
                   <tr>
                     <td align="center"width ="4%">{{ $row->month }}</td>
                     <td align="right">{{ number_format($row->an_total) }}</td>
@@ -1375,6 +1772,72 @@
               </div>
             </div>
           </div>
+          <br>
+          <!-- Refer -->
+          <div class="glass p-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h6>[10990] ข้อมูลการส่งต่อ Refer โรงพยาบาลลืออำนาจ ปีงบประมาณ {{$budget_year}}</h6>
+              <span class="text-secondary small">Update {{$update_at10985}}</span>
+            </div>
+            <div class="table-responsive">
+              <table id="table10990_refer" class="table table-bordered table-striped my-3" width="100%">
+                <thead class="table-light">
+                  <tr class="table-refer">
+                      <th class="text-center" rowspan="2" width="8%">เดือน</th>
+                      <th class="text-center" colspan="4">Refer Out</th>
+                      <th class="text-center" colspan="4">Refer In</th>
+                      <th class="text-center" colspan="2">Refer Back</th>
+                  </tr>
+                  <tr class="table-refer">
+                      <th class="text-center">OPD ในจังหวัด</th>
+                      <th class="text-center">OPD ต่างจังหวัด</th>
+                      <th class="text-center">IPD ในจังหวัด</th>
+                      <th class="text-center">IPD ต่างจังหวัด</th>
+                      <th class="text-center">OPD ในจังหวัด</th>
+                      <th class="text-center">OPD ต่างจังหวัด</th>
+                      <th class="text-center">IPD ในจังหวัด</th>
+                      <th class="text-center">IPD ต่างจังหวัด</th>
+                      <th class="text-center">ในจังหวัด</th>
+                      <th class="text-center">ต่างจังหวัด</th>
+                  </tr>
+                </thead>
+                <tbody>
+                @foreach($refer_10990 as $row)
+                  <tr>
+                    <td class="text-center">{{ $row->month }}</td>
+                    <!-- Refer Out -->
+                    <td class="text-end">{{ number_format($row->visit_referout_inprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referout_outprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referout_inprov_ipd) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referout_outprov_ipd) }}</td>
+                    <!-- Refer In -->
+                    <td class="text-end">{{ number_format($row->visit_referin_inprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referin_outprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referin_inprov_ipd) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referin_outprov_ipd) }}</td>
+                    <!-- Refer Back -->
+                    <td class="text-end">{{ number_format($row->visit_referback_inprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referback_outprov) }}</td>
+                  </tr>
+                @endforeach
+                  <!-- รวม -->
+                  <tr class="table-secondary fw-bold">
+                    <td class="text-end">รวม</td>
+                    <td class="text-end">{{ number_format($refer_10990->sum('visit_referout_inprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10990->sum('visit_referout_outprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10990->sum('visit_referout_inprov_ipd')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10990->sum('visit_referout_outprov_ipd')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10990->sum('visit_referin_inprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10990->sum('visit_referin_outprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10990->sum('visit_referin_inprov_ipd')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10990->sum('visit_referin_outprov_ipd')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10990->sum('visit_referback_inprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10990->sum('visit_referback_outprov')) }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>   
         <!-- END 10990 --> 
         </div>
 
@@ -1413,9 +1876,9 @@
                     $sum_inc_total = 0;  
                     $sum_inc_lab_total = 0;
                     $sum_inc_drug_total = 0;
-                    $bed_report = $total_10703_ipd[0]->bed_report ?? 432; // ค่าเตียงจาก hospital_config
+                    $bed_report = $ipd_10703[0]->bed_report ?? 432; // ค่าเตียงจาก hospital_config
                   ?>  
-                  @foreach($total_10703_ipd as $row) 
+                  @foreach($ipd_10703 as $row) 
                   <tr>
                     <td align="center"width ="4%">{{ $row->month }}</td>
                     <td align="right">{{ number_format($row->an_total) }}</td>
@@ -1488,6 +1951,72 @@
               </div>
             </div>
           </div>
+          <br>
+          <!-- Refer -->
+          <div class="glass p-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h6>[10703] ข้อมูลการส่งต่อ Refer โรงพยาบาลอำนาจเจริญ ปีงบประมาณ {{$budget_year}}</h6>
+              <span class="text-secondary small">Update {{$update_at10985}}</span>
+            </div>
+            <div class="table-responsive">
+              <table id="table10703_refer" class="table table-bordered table-striped my-3" width="100%">
+                <thead class="table-light">
+                  <tr class="table-refer">
+                      <th class="text-center" rowspan="2" width="8%">เดือน</th>
+                      <th class="text-center" colspan="4">Refer Out</th>
+                      <th class="text-center" colspan="4">Refer In</th>
+                      <th class="text-center" colspan="2">Refer Back</th>
+                  </tr>
+                  <tr class="table-refer">
+                      <th class="text-center">OPD ในจังหวัด</th>
+                      <th class="text-center">OPD ต่างจังหวัด</th>
+                      <th class="text-center">IPD ในจังหวัด</th>
+                      <th class="text-center">IPD ต่างจังหวัด</th>
+                      <th class="text-center">OPD ในจังหวัด</th>
+                      <th class="text-center">OPD ต่างจังหวัด</th>
+                      <th class="text-center">IPD ในจังหวัด</th>
+                      <th class="text-center">IPD ต่างจังหวัด</th>
+                      <th class="text-center">ในจังหวัด</th>
+                      <th class="text-center">ต่างจังหวัด</th>
+                  </tr>
+                </thead>
+                <tbody>
+                @foreach($refer_10703 as $row)
+                  <tr>
+                    <td class="text-center">{{ $row->month }}</td>
+                    <!-- Refer Out -->
+                    <td class="text-end">{{ number_format($row->visit_referout_inprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referout_outprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referout_inprov_ipd) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referout_outprov_ipd) }}</td>
+                    <!-- Refer In -->
+                    <td class="text-end">{{ number_format($row->visit_referin_inprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referin_outprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referin_inprov_ipd) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referin_outprov_ipd) }}</td>
+                    <!-- Refer Back -->
+                    <td class="text-end">{{ number_format($row->visit_referback_inprov) }}</td>
+                    <td class="text-end">{{ number_format($row->visit_referback_outprov) }}</td>
+                  </tr>
+                @endforeach
+                  <!-- รวม -->
+                  <tr class="table-secondary fw-bold">
+                    <td class="text-end">รวม</td>
+                    <td class="text-end">{{ number_format($refer_10703->sum('visit_referout_inprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10703->sum('visit_referout_outprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10703->sum('visit_referout_inprov_ipd')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10703->sum('visit_referout_outprov_ipd')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10703->sum('visit_referin_inprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10703->sum('visit_referin_outprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10703->sum('visit_referin_inprov_ipd')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10703->sum('visit_referin_outprov_ipd')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10703->sum('visit_referback_inprov')) }}</td>
+                    <td class="text-end">{{ number_format($refer_10703->sum('visit_referback_outprov')) }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>   
         <!-- END 10703 --> 
         </div>
 
@@ -1534,6 +2063,26 @@
   </script>
   <script>
     $(function () {
+      $('#table10985_refer').DataTable({
+        dom: '<"d-flex justify-content-end mb-2"B>rt',
+        buttons: [
+          {
+            extend: 'excelHtml5',
+            text: '<i class="bi bi-file-earmark-excel"></i> ส่งออก Excel',
+            className: 'btn btn-success btn-sm',
+            title: 'ข้อมูลการส่งต่อ Refer โรงพยาบาลชานุมาน {{ $budget_year ?? "" }}'
+          }
+        ],
+        ordering: false,
+        paging: false,
+        info: false,
+        lengthChange: false,
+        language: { search: "ค้นหา:" }
+      });
+    });
+  </script>
+  <script>
+    $(function () {
       $('#table10986_ipd').DataTable({
         dom: '<"d-flex justify-content-end mb-2"B>rt',
         buttons: [
@@ -1542,6 +2091,26 @@
             text: '<i class="bi bi-file-earmark-excel"></i> ส่งออก Excel',
             className: 'btn btn-success btn-sm',
             title: 'ข้อมูลบริการผู้ป่วยใน IPD โรงพยาบาลปทุมราชวงศา {{ $budget_year ?? "" }}'
+          }
+        ],
+        ordering: false,
+        paging: false,
+        info: false,
+        lengthChange: false,
+        language: { search: "ค้นหา:" }
+      });
+    });
+  </script>
+  <script>
+    $(function () {
+      $('#table10986_refer').DataTable({
+        dom: '<"d-flex justify-content-end mb-2"B>rt',
+        buttons: [
+          {
+            extend: 'excelHtml5',
+            text: '<i class="bi bi-file-earmark-excel"></i> ส่งออก Excel',
+            className: 'btn btn-success btn-sm',
+            title: 'ข้อมูลการส่งต่อ Refer โรงพยาบาลปทุมราชวงศา {{ $budget_year ?? "" }}'
           }
         ],
         ordering: false,
@@ -1574,14 +2143,34 @@
   </script>
   <script>
     $(function () {
-      $('#table10988_ipd').DataTable({
+      $('#table10987_refer').DataTable({
         dom: '<"d-flex justify-content-end mb-2"B>rt',
         buttons: [
           {
             extend: 'excelHtml5',
             text: '<i class="bi bi-file-earmark-excel"></i> ส่งออก Excel',
             className: 'btn btn-success btn-sm',
-            title: 'ข้อมูลบริการผู้ป่วยใน IPD โรงพยาบาลเสนางคนิคม {{ $budget_year ?? "" }}'
+            title: 'ข้อมูลการส่งต่อ Refer โรงพยาบาลพนา {{ $budget_year ?? "" }}'
+          }
+        ],
+        ordering: false,
+        paging: false,
+        info: false,
+        lengthChange: false,
+        language: { search: "ค้นหา:" }
+      });
+    });
+  </script>
+  <script>
+    $(function () {
+      $('#table10988_refer').DataTable({
+        dom: '<"d-flex justify-content-end mb-2"B>rt',
+        buttons: [
+          {
+            extend: 'excelHtml5',
+            text: '<i class="bi bi-file-earmark-excel"></i> ส่งออก Excel',
+            className: 'btn btn-success btn-sm',
+            title: 'ข้อมูลการส่งต่อ Refer โรงพยาบาลเสนางคนิคม {{ $budget_year ?? "" }}'
           }
         ],
         ordering: false,
@@ -1614,6 +2203,26 @@
   </script>
   <script>
     $(function () {
+      $('#table10989_refer').DataTable({
+        dom: '<"d-flex justify-content-end mb-2"B>rt',
+        buttons: [
+          {
+            extend: 'excelHtml5',
+            text: '<i class="bi bi-file-earmark-excel"></i> ส่งออก Excel',
+            className: 'btn btn-success btn-sm',
+            title: 'ข้อมูลการส่งต่อ Refer โรงพยาบาลหัวตะพาน {{ $budget_year ?? "" }}'
+          }
+        ],
+        ordering: false,
+        paging: false,
+        info: false,
+        lengthChange: false,
+        language: { search: "ค้นหา:" }
+      });
+    });
+  </script>
+  <script>
+    $(function () {
       $('#table10990_ipd').DataTable({
         dom: '<"d-flex justify-content-end mb-2"B>rt',
         buttons: [
@@ -1622,6 +2231,26 @@
             text: '<i class="bi bi-file-earmark-excel"></i> ส่งออก Excel',
             className: 'btn btn-success btn-sm',
             title: 'ข้อมูลบริการผู้ป่วยใน IPD โรงพยาบาลลืออำนาจ {{ $budget_year ?? "" }}'
+          }
+        ],
+        ordering: false,
+        paging: false,
+        info: false,
+        lengthChange: false,
+        language: { search: "ค้นหา:" }
+      });
+    });
+  </script>
+  <script>
+    $(function () {
+      $('#table10990_refer').DataTable({
+        dom: '<"d-flex justify-content-end mb-2"B>rt',
+        buttons: [
+          {
+            extend: 'excelHtml5',
+            text: '<i class="bi bi-file-earmark-excel"></i> ส่งออก Excel',
+            className: 'btn btn-success btn-sm',
+            title: 'ข้อมูลการส่งต่อ Refer โรงพยาบาลลืออำนาจ {{ $budget_year ?? "" }}'
           }
         ],
         ordering: false,
@@ -1652,6 +2281,26 @@
       });
     });
   </script>
+  <script>
+    $(function () {
+      $('#table10703_refer').DataTable({
+        dom: '<"d-flex justify-content-end mb-2"B>rt',
+        buttons: [
+          {
+            extend: 'excelHtml5',
+            text: '<i class="bi bi-file-earmark-excel"></i> ส่งออก Excel',
+            className: 'btn btn-success btn-sm',
+            title: 'ข้อมูลการส่งต่อ Refer โรงพยาบาลอำนาจเจริญ {{ $budget_year ?? "" }}'
+          }
+        ],
+        ordering: false,
+        paging: false,
+        info: false,
+        lengthChange: false,
+        language: { search: "ค้นหา:" }
+      });
+    });
+  </script>
 @endpush
 
 <!-- script กราฟ  ---------------------------------------------------------------------------------------->
@@ -1659,9 +2308,9 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       // ✅ ดึงข้อมูลจาก PHP
-      const months = {!! json_encode(array_column($total_10985_ipd, 'month')) !!};
-      const bed_occupancy = {!! json_encode(array_column($total_10985_ipd, 'bed_occupancy')) !!};
-      const cmi = {!! json_encode(array_column($total_10985_ipd, 'cmi')) !!};
+      const months = {!! json_encode($ipd_10985->pluck('month')) !!};
+      const bed_occupancy = {!! json_encode($ipd_10985->pluck('bed_occupancy')) !!};
+      const cmi = {!! json_encode($ipd_10985->pluck('cmi')) !!};
       // 🩵 กราฟอัตราครองเตียง
       const bedChart = new ApexCharts(document.querySelector("#bed_occupancy_10985"), {
         series: [{
@@ -1748,9 +2397,9 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       // ✅ ดึงข้อมูลจาก PHP
-      const months = {!! json_encode(array_column($total_10986_ipd, 'month')) !!};
-      const bed_occupancy = {!! json_encode(array_column($total_10986_ipd, 'bed_occupancy')) !!};
-      const cmi = {!! json_encode(array_column($total_10986_ipd, 'cmi')) !!};
+      const months = {!! json_encode($ipd_10986->pluck('month')) !!};
+      const bed_occupancy = {!! json_encode($ipd_10986->pluck('bed_occupancy')) !!};
+      const cmi = {!! json_encode($ipd_10986->pluck('cmi')) !!};
       // 🩵 กราฟอัตราครองเตียง
       const bedChart = new ApexCharts(document.querySelector("#bed_occupancy_10986"), {
         series: [{
@@ -1837,9 +2486,9 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       // ✅ ดึงข้อมูลจาก PHP
-      const months = {!! json_encode(array_column($total_10987_ipd, 'month')) !!};
-      const bed_occupancy = {!! json_encode(array_column($total_10987_ipd, 'bed_occupancy')) !!};
-      const cmi = {!! json_encode(array_column($total_10987_ipd, 'cmi')) !!};
+      const months = {!! json_encode($ipd_10987->pluck('month')) !!};
+      const bed_occupancy = {!! json_encode($ipd_10987->pluck('bed_occupancy')) !!};
+      const cmi = {!! json_encode($ipd_10987->pluck('cmi')) !!};
       // 🩵 กราฟอัตราครองเตียง
       const bedChart = new ApexCharts(document.querySelector("#bed_occupancy_10987"), {
         series: [{
@@ -1926,9 +2575,9 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       // ✅ ดึงข้อมูลจาก PHP
-      const months = {!! json_encode(array_column($total_10988_ipd, 'month')) !!};
-      const bed_occupancy = {!! json_encode(array_column($total_10988_ipd, 'bed_occupancy')) !!};
-      const cmi = {!! json_encode(array_column($total_10988_ipd, 'cmi')) !!};
+      const months = {!! json_encode($ipd_10988->pluck('month')) !!};
+      const bed_occupancy = {!! json_encode($ipd_10988->pluck('bed_occupancy')) !!};
+      const cmi = {!! json_encode($ipd_10988->pluck('cmi')) !!};
       // 🩵 กราฟอัตราครองเตียง
       const bedChart = new ApexCharts(document.querySelector("#bed_occupancy_10988"), {
         series: [{
@@ -2015,9 +2664,9 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       // ✅ ดึงข้อมูลจาก PHP
-      const months = {!! json_encode(array_column($total_10989_ipd, 'month')) !!};
-      const bed_occupancy = {!! json_encode(array_column($total_10989_ipd, 'bed_occupancy')) !!};
-      const cmi = {!! json_encode(array_column($total_10989_ipd, 'cmi')) !!};
+      const months = {!! json_encode($ipd_10989->pluck('month')) !!};
+      const bed_occupancy = {!! json_encode($ipd_10989->pluck('bed_occupancy')) !!};
+      const cmi = {!! json_encode($ipd_10989->pluck('cmi')) !!};
       // 🩵 กราฟอัตราครองเตียง
       const bedChart = new ApexCharts(document.querySelector("#bed_occupancy_10989"), {
         series: [{
@@ -2104,9 +2753,9 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       // ✅ ดึงข้อมูลจาก PHP
-      const months = {!! json_encode(array_column($total_10990_ipd, 'month')) !!};
-      const bed_occupancy = {!! json_encode(array_column($total_10990_ipd, 'bed_occupancy')) !!};
-      const cmi = {!! json_encode(array_column($total_10990_ipd, 'cmi')) !!};
+      const months = {!! json_encode($ipd_10990->pluck('month')) !!};
+      const bed_occupancy = {!! json_encode($ipd_10990->pluck('bed_occupancy')) !!};
+      const cmi = {!! json_encode($ipd_10990->pluck('cmi')) !!};
       // 🩵 กราฟอัตราครองเตียง
       const bedChart = new ApexCharts(document.querySelector("#bed_occupancy_10990"), {
         series: [{
@@ -2193,9 +2842,9 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       // ✅ ดึงข้อมูลจาก PHP
-      const months = {!! json_encode(array_column($total_10703_ipd, 'month')) !!};
-      const bed_occupancy = {!! json_encode(array_column($total_10703_ipd, 'bed_occupancy')) !!};
-      const cmi = {!! json_encode(array_column($total_10703_ipd, 'cmi')) !!};
+      const months = {!! json_encode($ipd_10703->pluck('month')) !!};
+      const bed_occupancy = {!! json_encode($ipd_10703->pluck('bed_occupancy')) !!};
+      const cmi = {!! json_encode($ipd_10703->pluck('cmi')) !!};
       // 🩵 กราฟอัตราครองเตียง
       const bedChart = new ApexCharts(document.querySelector("#bed_occupancy_10703"), {
         series: [{
