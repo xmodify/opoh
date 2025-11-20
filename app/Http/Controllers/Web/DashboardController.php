@@ -133,7 +133,7 @@ class DashboardController extends Controller
                 ->leftJoin('ipd_bed_type as t', 'd.bed_code', '=', 't.bed_code')
                 ->where('d.hospcode', $h->hospcode)
                 ->whereIn('d.bed_code', [
-                    101100, 101201, 101400, 102201, 105208, 109604, 199100
+                    101100, 101201, 101301, 101400, 102201, 105208, 109604, 199100
                 ])
                 ->select(
                     'd.bed_code',
