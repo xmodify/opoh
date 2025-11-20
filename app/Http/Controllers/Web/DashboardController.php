@@ -61,21 +61,23 @@ class DashboardController extends Controller
                 COALESCE(SUM(visit_referin_inprov_ipd),0)       AS visit_referin_inprov_ipd,
                 COALESCE(SUM(visit_referin_outprov_ipd),0)      AS visit_referin_outprov_ipd,
                 COALESCE(SUM(visit_referback_inprov),0)         AS visit_referback_inprov,
-                COALESCE(SUM(visit_referback_outprov),0)        AS visit_referback_outprov           
+                COALESCE(SUM(visit_referback_outprov),0)        AS visit_referback_outprov, 
+                COALESCE(SUM(visit_operation),0)                AS visit_operation          
             ")->first();
 
         // ส่งเป็น array ใช้ง่าย ๆ ใน Blade
         $card = [           
-            'visit_referout_inprov'       => (int)$total->visit_referout_inprov, 
-            'visit_referout_inprov_ipd'   => (int)$total->visit_referout_inprov_ipd, 
-            'visit_referout_outprov'      => (int)$total->visit_referout_outprov, 
-            'visit_referout_outprov_ipd'  => (int)$total->visit_referout_outprov_ipd, 
-            'visit_referin_inprov'        => (int)$total->visit_referin_inprov, 
-            'visit_referin_outprov'       => (int)$total->visit_referin_outprov, 
-            'visit_referin_inprov_ipd'    => (int)$total->visit_referin_inprov_ipd, 
-            'visit_referin_outprov_ipd'   => (int)$total->visit_referin_outprov_ipd, 
-            'visit_referback_inprov'      => (int)$total->visit_referback_inprov, 
-            'visit_referback_outprov'     => (int)$total->visit_referback_outprov,             
+            'visit_referout_inprov'         => (int)$total->visit_referout_inprov, 
+            'visit_referout_inprov_ipd'     => (int)$total->visit_referout_inprov_ipd, 
+            'visit_referout_outprov'        => (int)$total->visit_referout_outprov, 
+            'visit_referout_outprov_ipd'    => (int)$total->visit_referout_outprov_ipd, 
+            'visit_referin_inprov'          => (int)$total->visit_referin_inprov, 
+            'visit_referin_outprov'         => (int)$total->visit_referin_outprov, 
+            'visit_referin_inprov_ipd'      => (int)$total->visit_referin_inprov_ipd, 
+            'visit_referin_outprov_ipd'     => (int)$total->visit_referin_outprov_ipd, 
+            'visit_referback_inprov'        => (int)$total->visit_referback_inprov, 
+            'visit_referback_outprov'       => (int)$total->visit_referback_outprov,
+            'visit_operation'               => (int)$total->visit_operation,              
         ];
 
         $hospitalSummary = DB::table('opd')
@@ -94,7 +96,8 @@ class DashboardController extends Controller
                 DB::raw('COALESCE(SUM(visit_referin_inprov_ipd),0) AS visit_referin_inprov_ipd'),
                 DB::raw('COALESCE(SUM(visit_referin_outprov_ipd),0) AS visit_referin_outprov_ipd'),
                 DB::raw('COALESCE(SUM(visit_referback_inprov),0) AS visit_referback_inprov'),
-                DB::raw('COALESCE(SUM(visit_referback_outprov),0) AS visit_referback_outprov'),              
+                DB::raw('COALESCE(SUM(visit_referback_outprov),0) AS visit_referback_outprov'), 
+                DB::raw('COALESCE(SUM(visit_operation),0) AS visit_operation'),              
             )
             ->groupBy('opd.hospcode', 'hospital_config.hospname')
             ->orderBy('opd.hospcode')

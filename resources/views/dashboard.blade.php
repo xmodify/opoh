@@ -8,47 +8,136 @@
   backdrop-filter: blur(10px);
   transition: all 0.3s ease-in-out;
   }
-  .card-hospital:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  }
-
-  /* 🌹 สีแดงพาสเทล (Admit) */
-  .card-hospital.admit {
-    background: linear-gradient(135deg, #f8bbd0, #ffffff);
-  }
-
-  /* 💜 สีม่วงพาสเทล (Refer Out) */
-  .card-hospital.referout {
-    background: linear-gradient(135deg, #d1c4e9, #faf5ff);
-  }
-
-  /* 💙 สีฟ้าพาสเทล (Refer In) */
-  .card-hospital.referin {
-    background: linear-gradient(135deg, #b3e5fc, #eff6ff);
-  }
-
-  /* 💚 สีเขียวพาสเทล (Refer Back) */
-  .card-hospital.referback {
-    background: linear-gradient(135deg, #d0f8ce, #f0fdff);
-  }
-
   /* เพิ่มสีม่วงสำหรับข้อความ */
   .text-purple {
     color: #8b5cf6 !important;
   }
-
   tr.table-ipd td,
   tr.table-ipd th {
     background: linear-gradient(135deg, #fce7ee, #fcf2f6) !important;   
   }
-
   tr.table-refer td,
   tr.table-refer th {
     background: linear-gradient(135deg, #c6ecfd, #def5ff) !important;   
   }
-
 </style>
+<style>
+  /* === BASE GLASS CARD (ใช้ร่วมกันทุก block) === */
+  .glass-card {
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,0.35);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+    color: #fff;
+    min-height: 110px;
+    padding: 12px 14px !important;
+    border-radius: 16px;
+    position: relative;
+  }
+  /* === ICON มุมขวาบน (ใช้ร่วมทุก block) === */
+  .glass-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.20);
+    border: 1px solid rgba(255,255,255,0.26);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+  .glass-icon i {
+    color: #ffffff;
+    font-size: 1.05rem;
+  }
+  /* หัวข้อ */
+  .glass-title {
+    font-weight: bold;
+    font-size: .9rem;
+    margin-bottom: 2px;
+  }
+  /* ตัวเลข */
+  .glass-number {
+    font-size: 1.75rem;
+    font-weight: bold;
+    margin-top: 6px;
+    text-align: center;
+  }
+</style>
+<style>
+  /* ================================
+    1) Operation – Deep Green Glass
+  =================================*/
+  .glass-op {
+    background: linear-gradient(135deg,
+                rgba(0,120,50,0.55),
+                rgba(0,180,90,0.28));
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.35);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+    color: #ffffff;
+  }
+
+  .glass-op .glass-title,
+  .glass-op .glass-number {
+    color: #ffffff !important;
+  }
+
+  /* ================================
+    2) Refer Out – Magenta Glass
+  =================================*/
+  .glass-referout {
+    background: linear-gradient(135deg,
+                rgba(180,40,160,0.55),
+                rgba(255,115,195,0.25));
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.35);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+    color: #fff0ff;
+  }
+  .glass-referout .glass-title,
+  .glass-referout .glass-number {
+    color: #fff0ff !important;
+  }
+
+  /* ================================
+    3) Refer In – Pink Red Glass
+  =================================*/
+  .glass-referin {
+    background: linear-gradient(135deg,
+                rgba(220,40,90,0.55),
+                rgba(255,130,160,0.28));
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.35);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+    color: #ffe6ea;
+  }
+  .glass-referin .glass-title,
+  .glass-referin .glass-number {
+    color: #ffffff !important;
+  }
+
+
+  /* ================================
+    4) Refer Back – Warm Yellow Glass
+  =================================*/
+  .glass-referback {
+    background: linear-gradient(135deg,
+                rgba(255,180,60,0.55),
+                rgba(255,225,120,0.28));
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.35);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+    color: #5e4800;
+  }
+  .glass-referback .glass-title,
+  .glass-referback .glass-number {
+    color: #5e4800 !important;
+  }
+</style>
+
 
 @section('content')
 
@@ -70,49 +159,68 @@
           </div>
         </div>
     </div>
-  </header>
-
-  <!-- SUMMARY (4 blocks, no foreach) -->
-  <section id="summary" class="pb-2">
+  </header>  
+    @php
+      $fmtInt   = fn($n) => number_format((int)($n ?? 0));
+      $fmtMoney = fn($n) => number_format((float)($n ?? 0), 2);
+    @endphp
+  <!-- ข้อมูลเตียง ---------------------------------------------------------------------------------------- -->
+  <section id="bed" class="pb-2">
     <div class="container-fluid">
-      @php
-        $fmtInt   = fn($n) => number_format((int)($n ?? 0));
-        $fmtMoney = fn($n) => number_format((float)($n ?? 0), 2);
-      @endphp
       <div class="row g-3">
-        
+
         <!-- กำลังรักษาอยู่ (แดงพาสเทล) --------------------------------------------------------------------------------------------->
         <div class="col-12 col-sm-6 col-xl-3">
-          <a href="#" data-bs-toggle="modal" data-bs-target="#AdmiitDetailModal" class="text-decoration-none text-dark">
-            <div class="card-hospital admit p-3 h-100 rounded-4 shadow-sm">
-              <div class="d-flex align-items-center justify-content-between mb-2">
-                <h6 class="mb-0 text-danger"><strong>กำลังรักษาอยู่</strong></h6>
-                <i class="fa-solid fa-bed-pulse text-danger fs-5 "></i>
+          <a href="#" data-bs-toggle="modal" data-bs-target="#AdmiitDetailModal"
+            class="text-decoration-none text-dark">
+
+            <div class="p-3 h-100 rounded-4 shadow-sm"
+                style="background: linear-gradient(135deg, #ffe6e9, #ffffff); border:1px solid #ffd1d7; border-radius:20px;">
+
+              <!-- ส่วนหัว -->
+              <div class="d-flex align-items-center justify-content-between mb-3">
+                <h6 class="mb-0 text-danger fw-bold">กำลังรักษาอยู่</h6>
+
+                <div class="p-2 rounded-circle shadow-sm"
+                    style="background:white; border:1px solid #ffccd2;">
+                  <i class="fa-solid fa-hospital-user text-danger fs-4"></i>
+                </div>
               </div>
-              <div class="d-flex align-items-end gap-4">
-                <div class="text-end">
-                  <div class="small text-secondary text-center">จำนวนเตียง</div>
-                  <div class="fw-bold text-primary" style="font-size:1.75rem;">
+
+              <!-- ตัวเลข -->
+              <div class="d-flex justify-content-between text-center">
+
+                <div class="flex-fill px-1">
+                  <div class="small text-secondary">จำนวนเตียง</div>
+                  <div class="fw-bold text-primary" style="font-size:1.9rem;">
                     {{ $fmtInt($total_bed_qty ?? 0) }}
                   </div>
+                  <i class="fa-solid fa-bed text-primary"></i>
                 </div>
-                <div class="vr d-none d-sm-block"></div>
-                <div class="text-end">
-                  <div class="small text-secondary text-center">Admit</div>
-                  <div class="fw-bold text-danger" style="font-size:1.75rem;">
+
+                <div class="vr mx-2 d-none d-sm-block"></div>
+
+                <div class="flex-fill px-1">
+                  <div class="small text-secondary">Admit</div>
+                  <div class="fw-bold text-danger" style="font-size:1.9rem;">
                     {{ $fmtInt($total_bed_use ?? 0) }}
                   </div>
+                  <i class="fa-solid fa-bed-pulse text-danger"></i>
                 </div>
-                <div class="vr d-none d-sm-block"></div>
-                <div class="text-end">
-                  <div class="small text-secondary text-center">เตียงว่าง</div>
-                  <div class="fw-bold text-success" style="font-size:1.75rem;">
+
+                <div class="vr mx-2 d-none d-sm-block"></div>
+
+                <div class="flex-fill px-1">
+                  <div class="small text-secondary">เตียงว่าง</div>
+                  <div class="fw-bold text-success" style="font-size:1.9rem;">
                     {{ $fmtInt($total_bed_empty ?? 0) }}
                   </div>
+                  <i class="fa-solid fa-bed text-success"></i>
                 </div>
-              </div>              
+
+              </div>
             </div>
-          </a>    
+          </a>
         </div>
         {{-- Modal แสดงรายละเอียด รพ. (โทนน้ำเงินพาสเทลเข้ม / กรอบเล็ก) --}}
         <div class="modal fade" id="AdmiitDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
@@ -330,29 +438,159 @@
             });
           });
         </script>
+      <!-- Block แยกแต่ละ รพ --------------------------------------------------------------------------------------------->
+        @foreach($bedData as $hospcode => $data)
+        <div class="col-12 col-sm-6 col-xl-3" >
+            <div  class="card p-3 h-100 rounded-3 shadow-sm"
+                  style="background: linear-gradient(145deg, #e0f7fa, #ffffff); border:1px solid #b3e5fc;">
+
+                <!-- หัวข้อ Card -->
+                <h6 class="mb-3 fw-bold text-primary d-flex justify-content-between align-items-center">
+                    <span>ข้อมูลเตียง{{ $data['hospname'] }}</span>
+                    <i class="fa-solid fa-bed-pulse text-danger fs-5"></i>
+                </h6>
+                <!-- Header -->
+                <div class="row mb-1">
+                    <div class="col-4 small text-secondary">แผนก</div>
+                    <div class="col-2 small text-secondary text-center">จำนวนเตียง</div>
+                    <div class="col-2 small text-secondary text-center">Admit</div>
+                    <div class="col-2 small text-secondary text-center">เตียงว่าง</div>
+                    <div class="col-2 small text-secondary text-center">อัตราครองเตียง</div>
+                </div>
+                <hr class="my-1">
+                <!-- รายการเตียงแต่ละแผนก -->
+                @foreach($data['beds'] as $b)
+                    @php 
+                        $empty = $b->bed_qty - $b->bed_use;
+                    @endphp
+                    <div class="row mb-1 small align-items-center">
+                        <div class="col-4 fw-bold" >
+                            {{ $b->bed_name }}
+                        </div>
+                        <div class="col-2 text-center fw-bold">
+                            {{ $b->bed_qty }}
+                        </div>
+                        <div class="col-2 text-center fw-bold text-danger">
+                            {{ $b->bed_use }}
+                        </div>
+                        <div class="col-2 text-center fw-bold text-success">
+                            {{ $empty }}
+                        </div>
+                        <!-- อัตราครองเตียงพร้อมสี (เขียว / ส้ม / แดง) -->
+                        <div class="col-2 text-center fw-bold"
+                            @if($b->bed_rate >= 80)
+                                style="color:#d32f2f;"      {{-- แดงเข้ม --}}
+                            @elseif($b->bed_rate >= 60)
+                                style="color:#ffc107;"      {{-- เหลือง --}}
+                            @else
+                                style="color:#1976d2;"      {{-- น้ำเงิน --}}
+                            @endif
+                        >
+                            {{ $b->bed_rate }}%
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        @endforeach        
+      </div>
+    </div>
+  </section>
+  <br>
+  <!-- แถว 2 จำนวน 4 Block -->
+  <section id="summary" class="pb-2">
+    <div class="container-fluid">      
+      <div class="row g-3">
+        
+        <!-- ผ่าตัด Operation  --------------------------------------------------------------------------------------------->
+        <div class="col-12 col-sm-6 col-xl-3">
+          <a href="#" data-bs-toggle="modal" data-bs-target="#OperationDetailModal" class="text-decoration-none text-dark">
+            <div class="glass-card glass-op">
+              <div class="glass-icon"><i class="fa-solid fa-kit-medical"></i></div>
+              <div class="glass-title"><h6>ผ่าตัด วันนี้</h6></div>
+              <div class="glass-number fs-2">
+                {{ $fmtInt($visit_operation) }}
+              </div>
+            </div>
+          </a>
+        </div>
+        {{-- Modal แสดงรายละเอียด รพ. (โทนน้ำเงินพาสเทลเข้ม / modal-lg) --}}
+        <div class="modal fade" id="OperationDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow-lg rounded-3" style="background-color:#f5f8fc;">
+              <!-- Header -->
+              <div class="modal-header text-white rounded-top-3"
+                  style="background: linear-gradient(135deg, #2f6fb6, #4b8edc);">
+                <h5 class="modal-title fw-bold" id="hospitalDetailLabel">
+                  <i class="bi bi-arrow-left-right me-2"></i> ผ่าตัด วันนี้
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+
+              <!-- Body -->
+              <div class="modal-body py-3">
+                <table class="table table-hover align-middle shadow-sm rounded-3 overflow-hidden mb-0"
+                      style="background-color: #ffffff; border-radius: 0.75rem;">
+                  <thead style="background-color:#d9e8fb;">
+                    <tr class="text-center text-primary fw-semibold">
+                      <th class="text-center">รหัส</th>
+                      <th class="text-center">ชื่อโรงพยาบาล</th>
+                      <th>จำนวนผ่าตัด</th>                      
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @foreach($hospitalSummary as $h)
+                      <tr>
+                        <td align="right" class="text-secondary">{{ $h->hospcode }}</td>
+                        <td>
+                          <span class="fw-semibold text-dark">{{ $h->hospname }}</span><br>
+                          <small class="text-muted">
+                            {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
+                          </small>
+                        </td>
+                        <td align="right" class="text-primary">{{ number_format($h->visit_operation) }}</td>                        
+                      </tr>
+                    @endforeach
+                    {{-- แถวผลรวม --}}
+                    <tr style="background-color:#eef4fb;" class="fw-bold text-end">
+                      <td colspan="2" class="text-center text-dark">รวมทั้งหมด</td>
+                      <td class="text-primary">{{ number_format($hospitalSummary->sum('visit_operation')) }}</td>                    
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- Footer -->
+              <div class="modal-footer" style="background-color:#eef4fb;">
+                <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm"
+                        style="background-color:#3e7cc1; border-color:#3e7cc1;"
+                        data-bs-dismiss="modal">
+                  ปิด
+                </button>
+              </div>
+            </div>
+          </div>
+        </div> 
 
         <!-- Refer Out ------------------------------------------------------------------------------------------>
         <div class="col-12 col-sm-6 col-xl-3">
           <a href="#" data-bs-toggle="modal" data-bs-target="#ReferOutDetailModal" class="text-decoration-none text-dark">
-            <div class="card-hospital referout p-3 h-100 rounded-4 shadow-sm">
-              <div class="d-flex align-items-center justify-content-between mb-2">
-                <h6 class="mb-0 text-purple"><strong>การส่งต่อ Refer Out</strong></h6>
-                <i class="fa-solid fa-truck-medical text-purple fs-5"></i>
-              </div>
-              <div class="d-flex align-items-end gap-4">
-                <div class="text-end">
-                  <div class="small text-secondary text-center">OPD</div>
-                  <div class="fw-bold" style="font-size:1.75rem;">
-                    {{ $fmtInt($visit_referout_inprov+$visit_referout_outprov ?? 0) }}
+            <div class="glass-card glass-referout">
+              <div class="glass-icon"><i class="fa-solid fa-truck-medical"></i></div>
+              <div class="glass-title"><h6>Refer Out วันนี้</h6></div>
+              <div class="d-flex justify-content-between text-center mt-1">
+                <div class="flex-fill">
+                  <div class="small">OPD</div>
+                  <div class="glass-number fs-4">
+                    {{ $fmtInt($visit_referout_inprov + $visit_referout_outprov) }}
                   </div>
                 </div>
-                <div class="vr d-none d-sm-block"></div>
-                <div class="text-end">
-                  <div class="small text-secondary text-center">IPD</div>
-                  <div class="fw-bold text-purple" style="font-size:1.75rem;">
-                    {{ $fmtInt($visit_referout_inprov_ipd+$visit_referout_outprov_ipd ?? 0) }}
+                <div class="vr mx-2 d-none d-sm-block" style="opacity:0.4;"></div>
+                <div class="flex-fill">
+                  <div class="small">IPD</div>
+                  <div class="glass-number fs-4">
+                    {{ $fmtInt($visit_referout_inprov_ipd + $visit_referout_outprov_ipd) }}
                   </div>
-                </div>                
+                </div>
               </div>
             </div>
           </a>
@@ -365,11 +603,10 @@
               <div class="modal-header text-white rounded-top-3"
                   style="background: linear-gradient(135deg, #2f6fb6, #4b8edc);">
                 <h5 class="modal-title fw-bold" id="hospitalDetailLabel">
-                  <i class="bi bi-arrow-left-right me-2"></i> การส่งต่อ Refer Out
+                  <i class="bi bi-arrow-left-right me-2"></i> Refer Out วันนี้
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-
               <!-- Body -->
               <div class="modal-body py-3">
                 <table class="table table-hover align-middle shadow-sm rounded-3 overflow-hidden mb-0"
@@ -420,7 +657,6 @@
                   </tbody>
                 </table>
               </div>
-
               <!-- Footer -->
               <div class="modal-footer" style="background-color:#eef4fb;">
                 <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm"
@@ -436,25 +672,23 @@
         <!-- Refer In  --------------------------------------------------------------------------------------->
         <div class="col-12 col-sm-6 col-xl-3">
           <a href="#" data-bs-toggle="modal" data-bs-target="#ReferInDetailModal" class="text-decoration-none text-dark">
-            <div class="card-hospital referin p-3 h-100 rounded-4 shadow-sm">
-              <div class="d-flex align-items-center justify-content-between mb-2">
-                <h6 class="mb-0 text-primary"><strong>การส่งต่อ Refer In</strong></h6> 
-                <i class="fa-solid fa-truck-medical text-primary fs-5"></i>
-              </div>
-              <div class="d-flex align-items-end gap-4">
-                <div class="text-end">
-                  <div class="small text-secondary text-center">OPD</div>
-                  <div class="fw-bold" style="font-size:1.75rem;">
-                    {{ $fmtInt($visit_referin_inprov+$visit_referin_outprov ?? 0) }}
+            <div class="glass-card glass-referin">
+              <div class="glass-icon"><i class="fa-solid fa-truck-medical"></i></div>
+              <div class="glass-title"><h6>Refer In วันนี้</h6></div>
+              <div class="d-flex justify-content-between text-center mt-1">
+                <div class="flex-fill">
+                  <div class="small">OPD</div>
+                  <div class="glass-number fs-4">
+                    {{ $fmtInt($visit_referin_inprov + $visit_referin_outprov) }}
                   </div>
                 </div>
-                <div class="vr d-none d-sm-block"></div>
-                <div class="text-end">
-                  <div class="small text-secondary text-center">IPD</div>
-                  <div class="fw-bold text-primary" style="font-size:1.75rem;">
-                    {{ $fmtInt($visit_referin_inprov_ipd+$visit_referin_outprov_ipd ?? 0) }}
+                <div class="vr mx-2 d-none d-sm-block" style="opacity:0.4;"></div>
+                <div class="flex-fill">
+                  <div class="small">IPD</div>
+                  <div class="glass-number fs-4">
+                    {{ $fmtInt($visit_referin_inprov_ipd + $visit_referin_outprov_ipd) }}
                   </div>
-                </div>                
+                </div>
               </div>
             </div>
           </a>
@@ -467,7 +701,7 @@
               <div class="modal-header text-white rounded-top-3"
                   style="background: linear-gradient(135deg, #2f6fb6, #4b8edc);">
                 <h5 class="modal-title fw-bold" id="hospitalDetailLabel">
-                  <i class="bi bi-arrow-left-right me-2"></i> การส่งต่อ Refer IN
+                  <i class="bi bi-arrow-left-right me-2"></i>Refer IN วันนี้
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
@@ -537,25 +771,23 @@
         <!-- Refer Back  --------------------------------------------------------------------------------------------->
         <div class="col-12 col-sm-6 col-xl-3">
           <a href="#" data-bs-toggle="modal" data-bs-target="#ReferBackDetailModal" class="text-decoration-none text-dark">
-            <div class="card-hospital referback p-3 h-100 rounded-4 shadow-sm">
-              <div class="d-flex align-items-center justify-content-between mb-2">
-                <h6 class="mb-0 text-green"><strong>การส่งต่อ Refer Back</strong></h6> 
-                <i class="fa-solid fa-truck-medical text-green fs-5"></i>
-              </div>
-              <div class="d-flex align-items-end gap-4">
-                <div class="text-end">
-                  <div class="small text-secondary text-center">ในจังหวัด</div>
-                  <div class="fw-bold" style="font-size:1.75rem;">
-                    {{ $fmtInt($visit_referback_inprov ?? 0) }}
+            <div class="glass-card glass-referback">
+              <div class="glass-icon"><i class="fa-solid fa-truck-medical"></i></div>
+              <div class="glass-title"><h6>Refer Back วันนี้</h6></div>
+              <div class="d-flex justify-content-between text-center mt-1">
+                <div class="flex-fill">
+                  <div class="small">ในจังหวัด</div>
+                  <div class="glass-number fs-4">
+                    {{ $fmtInt($visit_referback_inprov) }}
                   </div>
                 </div>
-                <div class="vr d-none d-sm-block"></div>
-                <div class="text-end">
-                  <div class="small text-secondary text-center">ต่างจังหวัด</div>
-                  <div class="fw-bold text-green" style="font-size:1.75rem;">
-                    {{ $fmtInt($visit_referback_outprov ?? 0) }}
+                <div class="vr mx-2 d-none d-sm-block" style="opacity:0.4;"></div>
+                <div class="flex-fill">
+                  <div class="small">ต่างจังหวัด</div>
+                  <div class="glass-number fs-4">
+                    {{ $fmtInt($visit_referback_outprov) }}
                   </div>
-                </div>                
+                </div>
               </div>
             </div>
           </a>
@@ -568,7 +800,7 @@
               <div class="modal-header text-white rounded-top-3"
                   style="background: linear-gradient(135deg, #2f6fb6, #4b8edc);">
                 <h5 class="modal-title fw-bold" id="hospitalDetailLabel">
-                  <i class="bi bi-arrow-left-right me-2"></i> การส่งต่อ Refer Back
+                  <i class="bi bi-arrow-left-right me-2"></i>Refer Back วันนี้
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
@@ -609,7 +841,6 @@
                   </tbody>
                 </table>
               </div>
-
               <!-- Footer -->
               <div class="modal-footer" style="background-color:#eef4fb;">
                 <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm"
@@ -625,71 +856,7 @@
         {{-- -------------------------------------------------------------------------------------------------------------- --}}
       </div>
     </div>  
-  </section>  
-
-  <!-- ข้อมูลเตียง ---------------------------------------------------------------------------------------- -->
-  <section id="bed" class="pb-2">
-      <div class="container-fluid">
-          <div class="row g-3">
-              @foreach($bedData as $hospcode => $data)
-              <div class="col-12 col-sm-6 col-xl-3" >
-                  <div  class="card p-3 h-100 rounded-3 shadow-sm"
-                        style="background: linear-gradient(145deg, #e0f7fa, #ffffff); border:1px solid #b3e5fc;">
-
-                      <!-- หัวข้อ Card -->
-                      <h6 class="mb-3 fw-bold text-primary d-flex justify-content-between align-items-center">
-                          <span>ข้อมูลเตียง{{ $data['hospname'] }}</span>
-                          <i class="fa-solid fa-bed-pulse text-danger fs-5"></i>
-                      </h6>
-                      <!-- Header -->
-                      <div class="row mb-1">
-                          <div class="col-4 small text-secondary">แผนก</div>
-                          <div class="col-2 small text-secondary text-center">จำนวนเตียง</div>
-                          <div class="col-2 small text-secondary text-center">Admit</div>
-                          <div class="col-2 small text-secondary text-center">เตียงว่าง</div>
-                          <div class="col-2 small text-secondary text-center">อัตราครองเตียง</div>
-                      </div>
-                      <hr class="my-1">
-                      <!-- รายการเตียงแต่ละแผนก -->
-                      @foreach($data['beds'] as $b)
-                          @php 
-                              $empty = $b->bed_qty - $b->bed_use;
-                          @endphp
-                          <div class="row mb-1 small align-items-center">
-                              <div class="col-4 fw-bold" >
-                                  {{ $b->bed_name }}
-                              </div>
-                              <div class="col-2 text-center fw-bold">
-                                  {{ $b->bed_qty }}
-                              </div>
-                              <div class="col-2 text-center fw-bold text-danger">
-                                  {{ $b->bed_use }}
-                              </div>
-                              <div class="col-2 text-center fw-bold text-success">
-                                  {{ $empty }}
-                              </div>
-                              <!-- อัตราครองเตียงพร้อมสี (เขียว / ส้ม / แดง) -->
-                              <div class="col-2 text-center fw-bold"
-                                  @if($b->bed_rate >= 80)
-                                      style="color:#d32f2f;"      {{-- แดงเข้ม --}}
-                                  @elseif($b->bed_rate >= 60)
-                                      style="color:#ffc107;"      {{-- เหลือง --}}
-                                  @else
-                                      style="color:#1976d2;"      {{-- น้ำเงิน --}}
-                                  @endif
-                              >
-                                  {{ $b->bed_rate }}%
-                              </div>
-                          </div>
-                      @endforeach
-                  </div>
-              </div>
-              @endforeach
-          </div>
-      </div>
   </section>
-
-
 
 <hr>
 
