@@ -14,11 +14,11 @@
   }
   tr.table-ipd td,
   tr.table-ipd th {
-    background: linear-gradient(135deg, #fce7ee, #fcf2f6) !important;   
+    background: linear-gradient(135deg, #f3e5f5, #fbf6fc) !important; 
   }
   tr.table-refer td,
   tr.table-refer th {
-    background: linear-gradient(135deg, #c6ecfd, #def5ff) !important;   
+    background: linear-gradient(135deg, #ceebfa, #e8f6fc) !important;   
   }
 </style>
 <style>
