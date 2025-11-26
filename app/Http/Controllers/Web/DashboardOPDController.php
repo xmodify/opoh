@@ -55,20 +55,12 @@ class DashboardOPDController extends Controller
                 COALESCE(SUM(visit_telehealth),0)   AS visit_telehealth, 
                 COALESCE(SUM(visit_moph_oapp),0)    AS visit_moph_oapp, 
 
-                COALESCE(SUM(visit_ucs_incup),0)+COALESCE(SUM(visit_ucs_inprov),0)+COALESCE(SUM(visit_ucs_outprov),0)   AS visit_ucs,
-                COALESCE(SUM(inc_ucs_incup),0)+COALESCE(SUM(inc_ucs_inprov),0)+COALESCE(SUM(inc_ucs_outprov),0)         AS inc_ucs,
-                COALESCE(SUM(visit_ucs_incup),0)    AS visit_ucs_incup,
-                COALESCE(SUM(inc_ucs_incup),0)      AS inc_ucs_incup,
-                COALESCE(SUM(visit_ucs_inprov),0)   AS visit_ucs_inprov,
-                COALESCE(SUM(inc_ucs_inprov),0)     AS inc_ucs_inprov,
+                COALESCE(SUM(visit_ucs_incup),0)    AS visit_ucs_incup, 
+                COALESCE(SUM(visit_ucs_outprov),0)  AS visit_ucs_outprov,
                 COALESCE(SUM(visit_ofc),0)          AS visit_ofc,
-                COALESCE(SUM(inc_ofc),0)            AS inc_ofc,
                 COALESCE(SUM(visit_lgo),0)          AS visit_lgo,
-                COALESCE(SUM(inc_lgo),0)            AS inc_lgo,
                 COALESCE(SUM(visit_sss),0)          AS visit_sss,
-                COALESCE(SUM(inc_sss),0)            AS inc_sss,
-                COALESCE(SUM(visit_pay),0)          AS visit_pay,
-                COALESCE(SUM(inc_pay),0)            AS inc_pay
+                COALESCE(SUM(visit_pay),0)          AS visit_pay
             ")->first();
 
         // ส่งเป็น array ใช้ง่าย ๆ ใน Blade
@@ -82,22 +74,13 @@ class DashboardOPDController extends Controller
             'visit_physic'          => (int)$total->visit_physic, 
             'visit_anc'             => (int)$total->visit_anc, 
             'visit_telehealth'      => (int)$total->visit_telehealth, 
-            'visit_moph_oapp'       => (int)$total->visit_moph_oapp, 
-
-            'visit_ucs'             => (int)$total->visit_ucs,
-            'inc_ucs'               => (float)$total->inc_ucs,
+            'visit_moph_oapp'       => (int)$total->visit_moph_oapp,
             'visit_ucs_incup'       => (int)$total->visit_ucs_incup,
-            'inc_ucs_incup'         => (float)$total->inc_ucs_incup,
-            'visit_ucs_inprov'      => (int)$total->visit_ucs_inprov,
-            'inc_ucs_inprov'        => (float)$total->inc_ucs_inprov,
-            'visit_ofc'             => (int)$total->visit_ofc,
-            'inc_ofc'               => (float)$total->inc_ofc,
-            'visit_lgo'             => (int)$total->visit_lgo,
-            'inc_lgo'               => (float)$total->inc_lgo,
-            'visit_sss'             => (int)$total->visit_sss,
-            'inc_sss'               => (float)$total->inc_sss,
-            'visit_pay'             => (int)$total->visit_pay,
-            'inc_pay'               => (float)$total->inc_pay,
+            'visit_ucs_outprov'     => (int)$total->visit_ucs_outprov,
+            'visit_ofc'             => (int)$total->visit_ofc,            
+            'visit_lgo'             => (int)$total->visit_lgo,           
+            'visit_sss'             => (int)$total->visit_sss,           
+            'visit_pay'             => (int)$total->visit_pay,          
         ];
 
         $hospitalSummary = DB::table('opd')

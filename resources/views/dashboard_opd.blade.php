@@ -46,35 +46,39 @@
       <div class="row g-3">  
         
         {{--  ผู้ป่วยนอก ----------------------------------------------------------------------------------------------- --}}
-        <div class="col-12 col-sm-6 col-xl-3">
+        <div class="col-12 col-sm-6 col-xl-4">
           <a href="#" data-bs-toggle="modal" data-bs-target="#VisitDetailModal" class="text-decoration-none text-dark">
-            <div class="card-opd card glass p-3 h-100" 
-                style="background: linear-gradient(145deg, #e0f7fa, #ffffff); border:1px solid #b3e5fc;">
-              <div class="d-flex align-items-center justify-content-between mb-2">
-                <h6 class="mb-0 text-primary"><strong>ผู้ป่วยนอก OPD วันนี้</strong></h6>
-                <span><i class="bi bi-person-heart fs-5 text-primary"></i> </span>
+            <div class="card-opd card glass p-3 h-100" style="background: linear-gradient(145deg, #e0f7fa, #ffffff); border:1px solid #b3e5fc;">
+              <!-- Header -->
+              <div class="d-flex align-items-center justify-content-between mb-3">
+                <h6 class="mb-0 text-primary fw-semibold">ผู้ป่วยนอก OPD วันนี้</h6>
+                <i class="bi bi-person-heart fs-4 text-primary"></i>
               </div>
-              <div class="d-flex align-items-end gap-4">
-                <div class="text-end">
-                  <div class="small text-secondary text-center">visit op</div>
-                  <div class="fw-bold" style="font-size:1.75rem;">
+              <!-- Body Numbers -->
+              <div class="d-flex justify-content-between align-items-center text-center">
+                <!-- visit op -->
+                <div class="flex-fill">
+                  <div class="small text-secondary">visit op</div>
+                  <div class="fw-bold" style="font-size:1.85rem;">
                     {{ $fmtInt($visit_total_op ?? 0) }}
                   </div>
                 </div>
-                <div class="vr d-none d-sm-block"></div>
-                <div class="text-end">
-                  <div class="small text-secondary text-center">visit pp</div>
-                  <div class="fw-bold text-primary" style="font-size:1.75rem;">
+                <div class="vr mx-2 d-none d-sm-block" style="opacity:0.15;"></div>
+                <!-- visit pp -->
+                <div class="flex-fill">
+                  <div class="small text-secondary">visit pp</div>
+                  <div class="fw-bold text-primary" style="font-size:1.85rem;">
                     {{ $fmtInt($visit_total_pp ?? 0) }}
                   </div>
-                </div>          
-                <div class="vr d-none d-sm-block"></div>
-                <div class="text-end">
-                  <div class="small text-secondary text-center">ปิดสิทธิ สปสช.</div>
-                  <div class="fw-bold text-success" style="font-size:1.75rem;">
+                </div>
+                <div class="vr mx-2 d-none d-sm-block" style="opacity:0.15;"></div>
+                <!-- endpoint สปสช -->
+                <div class="flex-fill">
+                  <div class="small text-secondary">ปิดสิทธิ สปสช.</div>
+                  <div class="fw-bold text-success" style="font-size:1.85rem;">
                     {{ $fmtInt($visit_endpoint ?? 0) }}
                   </div>
-                </div>                  
+                </div>
               </div>
             </div>
           </a>
@@ -83,7 +87,6 @@
         <div class="modal fade" id="VisitDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content border-0 shadow-lg rounded-3" style="background-color:#f5f8fc;">
-
               <!-- Header -->
               <div class="modal-header text-white rounded-top-3"
                   style="background: linear-gradient(135deg, #2f6fb6, #4b8edc);">
@@ -92,7 +95,6 @@
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-
               <!-- Body -->
               <div class="modal-body py-3">
                 <table class="table table-hover align-middle shadow-sm rounded-3 overflow-hidden mb-0"
@@ -124,7 +126,6 @@
                   </tbody>
                 </table>
               </div>
-
               <!-- Footer -->
               <div class="modal-footer" style="background-color:#eef4fb;">
                 <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm"
@@ -137,253 +138,73 @@
           </div>
         </div>
 
-        {{--  สิทธิประกันสุขภาพ UCS------------------------------------------------------------------------------------------------ --}}
-        <div class="col-12 col-sm-6 col-xl-3">
-          <a href="#" data-bs-toggle="modal" data-bs-target="#UCSDetailModal" class="text-decoration-none text-dark">
-            <div class="card-opd card glass p-3 h-100" 
-                style="background: linear-gradient(145deg, #e0f7fa, #ffffff); border:1px solid #b3e5fc;">
-              <div class="d-flex align-items-center justify-content-between mb-2">
-                <h6 class="mb-0 text-primary"><strong>สิทธิประกันสุขภาพ UCS</strong></h6>
-                <span><i class="bi bi-person-heart fs-5 text-success"></i></span>
-              </div>
-              <div class="d-flex align-items-end gap-4">
-                <div class="text-end">
-                  <div class="small text-secondary text-center">visit</div>
-                  <div class="fw-bold" style="font-size:1.5rem;">
-                    {{ $fmtInt($visit_ucs ?? 0) }}
-                  </div>
-                </div>
-                <div class="vr d-none d-sm-block"></div>
-                <div class="text-end">
-                  <div class="small text-secondary text-center">บาท</div>
-                  <div class="fw-bold text-success" style="font-size:1.5rem;">
-                    {{ $fmtMoney($inc_ucs ?? 0) }}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
-        {{-- Modal แสดงรายละเอียด รพ. (โทนน้ำเงินพาสเทลเข้ม / modal-lg) --}}
-        <div class="modal fade" id="UCSDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg modal-dialog-scrollable">
-            <div class="modal-content border-0 shadow-lg rounded-3" style="background-color:#f5f8fc;">
-
-              <!-- Header -->
-              <div class="modal-header text-white rounded-top-3"
-                  style="background: linear-gradient(135deg, #2f6fb6, #4b8edc);">
-                <h5 class="modal-title fw-bold" id="hospitalDetailLabel">
-                  <i class="bi bi-shield-check me-2"></i> สิทธิประกันสุขภาพ (UCS)
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-
-              <!-- Body -->
-              <div class="modal-body py-3">
-                <table class="table table-hover align-middle shadow-sm rounded-3 overflow-hidden mb-0"
-                      style="background-color: #ffffff; border-radius: 0.75rem;">
-                  <thead style="background-color:#d9e8fb;">
-                    <tr class="text-center text-primary fw-semibold">
-                      <th>รหัส</th>
-                      <th>ชื่อโรงพยาบาล</th>
-                      <th>Visit</th>
-                      <th>ค่ารักษารวม (บาท)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @foreach($hospitalSummary as $h)
-                      <tr>
-                        <td align="right" class="text-secondary">{{ $h->hospcode }}</td>
-                        <td>
-                          <span class="fw-semibold text-dark">{{ $h->hospname }}</span><br>
-                          <small class="text-muted">
-                            {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
-                          </small>
-                        </td>
-                        <td align="right" class="text-primary">{{ number_format($h->visit_ucs) }}</td>
-                        <td align="right" class="fw-bold text-success">{{ number_format($h->inc_ucs,2) }}</td>
-                      </tr>
-                    @endforeach
-                  </tbody>
-                </table>
-              </div>
-
-              <!-- Footer -->
-              <div class="modal-footer" style="background-color:#eef4fb;">
-                <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm"
-                        style="background-color:#3e7cc1; border-color:#3e7cc1;"
-                        data-bs-dismiss="modal">
-                  ปิด
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {{--  สิทธิประกันสุขภาพ UCS ใน CUP------------------------------------------------------------------------------------------------ --}}
-        <div class="col-12 col-sm-6 col-xl-3">
-          <a href="#" data-bs-toggle="modal" data-bs-target="#UCS_IncupDetailModal" class="text-decoration-none text-dark">
-            <div class="card-opd card glass p-3 h-100" 
-                style="background: linear-gradient(145deg, #e0f7fa, #ffffff); border:1px solid #b3e5fc;">
-              <div class="d-flex align-items-center justify-content-between mb-2">
-                <h6 class="mb-0 text-primary"><strong>สิทธิประกันสุขภาพ UCS ใน CUP</strong></h6>
-                <span><i class="bi bi-person-heart fs-5 text-success"></i></span>
-              </div>
-              <div class="d-flex align-items-end gap-4">
-                <div class="text-end">
-                  <div class="small text-secondary text-center">visit</div>
-                  <div class="fw-bold" style="font-size:1.5rem;">
-                    {{ $fmtInt($visit_ucs_incup ?? 0) }}
-                  </div>
-                </div>
-                <div class="vr d-none d-sm-block"></div>
-                <div class="text-end">
-                  <div class="small text-secondary text-center">บาท</div>
-                  <div class="fw-bold text-success" style="font-size:1.5rem;">
-                    {{ $fmtMoney($inc_ucs_incup ?? 0) }}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
-        {{-- Modal แสดงรายละเอียด รพ. (โทนน้ำเงินพาสเทลเข้ม / modal-lg) --}}
-        <div class="modal fade" id="UCS_IncupDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg modal-dialog-scrollable">
-            <div class="modal-content border-0 shadow-lg rounded-3" style="background-color:#f5f8fc;">
-
-              <!-- Header -->
-              <div class="modal-header text-white rounded-top-3"
-                  style="background: linear-gradient(135deg, #2f6fb6, #4b8edc);">
-                <h5 class="modal-title fw-bold" id="hospitalDetailLabel">
-                  <i class="bi bi-shield-check me-2"></i> สิทธิประกันสุขภาพ UCS ใน CUP
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-
-              <!-- Body -->
-              <div class="modal-body py-3">
-                <table class="table table-hover align-middle shadow-sm rounded-3 overflow-hidden mb-0"
-                      style="background-color: #ffffff; border-radius: 0.75rem;">
-                  <thead style="background-color:#d9e8fb;">
-                    <tr class="text-center text-primary fw-semibold">
-                      <th>รหัส</th>
-                      <th>ชื่อโรงพยาบาล</th>
-                      <th>Visit</th>
-                      <th>ค่ารักษารวม (บาท)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @foreach($hospitalSummary as $h)
-                      <tr>
-                        <td align="right" class="text-secondary">{{ $h->hospcode }}</td>
-                        <td>
-                          <span class="fw-semibold text-dark">{{ $h->hospname }}</span><br>
-                          <small class="text-muted">
-                            {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
-                          </small>
-                        </td>
-                        <td align="right" class="text-primary">{{ number_format($h->visit_ucs_incup) }}</td>
-                        <td align="right" class="fw-bold text-success">{{ number_format($h->inc_ucs_incup,2) }}</td>
-                      </tr>
-                    @endforeach
-                  </tbody>
-                </table>
-              </div>
-
-              <!-- Footer -->
-              <div class="modal-footer" style="background-color:#eef4fb;">
-                <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm"
-                        style="background-color:#3e7cc1; border-color:#3e7cc1;"
-                        data-bs-dismiss="modal">
-                  ปิด
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {{--  สิทธิประกันสุขภาพ UCS ต่างจังหวัด------------------------------------------------------------------------------------------------ --}}
-        <div class="col-12 col-sm-6 col-xl-3">
-          <a href="#" data-bs-toggle="modal" data-bs-target="#UCS_InprovDetailModal" class="text-decoration-none text-dark">
-            <div class="card-opd card glass p-3 h-100" 
-                style="background: linear-gradient(145deg, #e0f7fa, #ffffff); border:1px solid #b3e5fc;">
-              <div class="d-flex align-items-center justify-content-between mb-2">
-                <h6 class="mb-0 text-primary"><strong>สิทธิประกันสุขภาพ UCS ในจังหวัด</strong></h6>
-                <span><i class="bi bi-person-heart fs-5 text-success"></i></span>
-              </div>
-              <div class="d-flex align-items-end gap-4">
-                <div class="text-end">
-                  <div class="small text-secondary text-center">visit</div>
-                  <div class="fw-bold" style="font-size:1.5rem;">
-                    {{ $fmtInt($visit_ucs_inprov ?? 0) }}
-                  </div>
-                </div>
-                <div class="vr d-none d-sm-block"></div>
-                <div class="text-end">
-                  <div class="small text-secondary text-center">บาท</div>
-                  <div class="fw-bold text-success" style="font-size:1.5rem;">
-                    {{ $fmtMoney($inc_ucs_inprov ?? 0) }}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
-        {{-- Modal แสดงรายละเอียด รพ. (โทนน้ำเงินพาสเทลเข้ม / modal-lg) --}}
-        <div class="modal fade" id="UCS_InprovDetailModal" tabindex="-1" aria-labelledby="hospitalDetailLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg modal-dialog-scrollable">
-            <div class="modal-content border-0 shadow-lg rounded-3" style="background-color:#f5f8fc;">
-
-              <!-- Header -->
-              <div class="modal-header text-white rounded-top-3"
-                  style="background: linear-gradient(135deg, #2f6fb6, #4b8edc);">
-                <h5 class="modal-title fw-bold" id="hospitalDetailLabel">
-                  <i class="bi bi-shield-check me-2"></i> สิทธิประกันสุขภาพ UCS ในจังหวัด
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-
-              <!-- Body -->
-              <div class="modal-body py-3">
-                <table class="table table-hover align-middle shadow-sm rounded-3 overflow-hidden mb-0"
-                      style="background-color: #ffffff; border-radius: 0.75rem;">
-                  <thead style="background-color:#d9e8fb;">
-                    <tr class="text-center text-primary fw-semibold">
-                      <th>รหัส</th>
-                      <th>ชื่อโรงพยาบาล</th>
-                      <th>Visit</th>
-                      <th>ค่ารักษารวม (บาท)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @foreach($hospitalSummary as $h)
-                      <tr>
-                        <td align="right" class="text-secondary">{{ $h->hospcode }}</td>
-                        <td>
-                          <span class="fw-semibold text-dark">{{ $h->hospname }}</span><br>
-                          <small class="text-muted">
-                            {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
-                          </small>
-                        </td>
-                        <td align="right" class="text-primary">{{ number_format($h->visit_ucs_inprov) }}</td>
-                        <td align="right" class="fw-bold text-success">{{ number_format($h->inc_ucs_inprov,2) }}</td>
-                      </tr>
-                    @endforeach
-                  </tbody>
-                </table>
-              </div>
-
-              <!-- Footer -->
-              <div class="modal-footer" style="background-color:#eef4fb;">
-                <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm"
-                        style="background-color:#3e7cc1; border-color:#3e7cc1;"
-                        data-bs-dismiss="modal">
-                  ปิด
-                </button>
-              </div>
-            </div>
-          </div>
+        {{--  กราฟแยกสิทธิ------------------------------------------------------------------------------------------------ --}}
+        <div class="col-12 col-sm-6 col-xl-8">
+          <div class="card-opd card glass p-3 h-100" style="background: linear-gradient(145deg, #effdff, #ffffff); border:1px solid #b3e5fc;">
+            <canvas id="visitRightsChart" height="200"></canvas>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+            <script>
+              document.addEventListener("DOMContentLoaded", () => {
+                new Chart(document.querySelector('#visitRightsChart'), {
+                  type: 'bar',
+                  data: {
+                    labels: ['ประกันสุขภาพในจังหวัด','ประกันสุขภาพต่างจังหวัด', 'กรมบัญชีกลาง', 'อปท.', 'ประกันสังคม', 'พรบ./ชำระเงิน'],
+                    datasets: [{
+                      label: 'ผู้ป่วยนอกตามสิทธิ วันนี้',   // ไม่เกี่ยวกับ tooltip
+                      data: [
+                        {{ $visit_ucs_incup ?? 0 }},
+                        {{ $visit_ucs_outprov ?? 0 }},
+                        {{ $visit_ofc ?? 0 }},
+                        {{ $visit_lgo ?? 0 }},
+                        {{ $visit_sss ?? 0 }},
+                        {{ $visit_pay ?? 0 }},
+                      ],
+                      backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 205, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(153, 102, 255, 0.2)'
+                      ],
+                      borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(54, 162, 235)',
+                        'rgb(153, 102, 255)'
+                      ],
+                      borderWidth: 1
+                    }]
+                  },
+                  options: {
+                    plugins: {
+                      legend: {
+                        display: true,
+                        labels: {
+                          usePointStyle: true,
+                          pointStyle: 'line',
+                          boxWidth: 0
+                        }
+                      },
+                      tooltip: {
+                        callbacks: {
+                          label: function(context) {
+                            return context.formattedValue.toLocaleString();  // ⭐ ตรงนี้ทำให้ตัดคำว่า Visit
+                          }
+                        }
+                      }
+                    },
+                    scales: {
+                      y: { beginAtZero: true }
+                    }
+                  }
+                });
+              });
+            </script>
+          </div>          
         </div>
 
         {{-- -------------------------------------------------------------------------------------------------------------- --}}
@@ -615,7 +436,7 @@
           </div>
         </div>
 
-                {{--  บริการแพทย์แผนไทย -------------------------------------------------------------------------------}}
+        {{--  บริการแพทย์แผนไทย -------------------------------------------------------------------------------}}
         <div class="col-12 col-sm-6 col-xl-2">
           <a href="#" data-bs-toggle="modal" data-bs-target="#HMDetailModal" class="text-decoration-none text-dark">
             <div class="card-opd card glass p-3 h-100"
@@ -925,12 +746,12 @@
                   <tr class="table-opd">
                     <th class="text-center" rowspan="2" width ="4%">เดือน</th>
                     <th class="text-center" colspan="7">ทั้งหมด</th>  
-                    <th class="text-center" rowspan="2">Visit ทันตกรรม</th>   
-                    <th class="text-center" rowspan="2">Visit กายภาพบำบัด</th> 
-                    <th class="text-center" rowspan="2">Visit ฝากครรภ์</th> 
-                    <th class="text-center" rowspan="2">Visit แพทย์แผนไทย</th>  
-                    <th class="text-center" rowspan="2">Visit การแพทย์ทางไกล</th>    
-                    <th class="text-center" rowspan="2">Visit นัดหมายออนไลน์</th>                     
+                    <td class="text-center text-primary" rowspan="2">Visit ทันตกรรม</td>   
+                    <td class="text-center text-primary" rowspan="2">Visit กายภาพบำบัด</td> 
+                    <td class="text-center text-primary" rowspan="2">Visit ฝากครรภ์</td> 
+                    <td class="text-center text-primary" rowspan="2">Visit แพทย์แผนไทย</td>  
+                    <td class="text-center text-primary" rowspan="2">Visit การแพทย์ทางไกล</td>    
+                    <td class="text-center text-primary" rowspan="2">Visit นัดหมายออนไลน์</td>                     
                   </tr>    
                   <tr class="table-opd">        
                     <td class="text-center text-primary">HN Total</td>
@@ -1120,7 +941,7 @@
         </div>
 
         <!-- 10986-->
-        <div class="tab-pane fade show active" id="pane-10986" role="tabpanel" aria-labelledby="tab-10986" tabindex="0">
+        <div class="tab-pane fade" id="pane-10986" role="tabpanel" aria-labelledby="tab-10986" tabindex="0">
           <!-- 10986 OPD-->
           <div class="glass p-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
@@ -1133,12 +954,12 @@
                   <tr class="table-opd">
                     <th class="text-center" rowspan="2" width ="4%">เดือน</th>
                     <th class="text-center" colspan="7">ทั้งหมด</th>  
-                    <th class="text-center" rowspan="2">Visit ทันตกรรม</th>   
-                    <th class="text-center" rowspan="2">Visit กายภาพบำบัด</th> 
-                    <th class="text-center" rowspan="2">Visit ฝากครรภ์</th> 
-                    <th class="text-center" rowspan="2">Visit แพทย์แผนไทย</th>  
-                    <th class="text-center" rowspan="2">Visit การแพทย์ทางไกล</th>    
-                    <th class="text-center" rowspan="2">Visit นัดหมายออนไลน์</th>                     
+                    <td class="text-center text-primary" rowspan="2">Visit ทันตกรรม</td>   
+                    <td class="text-center text-primary" rowspan="2">Visit กายภาพบำบัด</td> 
+                    <td class="text-center text-primary" rowspan="2">Visit ฝากครรภ์</td> 
+                    <td class="text-center text-primary" rowspan="2">Visit แพทย์แผนไทย</td>  
+                    <td class="text-center text-primary" rowspan="2">Visit การแพทย์ทางไกล</td>    
+                    <td class="text-center text-primary" rowspan="2">Visit นัดหมายออนไลน์</td>                     
                   </tr>    
                   <tr class="table-opd">        
                     <td class="text-center text-primary">HN Total</td>
@@ -1328,7 +1149,7 @@
         </div>
 
         <!-- 10987-->
-        <div class="tab-pane fade show active" id="pane-10987" role="tabpanel" aria-labelledby="tab-10987" tabindex="0">
+        <div class="tab-pane fade" id="pane-10987" role="tabpanel" aria-labelledby="tab-10987" tabindex="0">
           <!-- 10987 OPD-->
           <div class="glass p-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
@@ -1341,12 +1162,12 @@
                   <tr class="table-opd">
                     <th class="text-center" rowspan="2" width ="4%">เดือน</th>
                     <th class="text-center" colspan="7">ทั้งหมด</th>  
-                    <th class="text-center" rowspan="2">Visit ทันตกรรม</th>   
-                    <th class="text-center" rowspan="2">Visit กายภาพบำบัด</th> 
-                    <th class="text-center" rowspan="2">Visit ฝากครรภ์</th> 
-                    <th class="text-center" rowspan="2">Visit แพทย์แผนไทย</th>  
-                    <th class="text-center" rowspan="2">Visit การแพทย์ทางไกล</th>    
-                    <th class="text-center" rowspan="2">Visit นัดหมายออนไลน์</th>                     
+                    <td class="text-center text-primary" rowspan="2">Visit ทันตกรรม</td>   
+                    <td class="text-center text-primary" rowspan="2">Visit กายภาพบำบัด</td> 
+                    <td class="text-center text-primary" rowspan="2">Visit ฝากครรภ์</td> 
+                    <td class="text-center text-primary" rowspan="2">Visit แพทย์แผนไทย</td>  
+                    <td class="text-center text-primary" rowspan="2">Visit การแพทย์ทางไกล</td>    
+                    <td class="text-center text-primary" rowspan="2">Visit นัดหมายออนไลน์</td>                     
                   </tr>    
                   <tr class="table-opd">        
                     <td class="text-center text-primary">HN Total</td>
@@ -1536,7 +1357,7 @@
         </div>
 
         <!-- 10988-->
-        <div class="tab-pane fade show active" id="pane-10988" role="tabpanel" aria-labelledby="tab-10988" tabindex="0">
+        <div class="tab-pane fade" id="pane-10988" role="tabpanel" aria-labelledby="tab-10988" tabindex="0">
           <!-- 10988 OPD-->
           <div class="glass p-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
@@ -1549,12 +1370,12 @@
                   <tr class="table-opd">
                     <th class="text-center" rowspan="2" width ="4%">เดือน</th>
                     <th class="text-center" colspan="7">ทั้งหมด</th>  
-                    <th class="text-center" rowspan="2">Visit ทันตกรรม</th>   
-                    <th class="text-center" rowspan="2">Visit กายภาพบำบัด</th> 
-                    <th class="text-center" rowspan="2">Visit ฝากครรภ์</th> 
-                    <th class="text-center" rowspan="2">Visit แพทย์แผนไทย</th>  
-                    <th class="text-center" rowspan="2">Visit การแพทย์ทางไกล</th>    
-                    <th class="text-center" rowspan="2">Visit นัดหมายออนไลน์</th>                     
+                    <td class="text-center text-primary" rowspan="2">Visit ทันตกรรม</td>   
+                    <td class="text-center text-primary" rowspan="2">Visit กายภาพบำบัด</td> 
+                    <td class="text-center text-primary" rowspan="2">Visit ฝากครรภ์</td> 
+                    <td class="text-center text-primary" rowspan="2">Visit แพทย์แผนไทย</td>  
+                    <td class="text-center text-primary" rowspan="2">Visit การแพทย์ทางไกล</td>    
+                    <td class="text-center text-primary" rowspan="2">Visit นัดหมายออนไลน์</td>                    
                   </tr>    
                   <tr class="table-opd">        
                     <td class="text-center text-primary">HN Total</td>
@@ -1744,7 +1565,7 @@
         </div>
 
         <!-- 10989-->
-        <div class="tab-pane fade show active" id="pane-10989" role="tabpanel" aria-labelledby="tab-10989" tabindex="0">
+        <div class="tab-pane fade" id="pane-10989" role="tabpanel" aria-labelledby="tab-10989" tabindex="0">
           <!-- 10989 OPD-->
           <div class="glass p-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
@@ -1757,12 +1578,12 @@
                   <tr class="table-opd">
                     <th class="text-center" rowspan="2" width ="4%">เดือน</th>
                     <th class="text-center" colspan="7">ทั้งหมด</th>  
-                    <th class="text-center" rowspan="2">Visit ทันตกรรม</th>   
-                    <th class="text-center" rowspan="2">Visit กายภาพบำบัด</th> 
-                    <th class="text-center" rowspan="2">Visit ฝากครรภ์</th> 
-                    <th class="text-center" rowspan="2">Visit แพทย์แผนไทย</th>  
-                    <th class="text-center" rowspan="2">Visit การแพทย์ทางไกล</th>    
-                    <th class="text-center" rowspan="2">Visit นัดหมายออนไลน์</th>                     
+                    <td class="text-center text-primary" rowspan="2">Visit ทันตกรรม</td>   
+                    <td class="text-center text-primary" rowspan="2">Visit กายภาพบำบัด</td> 
+                    <td class="text-center text-primary" rowspan="2">Visit ฝากครรภ์</td> 
+                    <td class="text-center text-primary" rowspan="2">Visit แพทย์แผนไทย</td>  
+                    <td class="text-center text-primary" rowspan="2">Visit การแพทย์ทางไกล</td>    
+                    <td class="text-center text-primary" rowspan="2">Visit นัดหมายออนไลน์</td>                    
                   </tr>    
                   <tr class="table-opd">        
                     <td class="text-center text-primary">HN Total</td>
@@ -1952,7 +1773,7 @@
         </div>
 
         <!-- 10990-->
-        <div class="tab-pane fade show active" id="pane-10990" role="tabpanel" aria-labelledby="tab-10990" tabindex="0">
+        <div class="tab-pane fade" id="pane-10990" role="tabpanel" aria-labelledby="tab-10990" tabindex="0">
           <!-- 10990 OPD-->
           <div class="glass p-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
@@ -1965,12 +1786,12 @@
                   <tr class="table-opd">
                     <th class="text-center" rowspan="2" width ="4%">เดือน</th>
                     <th class="text-center" colspan="7">ทั้งหมด</th>  
-                    <th class="text-center" rowspan="2">Visit ทันตกรรม</th>   
-                    <th class="text-center" rowspan="2">Visit กายภาพบำบัด</th> 
-                    <th class="text-center" rowspan="2">Visit ฝากครรภ์</th> 
-                    <th class="text-center" rowspan="2">Visit แพทย์แผนไทย</th>  
-                    <th class="text-center" rowspan="2">Visit การแพทย์ทางไกล</th>    
-                    <th class="text-center" rowspan="2">Visit นัดหมายออนไลน์</th>                     
+                    <td class="text-center text-primary" rowspan="2">Visit ทันตกรรม</td>   
+                    <td class="text-center text-primary" rowspan="2">Visit กายภาพบำบัด</td> 
+                    <td class="text-center text-primary" rowspan="2">Visit ฝากครรภ์</td> 
+                    <td class="text-center text-primary" rowspan="2">Visit แพทย์แผนไทย</td>  
+                    <td class="text-center text-primary" rowspan="2">Visit การแพทย์ทางไกล</td>    
+                    <td class="text-center text-primary" rowspan="2">Visit นัดหมายออนไลน์</td>                     
                   </tr>    
                   <tr class="table-opd">        
                     <td class="text-center text-primary">HN Total</td>
@@ -2160,7 +1981,7 @@
         </div>
 
         <!-- 10703-->
-        <div class="tab-pane fade show active" id="pane-10703" role="tabpanel" aria-labelledby="tab-10703" tabindex="0">
+        <div class="tab-pane fade" id="pane-10703" role="tabpanel" aria-labelledby="tab-10703" tabindex="0">
           <!-- 10703 OPD-->
           <div class="glass p-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
@@ -2173,12 +1994,12 @@
                   <tr class="table-opd">
                     <th class="text-center" rowspan="2" width ="4%">เดือน</th>
                     <th class="text-center" colspan="7">ทั้งหมด</th>  
-                    <th class="text-center" rowspan="2">Visit ทันตกรรม</th>   
-                    <th class="text-center" rowspan="2">Visit กายภาพบำบัด</th> 
-                    <th class="text-center" rowspan="2">Visit ฝากครรภ์</th> 
-                    <th class="text-center" rowspan="2">Visit แพทย์แผนไทย</th>  
-                    <th class="text-center" rowspan="2">Visit การแพทย์ทางไกล</th>    
-                    <th class="text-center" rowspan="2">Visit นัดหมายออนไลน์</th>                     
+                    <td class="text-center text-primary" rowspan="2">Visit ทันตกรรม</td>   
+                    <td class="text-center text-primary" rowspan="2">Visit กายภาพบำบัด</td> 
+                    <td class="text-center text-primary" rowspan="2">Visit ฝากครรภ์</td> 
+                    <td class="text-center text-primary" rowspan="2">Visit แพทย์แผนไทย</td>  
+                    <td class="text-center text-primary" rowspan="2">Visit การแพทย์ทางไกล</td>    
+                    <td class="text-center text-primary" rowspan="2">Visit นัดหมายออนไลน์</td>                     
                   </tr>    
                   <tr class="table-opd">        
                     <td class="text-center text-primary">HN Total</td>
