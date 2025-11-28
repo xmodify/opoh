@@ -201,7 +201,9 @@ class DashboardController extends Controller
                     , 2 ) AS active_bed,
                     ROUND(SUM(i.adjrw), 4) AS adjrw,
                     ROUND(SUM(i.adjrw)/SUM(i.an_total), 2) AS cmi,
-                    i.inc_total, i.inc_lab_total, i.inc_drug_total
+                    SUM(i.inc_total) AS inc_total ,
+				    SUM(i.inc_lab_total) AS inc_lab_total ,
+                    SUM(i.inc_drug_total) AS inc_drug_total 
                 FROM ipd i
                 LEFT JOIN hospital_config h ON h.hospcode=i.hospcode 
                 WHERE i.dchdate BETWEEN ? AND ?
