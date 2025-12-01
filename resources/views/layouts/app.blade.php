@@ -65,6 +65,11 @@
               <i class="bi bi-coin fs-5 text-warning me-2"></i></i> Claim
           </a>
 
+          <a class="navbar-brand d-flex align-items-center text-primary brand-title fw-bold" 
+              href="https://apps-amno.moph.go.th/hdcamnat/reports/insurance/report_summary2.php" target="_blank">
+              <i class="fa-solid fa-money-bill-wave fs-5 me-2" style="color:#7e57c2;"></i></i> AIM
+          </a>
+
           <a class="navbar-brand d-flex align-items-center text-primary brand-title fw-bold ms-3"  href="http://1.179.175.230:89" target="_blank">
               <i class="bi bi-box-seam text-info me-2"></i> Inventory
           </a>
