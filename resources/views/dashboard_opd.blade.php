@@ -582,17 +582,31 @@
           <a href="#" data-bs-toggle="modal" data-bs-target="#OappDetailModal" class="text-decoration-none text-dark">
             <div class="card-opd card glass p-3 h-100"
                 style="background: linear-gradient(145deg, #e0f7fa, #ffffff); border:1px solid #b3e5fc;">
-              <!-- หัวข้อซ้าย + ไอคอนขวา -->
+              <!-- หัวข้อ -->
               <div class="d-flex align-items-center justify-content-between mb-2">
                 <h6 class="mb-0" style="color:#42bd41;"><strong>นัดหมายออนไลน์ วันนี้</strong></h6>
                 <i class="fa-solid fa-calendar-days" style="color:#42bd41;"></i>
               </div>
-              <!-- เนื้อหาตรงกลาง -->
-              <div class="text-center mt-3">                
-                <div class="fw-bold" style="font-size:1.7rem; color:#42bd41;">
-                  {{ $fmtInt($visit_moph_oapp ?? 0) }}
+              <!-- เนื้อหา -->
+              <div class="text-center mt-3">
+                <div class="d-flex justify-content-center align-items-center gap-3">
+                  <!-- นัดหมาย -->
+                  <div class="text-center">
+                    <div class="fw-bold" style="font-size:1.7rem; color:#42bd41;">
+                      {{ $fmtInt($visit_moph_oapp_booking ?? 0) }}
+                    </div>
+                    <div class="small text-secondary">นัดหมาย</div>
+                  </div>
+                  <!-- ตัวคั่น -->
+                  <div class="vr mx-2 d-none d-sm-block" style="opacity:0.15;"></div>
+                  <!-- รับบริการ -->
+                  <div class="text-center">
+                    <div class="fw-bold" style="font-size:1.7rem; color:#42bd41;">
+                      {{ $fmtInt($visit_moph_oapp ?? 0) }}
+                    </div>
+                    <div class="small text-secondary">รับบริการ</div>
+                  </div>
                 </div>
-                <div class="small text-secondary">visit</div>
               </div>
             </div>
           </a>
@@ -617,7 +631,8 @@
                     <tr class="text-center text-primary fw-semibold">
                       <th>รหัส</th>
                       <th>ชื่อโรงพยาบาล</th>
-                      <th>Visit</th>
+                      <th>นัดหมาย</th>
+                      <th>รับบริการ</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -630,6 +645,7 @@
                             {{ \Carbon\Carbon::parse($h->last_updated_at)->locale('th')->isoFormat('D MMM YYYY H:mm') }} น.
                           </small>
                         </td>
+                        <td align="right" class="text-primary">{{ number_format($h->visit_moph_oapp_booking) }}</td>
                         <td align="right" class="text-primary">{{ number_format($h->visit_moph_oapp) }}</td>
                       </tr>
                     @endforeach
@@ -750,7 +766,7 @@
                     <td class="text-center text-primary" rowspan="2">Visit ฝากครรภ์</td> 
                     <td class="text-center text-primary" rowspan="2">Visit แพทย์แผนไทย</td>  
                     <td class="text-center text-primary" rowspan="2">Visit การแพทย์ทางไกล</td>    
-                    <td class="text-center text-primary" rowspan="2">Visit นัดหมายออนไลน์</td>                     
+                    <td class="text-center text-primary" colspan="2">Visit นัดหมายออนไลน์</td>                     
                   </tr>    
                   <tr class="table-opd">        
                     <td class="text-center text-primary">HN Total</td>
@@ -759,7 +775,9 @@
                     <td class="text-center text-primary">Visit PP</td>
                     <td class="text-center text-primary">ค่ารักษารวม</td>
                     <td class="text-center text-primary">ค่า Lab</td>
-                    <td class="text-center text-primary">ค่า ยา</td>                   
+                    <td class="text-center text-primary">ค่า ยา</td>  
+                    <td class="text-center text-primary">นัดหมาย</td>
+                    <td class="text-center text-primary">รับบริการ</td>                 
                   </tr>    
                 </thead>
                 <tbody>
@@ -778,6 +796,7 @@
                     <td align="right">{{ number_format($row->visit_anc) }}</td>
                     <td align="right">{{ number_format($row->visit_healthmed) }}</td>
                     <td align="right">{{ number_format($row->visit_telehealth) }}</td>
+                    <td align="right">{{ number_format($row->visit_moph_oapp_booking) }}</td>
                     <td align="right">{{ number_format($row->visit_moph_oapp) }}</td>
                   </tr>       
                   @endforeach    
@@ -795,6 +814,7 @@
                     <td class="text-end"><strong>{{ number_format($total_10985->sum('visit_anc')) }}</strong></td>
                     <td class="text-end"><strong>{{ number_format($total_10985->sum('visit_healthmed')) }}</strong></td>
                     <td class="text-end"><strong>{{ number_format($total_10985->sum('visit_telehealth')) }}</strong></td>
+                    <td class="text-end"><strong>{{ number_format($total_10985->sum('visit_moph_oapp_booking')) }}</strong></td>
                     <td class="text-end"><strong>{{ number_format($total_10985->sum('visit_moph_oapp')) }}</strong></td>
                   </tr>
                 </tbody>
@@ -958,7 +978,7 @@
                     <td class="text-center text-primary" rowspan="2">Visit ฝากครรภ์</td> 
                     <td class="text-center text-primary" rowspan="2">Visit แพทย์แผนไทย</td>  
                     <td class="text-center text-primary" rowspan="2">Visit การแพทย์ทางไกล</td>    
-                    <td class="text-center text-primary" rowspan="2">Visit นัดหมายออนไลน์</td>                     
+                    <td class="text-center text-primary" colspan="2">Visit นัดหมายออนไลน์</td>                     
                   </tr>    
                   <tr class="table-opd">        
                     <td class="text-center text-primary">HN Total</td>
@@ -967,7 +987,9 @@
                     <td class="text-center text-primary">Visit PP</td>
                     <td class="text-center text-primary">ค่ารักษารวม</td>
                     <td class="text-center text-primary">ค่า Lab</td>
-                    <td class="text-center text-primary">ค่า ยา</td>                   
+                    <td class="text-center text-primary">ค่า ยา</td>  
+                    <td class="text-center text-primary">นัดหมาย</td>
+                    <td class="text-center text-primary">รับบริการ</td>                    
                   </tr>    
                 </thead>
                 <tbody>
@@ -986,6 +1008,7 @@
                     <td align="right">{{ number_format($row->visit_anc) }}</td>
                     <td align="right">{{ number_format($row->visit_healthmed) }}</td>
                     <td align="right">{{ number_format($row->visit_telehealth) }}</td>
+                    <td align="right">{{ number_format($row->visit_moph_oapp_booking) }}</td>
                     <td align="right">{{ number_format($row->visit_moph_oapp) }}</td>
                   </tr>       
                   @endforeach    
@@ -1003,6 +1026,7 @@
                     <td class="text-end"><strong>{{ number_format($total_10986->sum('visit_anc')) }}</strong></td>
                     <td class="text-end"><strong>{{ number_format($total_10986->sum('visit_healthmed')) }}</strong></td>
                     <td class="text-end"><strong>{{ number_format($total_10986->sum('visit_telehealth')) }}</strong></td>
+                    <td class="text-end"><strong>{{ number_format($total_10986->sum('visit_moph_oapp_booking')) }}</strong></td>
                     <td class="text-end"><strong>{{ number_format($total_10986->sum('visit_moph_oapp')) }}</strong></td>
                   </tr>
                 </tbody>
@@ -1166,7 +1190,7 @@
                     <td class="text-center text-primary" rowspan="2">Visit ฝากครรภ์</td> 
                     <td class="text-center text-primary" rowspan="2">Visit แพทย์แผนไทย</td>  
                     <td class="text-center text-primary" rowspan="2">Visit การแพทย์ทางไกล</td>    
-                    <td class="text-center text-primary" rowspan="2">Visit นัดหมายออนไลน์</td>                     
+                    <td class="text-center text-primary" colspan="2">Visit นัดหมายออนไลน์</td>                     
                   </tr>    
                   <tr class="table-opd">        
                     <td class="text-center text-primary">HN Total</td>
@@ -1175,7 +1199,9 @@
                     <td class="text-center text-primary">Visit PP</td>
                     <td class="text-center text-primary">ค่ารักษารวม</td>
                     <td class="text-center text-primary">ค่า Lab</td>
-                    <td class="text-center text-primary">ค่า ยา</td>                   
+                    <td class="text-center text-primary">ค่า ยา</td> 
+                    <td class="text-center text-primary">นัดหมาย</td>
+                    <td class="text-center text-primary">รับบริการ</td>                  
                   </tr>    
                 </thead>
                 <tbody>
@@ -1194,6 +1220,7 @@
                     <td align="right">{{ number_format($row->visit_anc) }}</td>
                     <td align="right">{{ number_format($row->visit_healthmed) }}</td>
                     <td align="right">{{ number_format($row->visit_telehealth) }}</td>
+                    <td align="right">{{ number_format($row->visit_moph_oapp_booking) }}</td>
                     <td align="right">{{ number_format($row->visit_moph_oapp) }}</td>
                   </tr>       
                   @endforeach    
@@ -1211,6 +1238,7 @@
                     <td class="text-end"><strong>{{ number_format($total_10987->sum('visit_anc')) }}</strong></td>
                     <td class="text-end"><strong>{{ number_format($total_10987->sum('visit_healthmed')) }}</strong></td>
                     <td class="text-end"><strong>{{ number_format($total_10987->sum('visit_telehealth')) }}</strong></td>
+                    <td class="text-end"><strong>{{ number_format($total_10987->sum('visit_moph_oapp_booking')) }}</strong></td>
                     <td class="text-end"><strong>{{ number_format($total_10987->sum('visit_moph_oapp')) }}</strong></td>
                   </tr>
                 </tbody>
@@ -1374,7 +1402,7 @@
                     <td class="text-center text-primary" rowspan="2">Visit ฝากครรภ์</td> 
                     <td class="text-center text-primary" rowspan="2">Visit แพทย์แผนไทย</td>  
                     <td class="text-center text-primary" rowspan="2">Visit การแพทย์ทางไกล</td>    
-                    <td class="text-center text-primary" rowspan="2">Visit นัดหมายออนไลน์</td>                    
+                    <td class="text-center text-primary" colspan="2">Visit นัดหมายออนไลน์</td>                    
                   </tr>    
                   <tr class="table-opd">        
                     <td class="text-center text-primary">HN Total</td>
@@ -1383,7 +1411,9 @@
                     <td class="text-center text-primary">Visit PP</td>
                     <td class="text-center text-primary">ค่ารักษารวม</td>
                     <td class="text-center text-primary">ค่า Lab</td>
-                    <td class="text-center text-primary">ค่า ยา</td>                   
+                    <td class="text-center text-primary">ค่า ยา</td> 
+                    <td class="text-center text-primary">นัดหมาย</td>
+                    <td class="text-center text-primary">รับบริการ</td>                   
                   </tr>    
                 </thead>
                 <tbody>
@@ -1402,6 +1432,7 @@
                     <td align="right">{{ number_format($row->visit_anc) }}</td>
                     <td align="right">{{ number_format($row->visit_healthmed) }}</td>
                     <td align="right">{{ number_format($row->visit_telehealth) }}</td>
+                    <td align="right">{{ number_format($row->visit_moph_oapp_booking) }}</td>
                     <td align="right">{{ number_format($row->visit_moph_oapp) }}</td>
                   </tr>       
                   @endforeach    
@@ -1419,6 +1450,7 @@
                     <td class="text-end"><strong>{{ number_format($total_10988->sum('visit_anc')) }}</strong></td>
                     <td class="text-end"><strong>{{ number_format($total_10988->sum('visit_healthmed')) }}</strong></td>
                     <td class="text-end"><strong>{{ number_format($total_10988->sum('visit_telehealth')) }}</strong></td>
+                    <td class="text-end"><strong>{{ number_format($total_10988->sum('visit_moph_oapp_booking')) }}</strong></td>
                     <td class="text-end"><strong>{{ number_format($total_10988->sum('visit_moph_oapp')) }}</strong></td>
                   </tr>
                 </tbody>
@@ -1582,7 +1614,7 @@
                     <td class="text-center text-primary" rowspan="2">Visit ฝากครรภ์</td> 
                     <td class="text-center text-primary" rowspan="2">Visit แพทย์แผนไทย</td>  
                     <td class="text-center text-primary" rowspan="2">Visit การแพทย์ทางไกล</td>    
-                    <td class="text-center text-primary" rowspan="2">Visit นัดหมายออนไลน์</td>                    
+                    <td class="text-center text-primary" colspan="2">Visit นัดหมายออนไลน์</td>                    
                   </tr>    
                   <tr class="table-opd">        
                     <td class="text-center text-primary">HN Total</td>
@@ -1591,7 +1623,9 @@
                     <td class="text-center text-primary">Visit PP</td>
                     <td class="text-center text-primary">ค่ารักษารวม</td>
                     <td class="text-center text-primary">ค่า Lab</td>
-                    <td class="text-center text-primary">ค่า ยา</td>                   
+                    <td class="text-center text-primary">ค่า ยา</td>
+                    <td class="text-center text-primary">นัดหมาย</td>
+                    <td class="text-center text-primary">รับบริการ</td>                  
                   </tr>    
                 </thead>
                 <tbody>
@@ -1610,6 +1644,7 @@
                     <td align="right">{{ number_format($row->visit_anc) }}</td>
                     <td align="right">{{ number_format($row->visit_healthmed) }}</td>
                     <td align="right">{{ number_format($row->visit_telehealth) }}</td>
+                    <td align="right">{{ number_format($row->visit_moph_oapp_booking) }}</td>
                     <td align="right">{{ number_format($row->visit_moph_oapp) }}</td>
                   </tr>       
                   @endforeach    
@@ -1627,6 +1662,7 @@
                     <td class="text-end"><strong>{{ number_format($total_10989->sum('visit_anc')) }}</strong></td>
                     <td class="text-end"><strong>{{ number_format($total_10989->sum('visit_healthmed')) }}</strong></td>
                     <td class="text-end"><strong>{{ number_format($total_10989->sum('visit_telehealth')) }}</strong></td>
+                    <td class="text-end"><strong>{{ number_format($total_10989->sum('visit_moph_oapp_booking')) }}</strong></td>
                     <td class="text-end"><strong>{{ number_format($total_10989->sum('visit_moph_oapp')) }}</strong></td>
                   </tr>
                 </tbody>
@@ -1790,7 +1826,7 @@
                     <td class="text-center text-primary" rowspan="2">Visit ฝากครรภ์</td> 
                     <td class="text-center text-primary" rowspan="2">Visit แพทย์แผนไทย</td>  
                     <td class="text-center text-primary" rowspan="2">Visit การแพทย์ทางไกล</td>    
-                    <td class="text-center text-primary" rowspan="2">Visit นัดหมายออนไลน์</td>                     
+                    <td class="text-center text-primary" colspan="2">Visit นัดหมายออนไลน์</td>                     
                   </tr>    
                   <tr class="table-opd">        
                     <td class="text-center text-primary">HN Total</td>
@@ -1799,7 +1835,9 @@
                     <td class="text-center text-primary">Visit PP</td>
                     <td class="text-center text-primary">ค่ารักษารวม</td>
                     <td class="text-center text-primary">ค่า Lab</td>
-                    <td class="text-center text-primary">ค่า ยา</td>                   
+                    <td class="text-center text-primary">ค่า ยา</td>    
+                    <td class="text-center text-primary">นัดหมาย</td>
+                    <td class="text-center text-primary">รับบริการ</td>                
                   </tr>    
                 </thead>
                 <tbody>
@@ -1818,6 +1856,7 @@
                     <td align="right">{{ number_format($row->visit_anc) }}</td>
                     <td align="right">{{ number_format($row->visit_healthmed) }}</td>
                     <td align="right">{{ number_format($row->visit_telehealth) }}</td>
+                    <td align="right">{{ number_format($row->visit_moph_oapp_booking) }}</td>
                     <td align="right">{{ number_format($row->visit_moph_oapp) }}</td>
                   </tr>       
                   @endforeach    
@@ -1835,6 +1874,7 @@
                     <td class="text-end"><strong>{{ number_format($total_10990->sum('visit_anc')) }}</strong></td>
                     <td class="text-end"><strong>{{ number_format($total_10990->sum('visit_healthmed')) }}</strong></td>
                     <td class="text-end"><strong>{{ number_format($total_10990->sum('visit_telehealth')) }}</strong></td>
+                    <td class="text-end"><strong>{{ number_format($total_10990->sum('visit_moph_oapp_booking')) }}</strong></td>
                     <td class="text-end"><strong>{{ number_format($total_10990->sum('visit_moph_oapp')) }}</strong></td>
                   </tr>
                 </tbody>
@@ -1998,7 +2038,7 @@
                     <td class="text-center text-primary" rowspan="2">Visit ฝากครรภ์</td> 
                     <td class="text-center text-primary" rowspan="2">Visit แพทย์แผนไทย</td>  
                     <td class="text-center text-primary" rowspan="2">Visit การแพทย์ทางไกล</td>    
-                    <td class="text-center text-primary" rowspan="2">Visit นัดหมายออนไลน์</td>                     
+                    <td class="text-center text-primary" colspan="2">Visit นัดหมายออนไลน์</td>                     
                   </tr>    
                   <tr class="table-opd">        
                     <td class="text-center text-primary">HN Total</td>
@@ -2007,7 +2047,9 @@
                     <td class="text-center text-primary">Visit PP</td>
                     <td class="text-center text-primary">ค่ารักษารวม</td>
                     <td class="text-center text-primary">ค่า Lab</td>
-                    <td class="text-center text-primary">ค่า ยา</td>                   
+                    <td class="text-center text-primary">ค่า ยา</td>
+                    <td class="text-center text-primary">นัดหมาย</td>
+                    <td class="text-center text-primary">รับบริการ</td>                   
                   </tr>    
                 </thead>
                 <tbody>
@@ -2026,6 +2068,7 @@
                     <td align="right">{{ number_format($row->visit_anc) }}</td>
                     <td align="right">{{ number_format($row->visit_healthmed) }}</td>
                     <td align="right">{{ number_format($row->visit_telehealth) }}</td>
+                    <td align="right">{{ number_format($row->visit_moph_oapp_booking) }}</td>
                     <td align="right">{{ number_format($row->visit_moph_oapp) }}</td>
                   </tr>       
                   @endforeach    
@@ -2043,6 +2086,7 @@
                     <td class="text-end"><strong>{{ number_format($total_10703->sum('visit_anc')) }}</strong></td>
                     <td class="text-end"><strong>{{ number_format($total_10703->sum('visit_healthmed')) }}</strong></td>
                     <td class="text-end"><strong>{{ number_format($total_10703->sum('visit_telehealth')) }}</strong></td>
+                    <td class="text-end"><strong>{{ number_format($total_10703->sum('visit_moph_oapp_booking')) }}</strong></td>
                     <td class="text-end"><strong>{{ number_format($total_10703->sum('visit_moph_oapp')) }}</strong></td>
                   </tr>
                 </tbody>
