@@ -776,7 +776,7 @@
                     <td class="text-center text-primary">ค่ารักษารวม</td>
                     <td class="text-center text-primary">ค่า Lab</td>
                     <td class="text-center text-primary">ค่า ยา</td>  
-                    <td class="text-center text-primary">นัดหมาย</td>
+                    <td class="text-center text-primary">จองคิวนัดหมาย</td>
                     <td class="text-center text-primary">รับบริการ</td>                 
                   </tr>    
                 </thead>
@@ -988,7 +988,7 @@
                     <td class="text-center text-primary">ค่ารักษารวม</td>
                     <td class="text-center text-primary">ค่า Lab</td>
                     <td class="text-center text-primary">ค่า ยา</td>  
-                    <td class="text-center text-primary">นัดหมาย</td>
+                    <td class="text-center text-primary">จองคิวนัดหมาย</td>
                     <td class="text-center text-primary">รับบริการ</td>                    
                   </tr>    
                 </thead>
@@ -1200,7 +1200,7 @@
                     <td class="text-center text-primary">ค่ารักษารวม</td>
                     <td class="text-center text-primary">ค่า Lab</td>
                     <td class="text-center text-primary">ค่า ยา</td> 
-                    <td class="text-center text-primary">นัดหมาย</td>
+                    <td class="text-center text-primary">จองคิวนัดหมาย</td>
                     <td class="text-center text-primary">รับบริการ</td>                  
                   </tr>    
                 </thead>
@@ -1412,7 +1412,7 @@
                     <td class="text-center text-primary">ค่ารักษารวม</td>
                     <td class="text-center text-primary">ค่า Lab</td>
                     <td class="text-center text-primary">ค่า ยา</td> 
-                    <td class="text-center text-primary">นัดหมาย</td>
+                    <td class="text-center text-primary">จองคิวนัดหมาย</td>
                     <td class="text-center text-primary">รับบริการ</td>                   
                   </tr>    
                 </thead>
@@ -1624,7 +1624,7 @@
                     <td class="text-center text-primary">ค่ารักษารวม</td>
                     <td class="text-center text-primary">ค่า Lab</td>
                     <td class="text-center text-primary">ค่า ยา</td>
-                    <td class="text-center text-primary">นัดหมาย</td>
+                    <td class="text-center text-primary">จองคิวนัดหมาย</td>
                     <td class="text-center text-primary">รับบริการ</td>                  
                   </tr>    
                 </thead>
@@ -1836,7 +1836,7 @@
                     <td class="text-center text-primary">ค่ารักษารวม</td>
                     <td class="text-center text-primary">ค่า Lab</td>
                     <td class="text-center text-primary">ค่า ยา</td>    
-                    <td class="text-center text-primary">นัดหมาย</td>
+                    <td class="text-center text-primary">จองคิวนัดหมาย</td>
                     <td class="text-center text-primary">รับบริการ</td>                
                   </tr>    
                 </thead>
@@ -2048,7 +2048,7 @@
                     <td class="text-center text-primary">ค่ารักษารวม</td>
                     <td class="text-center text-primary">ค่า Lab</td>
                     <td class="text-center text-primary">ค่า ยา</td>
-                    <td class="text-center text-primary">นัดหมาย</td>
+                    <td class="text-center text-primary">จองคิวนัดหมาย</td>
                     <td class="text-center text-primary">รับบริการ</td>                   
                   </tr>    
                 </thead>
