@@ -595,7 +595,7 @@
                     <div class="fw-bold" style="font-size:1.7rem; color:#42bd41;">
                       {{ $fmtInt($visit_moph_oapp_booking ?? 0) }}
                     </div>
-                    <div class="small text-secondary">นัดหมาย</div>
+                    <div class="small text-secondary">จองคิวนัดหมาย</div>
                   </div>
                   <!-- ตัวคั่น -->
                   <div class="vr mx-2 d-none d-sm-block" style="opacity:0.15;"></div>
@@ -631,7 +631,7 @@
                     <tr class="text-center text-primary fw-semibold">
                       <th>รหัส</th>
                       <th>ชื่อโรงพยาบาล</th>
-                      <th>นัดหมาย</th>
+                      <th>จองคิวนัดหมาย</th>
                       <th>รับบริการ</th>
                     </tr>
                   </thead>
