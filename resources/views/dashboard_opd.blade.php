@@ -321,7 +321,7 @@
               <div class="modal-header text-white rounded-top-3"
                   style="background: linear-gradient(135deg, #2f6fb6, #4b8edc);">
                 <h5 class="modal-title fw-bold" id="hospitalDetailLabel">
-                  <i class="bi bi-person-vcard me-2"></i> สิทธิประกันสังคม (SSS)
+                  <i class="bi bi-person-vcard me-2"></i> กายภาพบำบัด วันนี้
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
@@ -604,7 +604,7 @@
                     <div class="fw-bold" style="font-size:1.7rem; color:#42bd41;">
                       {{ $fmtInt($visit_moph_oapp ?? 0) }}
                     </div>
-                    <div class="small text-secondary">รับบริการ</div>
+                    <div class="small text-secondary">เข้ารับบริการ</div>
                   </div>
                 </div>
               </div>
@@ -632,7 +632,7 @@
                       <th>รหัส</th>
                       <th>ชื่อโรงพยาบาล</th>
                       <th>จองคิวนัดหมาย</th>
-                      <th>รับบริการ</th>
+                      <th>เข้ารับบริการ</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -777,7 +777,7 @@
                     <td class="text-center text-primary">ค่า Lab</td>
                     <td class="text-center text-primary">ค่า ยา</td>  
                     <td class="text-center text-primary">จองคิวนัดหมาย</td>
-                    <td class="text-center text-primary">รับบริการ</td>                 
+                    <td class="text-center text-primary">เข้ารับบริการ</td>                 
                   </tr>    
                 </thead>
                 <tbody>
@@ -989,7 +989,7 @@
                     <td class="text-center text-primary">ค่า Lab</td>
                     <td class="text-center text-primary">ค่า ยา</td>  
                     <td class="text-center text-primary">จองคิวนัดหมาย</td>
-                    <td class="text-center text-primary">รับบริการ</td>                    
+                    <td class="text-center text-primary">เข้ารับบริการ</td>                    
                   </tr>    
                 </thead>
                 <tbody>
@@ -1201,7 +1201,7 @@
                     <td class="text-center text-primary">ค่า Lab</td>
                     <td class="text-center text-primary">ค่า ยา</td> 
                     <td class="text-center text-primary">จองคิวนัดหมาย</td>
-                    <td class="text-center text-primary">รับบริการ</td>                  
+                    <td class="text-center text-primary">เข้ารับบริการ</td>                  
                   </tr>    
                 </thead>
                 <tbody>
@@ -1413,7 +1413,7 @@
                     <td class="text-center text-primary">ค่า Lab</td>
                     <td class="text-center text-primary">ค่า ยา</td> 
                     <td class="text-center text-primary">จองคิวนัดหมาย</td>
-                    <td class="text-center text-primary">รับบริการ</td>                   
+                    <td class="text-center text-primary">เข้ารับบริการ</td>                   
                   </tr>    
                 </thead>
                 <tbody>
@@ -1625,7 +1625,7 @@
                     <td class="text-center text-primary">ค่า Lab</td>
                     <td class="text-center text-primary">ค่า ยา</td>
                     <td class="text-center text-primary">จองคิวนัดหมาย</td>
-                    <td class="text-center text-primary">รับบริการ</td>                  
+                    <td class="text-center text-primary">เข้ารับบริการ</td>                  
                   </tr>    
                 </thead>
                 <tbody>
@@ -1837,7 +1837,7 @@
                     <td class="text-center text-primary">ค่า Lab</td>
                     <td class="text-center text-primary">ค่า ยา</td>    
                     <td class="text-center text-primary">จองคิวนัดหมาย</td>
-                    <td class="text-center text-primary">รับบริการ</td>                
+                    <td class="text-center text-primary">เข้ารับบริการ</td>                
                   </tr>    
                 </thead>
                 <tbody>
@@ -2049,7 +2049,7 @@
                     <td class="text-center text-primary">ค่า Lab</td>
                     <td class="text-center text-primary">ค่า ยา</td>
                     <td class="text-center text-primary">จองคิวนัดหมาย</td>
-                    <td class="text-center text-primary">รับบริการ</td>                   
+                    <td class="text-center text-primary">เข้ารับบริการ</td>                   
                   </tr>    
                 </thead>
                 <tbody>
