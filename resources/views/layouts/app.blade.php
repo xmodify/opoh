@@ -70,7 +70,8 @@
               <i class="fa-solid fa-money-bill-wave fs-5 me-2" style="color:#7e57c2;"></i></i> AIM
           </a>
 
-          <a class="navbar-brand d-flex align-items-center text-primary brand-title fw-bold ms-3"  href="http://1.179.175.230:89" target="_blank">
+          <a class="navbar-brand d-flex align-items-center text-primary brand-title fw-bold ms-3"  
+              href="https://hosoffice-chanuman.moph.go.th/inventory" target="_blank">
               <i class="bi bi-box-seam text-info me-2"></i> Inventory
           </a>
 

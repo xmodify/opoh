@@ -250,7 +250,7 @@
                         <th>จำนวนเตียง</th>
                         <th>Admit</th>
                         <th>เตียงว่าง</th>
-                        <th>อัตราครองเตียง (%)</th>
+                        <th>อัตราใช้เตียง (%)</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -322,7 +322,7 @@
                         <th>จำนวนเตียง</th>
                         <th>Admit</th>
                         <th>เตียงว่าง</th>
-                        <th>อัตราครองเตียง (%)</th>
+                        <th>อัตราใช้เตียง (%)</th>
                       </tr>
                     </thead>
 
@@ -455,7 +455,7 @@
                     <div class="col-2 small text-secondary text-center">จำนวนเตียง</div>
                     <div class="col-2 small text-secondary text-center">Admit</div>
                     <div class="col-2 small text-secondary text-center">เตียงว่าง</div>
-                    <div class="col-2 small text-secondary text-center">อัตราครองเตียง</div>
+                    <div class="col-2 small text-secondary text-center">อัตราใช้เตียง</div>
                 </div>
                 <hr class="my-1">
                 <!-- รายการเตียงแต่ละแผนก -->
