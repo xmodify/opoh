@@ -74,6 +74,10 @@
               href="https://hosoffice-chanuman.moph.go.th/inventory" target="_blank">
               <i class="bi bi-box-seam text-info me-2"></i> Inventory
           </a>
+          <a class="navbar-brand d-flex align-items-center text-primary brand-title fw-bold ms-3"
+            href="https://hosoffice-chanuman.moph.go.th/pharmacy" target="_blank">
+            <i class="bi bi-capsule-pill text-success me-2"></i> One Province One Formula
+          </a>
 
           {{-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topnav">
               <span class="navbar-toggler-icon"></span>
